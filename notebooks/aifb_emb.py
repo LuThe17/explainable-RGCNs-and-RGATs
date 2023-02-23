@@ -3,6 +3,7 @@ from pyrdf2vec import RDF2VecTransformer
 from pyrdf2vec.embedders import Word2Vec
 from pyrdf2vec.graphs import KG
 from pyrdf2vec.walkers import RandomWalker
+from rdflib import Graph
 import pickle
 import rdflib
 from pykeen.pipeline import pipeline
@@ -38,3 +39,10 @@ if __name__ == '__main__':
         pickle.dump(emb_train, fp)
     with open(homedir + "/data/test_embedding", "wb") as fp:   #Pickling
         pickle.dump(emb_test, fp)
+    
+
+def kg_to_tsv(data):
+    g = Graph()
+    g.parse(homedir + data)
+    for s, p, o in g:
+        if 
