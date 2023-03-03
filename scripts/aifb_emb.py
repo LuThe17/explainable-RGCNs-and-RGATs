@@ -10,7 +10,6 @@ from sklearn import svm
 from sklearn.gaussian_process import GaussianProcessClassifier
 from sklearn.gaussian_process.kernels import RBF
 import pickle
-import rdflib
 from pykeen.pipeline import pipeline
 
 
@@ -28,7 +27,7 @@ def kg_to_tsv(data):
 def create_rdf2vec_embedding(kg, entities):
     kg = KG(kg)
     transformer = RDF2VecTransformer(
-        Word2Vec(epochs=10),
+        Word2Vec(epochs=250), # mehr Epochen (100/200), mehr als 75% accuracy
         walkers=[RandomWalker(4, 10, with_reverse=False, n_jobs=2)],
     )
     embeddings, literals = transformer.fit_transform(kg, entities)  # gesamter Graph
@@ -41,55 +40,36 @@ def create_rdf2vec_embedding(kg, entities):
         pickle.dump(emb_test, fp)
     return emb_train, emb_test
 
-def create_pykeen_embedding(train, test):
+def create_pykeen_embedding(train, test, entities):
     
-    results = pipeline(
+    result = pipeline(
         training=train,
         testing=test,
         model="TransE",
-        #training_kwargs=dict(num_epochs=100),
-        #random_seed=1235,
         device="cpu",
+        epochs=200,
     )
-    results.save_to_directory(homedir + "/data/pykeen_emb")
-    print(results.metric_results.to_df())
-    return results
+    model = result.model
+
+    entity_embeddings = model.entity_representations[0](indices=None).cpu().detach().numpy()
+
+    entity_to_id_dict = result.training.entity_to_id
+
+    word_vectors = {}
+
+    for k, v in entity_to_id_dict.items():
+        word_vectors[k] = entity_embeddings[v]
+
+    embeddings = []
+    for node in entities:
+        embeddings.append(word_vectors[node])#.toPython()])
+    embeddings_np = np.array(embeddings)
 
 
-    # triples_factory = pykeen.triples.TriplesFactory.from_path(kg)
+    pykeen_emb_train = embeddings_np[:140]
+    pykeen_emb_test = embeddings_np[140:]
+    return pykeen_emb_train, pykeen_emb_test
 
-    # # Filter the triples to include only those that involve the selected entities
-
-    # filtered_triples = []
-    # for triple in triples_factory.mapped_triples:
-    #     if triple[0] in entities or triple[2] in entities:
-    #         filtered_triples.append((triples_factory.entity_to_id[triple[0]], 
-    #                                  triples_factory.relation_to_id[triple[1]], 
-    #                                  triples_factory.entity_to_id[triple[2]]))
-
-    
-    # filtered_triples_factory = TriplesFactory.from_labeled_triples(
-    #     triples=filtered_triples,
-    #     entity_to_id=triples_factory.entity_to_id,
-    #     relation_to_id=triples_factory.relation_to_id,
-    # )
-
-    # # Define the embedding model
-    # model = pykeen.models.TransE(
-    #     triples_factory=filtered_triples_factory)
-
-    # # Train the model
-    # result = model.fit(
-    #     triples_factory=filtered_triples_factory)
-    # print(result)
-    # return result
-    # pipeline_result = pipeline(
-    # model='TransE',
-    # evaluation_entity_whitelist=entities,
-    # training=traindata,  # --> gesamten Datensatz verwenden, literals müssen raus 
-    # testing=testdata)
-    
-    # return pipeline_result
 
 def SVM_classifier(train_emb, test_emb, traindata, testdata):
     SVM_classifier = svm.SVC(kernel='linear', C=1.0, random_state=42)
@@ -119,12 +99,17 @@ if __name__ == '__main__':
     pykeen_test = TriplesFactory.from_path(homedir + "/data/testSetpy.tsv", sep="\t")
     data = pd.concat([traindata, testdata])
     entities = [entity for entity in data["person"]]
-    #pykeen_emb = create_pykeen_embedding(pykeen_data, pykeen_test)
+    pykeen_emb_train, pykeen_emb_test = create_pykeen_embedding(pykeen_data, pykeen_test, entities)
     train_emb, test_emb = create_rdf2vec_embedding(kg, entities)
-    pred, score = Gaussian_classifier(train_emb, test_emb, traindata, testdata)  
-    np.savetxt(homedir + "/data/results/prediction_Gaussianclassifier.txt", pred,fmt="%s")
-    print(score)
-    print(pred)
+    pred_rdf_G, score_rdf_G = Gaussian_classifier(train_emb, test_emb, traindata, testdata)
+    pred_rdf_py, score_py_G = Gaussian_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata) # size:140x50
+    pred_rdf_SVM, score_rdf_SVM = SVM_classifier(train_emb, test_emb, traindata, testdata)
+    pred_py_SVM, score_py_SVM = SVM_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata)
+    #np.savetxt(homedir + "/data/results/prediction_Gaussianclassifier.txt", pred,fmt="%s")
+    print('Score_rdf_Gaussian Kernel: ', score_rdf_G)
+    print('Score_pykeen_Gaussian Kernel: ', score_py_G)
+    print('Score_rdf_SVM: ', score_rdf_SVM)
+    print('Score_pykeen_SVM: ', score_py_SVM)
     
 
 
