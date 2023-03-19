@@ -1,4 +1,4 @@
-name: aifb
+name: aifb_reconstruction
 channels:
   - pytorch
   - defaults
@@ -94,7 +94,7 @@ dependencies:
       - multidict==6.0.4
       - mypy-extensions==1.0.0
       - nest-asyncio==1.5.6
-      - networkx==3.0
+      #- networkx==3.0
       - numpy==1.24.2
       - optuna==3.1.0
       - packaging==23.0
@@ -133,4 +133,4 @@ dependencies:
       - typing-extensions==4.5.0
       - typing-inspect==0.8.0
       - zipp==3.15.0
-prefix: C:\Users\luisa\anaconda3\envs\aifb
+prefix: C:\Users\luisa\anaconda3\envs\aifb_reconstruction

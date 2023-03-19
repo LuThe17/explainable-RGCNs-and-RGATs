@@ -12,7 +12,7 @@ from sklearn.gaussian_process.kernels import RBF
 import pickle
 from pykeen.pipeline import pipeline
 
-
+homedir = "C:/Users/luisa/Projekte/Masterthesis/AIFB"
 def kg_to_tsv(data):
     df = pd.DataFrame(columns=['subject','predicate','object'])
     g = Graph()
@@ -39,6 +39,12 @@ def create_rdf2vec_embedding(kg, entities):
     with open(homedir + "/data/test_embedding", "wb") as fp:   #Pickling
         pickle.dump(emb_test, fp)
     return emb_train, emb_test
+
+def save_rdf2vec_emb(emb_train, emb_test):
+    with open(homedir + "/data/train_rdf_embedding", "wb") as fp:   #Pickling
+        pickle.dump(emb_train, fp)
+    with open(homedir + "/data/test_rdf_embedding", "wb") as fp:   #Pickling
+        pickle.dump(emb_test, fp)
 
 def create_pykeen_embedding(train, test, entities):
     
@@ -70,9 +76,18 @@ def create_pykeen_embedding(train, test, entities):
     pykeen_emb_test = embeddings_np[140:]
     return pykeen_emb_train, pykeen_emb_test
 
+def save_pykeen_emb (emb_train, emb_test):
+    with open(homedir + "/data/train_pykeen_embedding", "wb") as fp:   #Pickling
+        pickle.dump(emb_train, fp)
+    with open(homedir + "/data/test_pykeen_embedding", "wb") as fp:   #Pickling
+        pickle.dump(emb_test, fp)
+
+
+
+
 
 def SVM_classifier(train_emb, test_emb, traindata, testdata):
-    SVM_classifier = svm.SVC(kernel='linear', C=1.0, random_state=42)
+    SVM_classifier = svm.SVC(kernel='rbf', C=1.0, random_state=42)
     print(len(train_emb))
     print(traindata["label_affiliation"].shape)
     SVM_classifier.fit(train_emb, traindata["label_affiliation"])
@@ -101,6 +116,8 @@ if __name__ == '__main__':
     entities = [entity for entity in data["person"]]
     pykeen_emb_train, pykeen_emb_test = create_pykeen_embedding(pykeen_data, pykeen_test, entities)
     train_emb, test_emb = create_rdf2vec_embedding(kg, entities)
+    save_pykeen_emb(pykeen_emb_train, pykeen_emb_test)
+    save_rdf2vec_emb(train_emb, test_emb)
     pred_rdf_G, score_rdf_G = Gaussian_classifier(train_emb, test_emb, traindata, testdata)
     pred_rdf_py, score_py_G = Gaussian_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata) # size:140x50
     pred_rdf_SVM, score_rdf_SVM = SVM_classifier(train_emb, test_emb, traindata, testdata)
