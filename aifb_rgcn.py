@@ -16,11 +16,16 @@ from torch_geometric.utils import degree, add_self_loops
 from torch.nn.parameter import Parameter
 from torch_geometric.nn import GCNConv
 from sklearn.metrics import accuracy_score
+from torch import from_numpy
 import csv
 import time
 import numpy as np
+from copy import deepcopy
 import torch
 import pickle
+
+
+
 
 def load_pickle(filename):
     with open(filename, 'rb') as f:
@@ -69,7 +74,7 @@ def load_data(homedir):
         test[nod] = lab
     print('Labels loaded.')
     graph = rdf.Graph()
-    file = homedir + "/data/aifb_witho_complete.nt"
+    file = homedir + "/data/aifb_renamed_bn.nt"
     graph.parse(file, format=rdf.util.guess_format(file))
 
     print('RDF loaded.')
@@ -122,7 +127,6 @@ class RelationalGraphConvolutionNC(Module):
     """
     def __init__(self,
                  triples=None,
-                 #features = None,
                  num_nodes=None,
                  num_relations=None,
                  in_features=None,
@@ -149,7 +153,6 @@ class RelationalGraphConvolutionNC(Module):
         num_blocks = decomposition['num_blocks'] if decomposition is not None and 'num_blocks' in decomposition else None
 
         self.triples = triples
-        #self.features = features
         self.num_nodes = num_nodes
         self.num_relations = num_relations
         self.in_features = in_features
@@ -479,17 +482,179 @@ def sum_sparse(indices, values, size, row_normalisation=True, device='cpu'):
     return sums.view(k)
 
 def locate_file(filepath):
+
     directory = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
     return directory + '/' + filepath
+
+
+class RelevancePropagationConv2d(nn.Module):
+    """Layer-wise relevance propagation for 2D convolution.
+
+    Optionally modifies layer weights according to propagation rule. Here z^+-rule
+
+    Attributes:
+        layer: 2D convolutional layer.
+        eps: a value added to the denominator for numerical stability.
+
+    """
+
+    def __init__(self, layer: torch.nn.Conv2d, mode: str = "z_plus", eps: float = 1.0e-05) -> None:
+        super().__init__()
+
+        self.layer = layer
+
+        if mode == "z_plus":
+            self.layer.weight = torch.nn.Parameter(self.layer.weight.clamp(min=0.0))
+            self.layer.bias = torch.nn.Parameter(torch.zeros_like(self.layer.bias))
+
+        self.eps = eps
+
+    def forward(self, a: torch.tensor, r: torch.tensor) -> torch.tensor:
+        r = self.relevance_filter(r, top_k_percent=1.0)
+        z = self.layer.forward(a) + self.eps
+        s = (r / z).data
+        (z * s).sum().backward()
+        c = a.grad
+        r = (a * c).data
+        return r
+    
+    def relevance_filter(r: torch.tensor, top_k_percent: float = 1.0) -> torch.tensor:
+        """Filter that allows largest k percent values to pass for each batch dimension.
+
+        Filter keeps largest k% entries of a tensor. All tensor elements are set to
+        zero except for the largest k % values. Here, k = 1 means that all relevance
+        scores are passed on to the next layer.
+
+        Args:
+            r: Tensor holding relevance scores of current layer.
+            top_k_percent: Proportion of top k values that is passed on.
+
+        Returns:
+            Tensor of same shape as input tensor.
+
+        """
+        assert 0.0 <= top_k_percent <= 1.0
+
+        if top_k_percent < 1.0:
+            size = r.size()
+            r = r.flatten(start_dim=1)
+            num_elements = r.size(-1)
+            k = int(top_k_percent * num_elements)
+            assert k > 0, f"Expected k to be larger than 0."
+            top_k = torch.topk(input=r, k=k, dim=-1)
+            r = torch.zeros_like(r)
+            r.scatter_(dim=1, index=top_k.indices, src=top_k.values)
+            return r.view(size)
+        else:
+            return r
+
+class LRPModel(nn.Module):
+    """Class wraps PyTorch model to perform layer-wise relevance propagation."""
+
+    def __init__(self, model: torch.nn.Module, top_k: float = 0.0) -> None:
+        super().__init__()
+        self.model = model
+        self.top_k = top_k
+
+        self.model.eval()  # self.model.train() activates dropout / batch normalization etc.!
+
+        # Parse network
+        self.layers = self._get_layer_operations()
+
+        # Create LRP network
+        self.lrp_layers = self._create_lrp_model()
+
+    def _create_lrp_model(self) -> torch.nn.ModuleList:
+        """Method builds the model for layer-wise relevance propagation.
+
+        Returns:
+            LRP-model as module list.
+
+        """
+        # Clone layers from original model. This is necessary as we might modify the weights.
+        layers = deepcopy(self.layers)
+        # lookup_table = layers_lookup()
+
+        # # Run backwards through layers
+        # for i, layer in enumerate(layers[::-1]):
+        #     try:
+        #         layers[i] = lookup_table[layer.__class__](layer=layer, top_k=self.top_k)
+        #     except KeyError:
+        #         message = (
+        #             f"Layer-wise relevance propagation not implemented for "
+        #             f"{layer.__class__.__name__} layer."
+        #         )
+        #         raise NotImplementedError(message)
+
+        return layers
+
+    def _get_layer_operations(self) -> torch.nn.ModuleList:
+        """Get all network operations and store them in a list.
+
+        This method is adapted to VGG networks from PyTorch's Model Zoo.
+        Modify this method to work also for other networks.
+
+        Returns:
+            Layers of original model stored in module list.
+
+        """
+        layers = torch.nn.ModuleList()
+
+      
+        # for layer in self.model.features:
+        #     layers.append(layer)
+
+        # layers.append(self.model.avgpool)
+        # layers.append(torch.nn.Flatten(start_dim=1))
+
+        # for layer in self.model.classifier:
+        #     layers.append(layer)
+
+        return layers
+
+    def forward(self, x: torch.tensor) -> torch.tensor:
+        """Forward method that first performs standard inference followed by layer-wise relevance propagation.
+
+        Args:
+            x: Input tensor representing an image / images (N, C, H, W).
+
+        Returns:
+            Tensor holding relevance scores with dimensions (N, 1, H, W).
+
+        """
+        activations = list()
+
+        # Run inference and collect activations.
+        with torch.no_grad():
+            # Replace image with ones avoids using image information for relevance computation.
+            activations.append(torch.ones_like(x))
+            for layer in self.layers:
+                x = layer.forward(x)
+                activations.append(x)
+
+        # Reverse order of activations to run backwards through model
+        activations = activations[::-1]
+        #activations = [a.data.requires_grad_(True) for a in activations]
+
+        # Initial relevance scores are the network's output activations
+        relevance = nn.CrossEntropyLoss(activations.pop(0), dim=-1)  # Unsupervised
+
+        # Perform relevance propagation
+        for i, layer in enumerate(self.lrp_layers):
+            relevance = layer.forward(activations.pop(0), relevance)
+
+        return relevance#.permute(0, 2, 3, 1).sum(dim=-1).squeeze().detach().cpu()
+
+#mit Matrizen arbeiten und mit adjacency matrix arbeiten
+#modular aufbauen
+# rgan, rgcn, dense layer reverse
 
 if __name__ == '__main__':
     homedir="C:/Users/luisa/Projekte/Masterthesis/AIFB/"
     triples, (n2i, i2n), (r2i, i2r), train, test = load_data(homedir = "C:/Users/luisa/Projekte/Masterthesis/AIFB")
-    train_rdf_emb = load_pickle(homedir + "data/train_embedding")
-    test_rdf_emb = load_pickle(homedir + "data/test_embedding")
-    emb = np.append(train_rdf_emb, test_rdf_emb, axis=0)
-    print(emb.shape)
-    emb = torch.tensor(emb, dtype=torch.float)
+    pyk_emb = load_pickle(homedir + "data/embeddings/pykeen_embedding")
+    #print(pyk_emb.shape)
+    emb = torch.tensor(pyk_emb, dtype=torch.float)
     # Check for available GPUs
     use_cuda =  torch.cuda.is_available()
     device = torch.device('cuda' if use_cuda else 'cpu')
@@ -507,7 +672,7 @@ if __name__ == '__main__':
 
     classes = set([int(l) for l in test_lbl] + [int(l) for l in train_lbl])
     num_classes = len(classes)
-    num_nodes = len(n2i)
+    num_nodes = len(pyk_emb)
     num_relations = len(r2i)
     
     model = NodeClassifier
@@ -516,19 +681,18 @@ if __name__ == '__main__':
         nnodes=num_nodes,
         nrel=num_relations,
         nclass=num_classes,
-        #nfeat = len(emb),
+        nfeat = len(pyk_emb[1]),#len(emb),
         nhid=16,
-        nlayers=2,
+        nlayers=1,
         decomposition=None,
-        nemb=emb)
-        #feat=emb)
+        #nemb=emb
+        feat=emb)
     optimiser = torch.optim.Adam
     optimiser = optimiser(
         model.parameters(),
         lr=0.01,
         weight_decay=0.0
     )
-    print(model)
     epochs = 5
     for epoch in range(1, epochs+1):
         t1 = time.time()
@@ -549,14 +713,22 @@ if __name__ == '__main__':
             else:
                 layer1_l2 = model.rgc1.weights.pow(2).sum()
             loss = loss + layer1_l2_penalty * layer1_l2
-    print(model)
+
     t2 = time.time()
     loss.backward()
     optimiser.step()
     t3 = time.time()
+
+    torch.save(model.state_dict(), homedir +'out/pykeen_model/test.pth')
+    #model.load_state_dict(torch.load(homedir + "data/models/pykeen_model"))
+
+  
+
     with torch.no_grad():
         model.eval()
         classes = model()[train_idx, :].argmax(dim=-1)
+        lrp_model = LRPModel(model=model, top_k=1.0)
+        relevance = lrp_model.forward(x=train_idx[1].unsqueeze(0))
         train_accuracy = accuracy_score(classes.cpu(), train_lbl.cpu()) * 100  # Note: Accuracy is always computed on CPU
 
         classes = model()[test_idx, :].argmax(dim=-1)
