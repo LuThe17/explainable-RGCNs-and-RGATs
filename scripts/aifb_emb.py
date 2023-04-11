@@ -15,6 +15,7 @@ import collections
 import csv
 from pykeen.pipeline import pipeline
 from rdflib.namespace import RDF
+from collections import Counter
 
 
 
@@ -27,7 +28,7 @@ def kg_to_tsv(g):
         if isinstance(o, Literal):
             continue
         df = pd.concat([df, pd.DataFrame([[s,p,o]], columns=['subject','predicate','object'])])
-    df.to_csv(homedir +"/data/aifb_renamed_bn.tsv", sep="\t", index=False)
+    df.to_csv(homedir +"/data/aifb_renamed_bn.tsv", sep="\t", index=False, header=None)
     return df
 
 def create_rdf2vec_embedding(kg, entities):
@@ -164,18 +165,18 @@ def rename_bnode_in_graph(g):
         if isinstance(o, rdflib.BNode):
             
             o_iri = URIRef(f"{new_iri}{o}")
-            g.remove((None, None, o))#
-            g.add((o_iri, RDF.type, RDF.Statement))
-            g.add((o_iri, RDF.subject, o))
+            g.remove((s, p, o))#
+            g.add((s, p, o_iri))
+            #g.add((o_iri, RDF.subject, o))
             o = o_iri
 
         if isinstance(s, rdflib.BNode):
             s_iri = URIRef(f"{new_iri}{s}")
-            g.remove((s, None, None))
-            g.add((s_iri, RDF.type, RDF.Statement))
-            g.add((s_iri, RDF.subject, s))
+            g.remove((s, p, o))
+            g.add((s_iri, p, o))
+            #g.add((s_iri, RDF.subject, s))
             s = s_iri
-        print(f"{s} {p} {o}")
+        
     return g
 
 def SVM_classifier(train_emb, test_emb, traindata, testdata):
@@ -194,6 +195,18 @@ def Gaussian_classifier(train_emb, test_emb, traindata, testdata):
     score = Gaussian_classifier.score(test_emb, testdata["label_affiliation"])
     return predictions, score
 
+def st(node):
+    """
+    Maps an rdflib node to a unique string. We use str(node) for URIs (so they can be matched to the classes) and
+    we use .n3() for everything else, so that different nodes don't become unified.
+
+    Source: https://github.com/pbloem/gated-rgcn/blob/1bde7f28af8028f468349b2d760c17d5c908b58b/kgmodels/data.py#L16
+    """
+    if type(node) == URIRef:
+        return str(node)
+    else:
+        return node.n3()
+    
 
 if __name__ == '__main__':
     homedir = "C:/Users/luisa/Projekte/Masterthesis/AIFB"
@@ -201,13 +214,24 @@ if __name__ == '__main__':
     kg = homedir + '/data/aifb_renamed_bn.nt'
     g = Graph()
     g = g.parse(kg)
-    
+    # nodes = set()
+    # relations = Counter()
+
+    # for s, p, o in g:
+    #     nodes.add(st(s))
+    #     nodes.add(st(o))
+
+    #     relations[st(p)] += 1
+
+    # i2n = list(nodes)
     # kg = remove_aff_mem_emp(homedir, kg)
     # kg = remove_literal_in_graph(kg)
+
     # kg = rename_bnode_in_graph(kg)
     # kg.serialize(format="nt", destination= homedir +"/data/aifb_renamed_bn.nt")
 
-    # df = kg_to_tsv(g)
+
+    #df = kg_to_tsv(g)
    
     traindata = pd.read_csv(homedir +"/data/trainingSet.tsv", sep="\t") # train und test zusammen
     testdata = pd.read_csv(homedir + "/data/testSet.tsv", sep="\t")

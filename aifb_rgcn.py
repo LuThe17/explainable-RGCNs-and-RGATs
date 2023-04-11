@@ -61,7 +61,16 @@ def st(node):
         return node.n3()
 
 def load_data(homedir):
-    
+    '''
+    Input: homedir: path to the directory where the data is stored
+    Output: edges: list of edges
+            n2i: dictionary mapping node labels to indices
+            i2n: list of node labels
+            r2i: dictionary mapping relation labels to indices
+            i2r: list of relation labels
+            train: dictionary mapping training node labels to indices
+            test: dictionary mapping test node labels to indices
+    '''
     labels_train = pd.read_csv(homedir + "/data/trainingSet.tsv", sep="\t")
     labels_test = pd.read_csv(homedir + "/data/testSet.tsv", sep="\t")
     labels = labels_train['label_affiliation'].astype('category').cat.codes
@@ -96,9 +105,9 @@ def load_data(homedir):
 
     # the 'limit' most frequent labels are maintained, the rest are combined into label REST to save memory
    
-    i2r =list(relations.keys())
+    i2r =list(relations.keys()) # maps indices to labels
 
-    r2i = {r: i for i, r in enumerate(i2r)}
+    r2i = {r: i for i, r in enumerate(i2r)} # maps labels to indices
 
     # Collect all edges into a list: [from, relation, to] (only storing integer indices)
     edges = list()
@@ -242,7 +251,18 @@ class RelationalGraphConvolutionNC(Module):
             raise NotImplementedError(f'{reset_mode} parameter initialisation method has not been implemented')
 
     def forward(self, features=None):
-        """ Perform a single pass of message propagation """
+        '''
+        Perform a single pass of message propagation
+        :num_nodes: Number of nodes in the graph
+        :num_relations: Number of relations in the graph
+        :param vals: Tensor of shape (num_triples, 1) containing the value of each triple
+        :param n: Tensor of shape (num_triples, 1) containing the head of each triple
+        :param fw: Tensor of shape (num_triples, 1) containing the relation of each triple
+        :param sums: Tensor of shape (num_triples, 1) containing the tail of each triple
+        :triples: Tensor of shape (num_triples, 3) containing the head, relation and tail of each triple
+        :features: Tensor of shape (num_nodes, in_features) containing the features of each node
+        :return: Tensor of shape (num_nodes, out_features) containing the new features of each node
+        '''
 
         assert (features is None) == (self.in_features is None), "in_features not provided!"
 
@@ -285,6 +305,7 @@ class RelationalGraphConvolutionNC(Module):
         vals = torch.ones(num_triples, dtype=torch.float, device=device)
 
         # Apply normalisation (vertical-stacking -> row-wise rum & horizontal-stacking -> column-wise sum)
+        
         sums = sum_sparse(adj_indices, vals, adj_size, row_normalisation=vertical_stacking, device=device)
         if not vertical_stacking:
             # Rearrange column-wise normalised value to reflect original order (because of transpose-trick)
@@ -292,7 +313,8 @@ class RelationalGraphConvolutionNC(Module):
             i = self_edge_count
             sums = torch.cat([sums[n:2 * n], sums[:n], sums[-i:]], dim=0)
 
-        vals = vals / sums
+        vals = vals / sums # Normalise values by row/column sum (depending on vertical_stacking) to obtain transition probabilities (i.e. row/column stochastic matrix) 
+                           # (Note: this is not the same as the normalisation in the original R-GCN paper, which is done in the loss function)
 
         # Construct adjacency matrix
         if device == 'cuda':
@@ -308,7 +330,7 @@ class RelationalGraphConvolutionNC(Module):
         if self.in_features is None:
             # Message passing if no features are given
             output = torch.mm(adj, weights.view(num_relations * in_dim, out_dim))
-        elif self.diag_weight_matrix:
+        elif self.diag_weight_matrix: # rgc_no_hidden
             fw = torch.einsum('ij,kj->kij', features, weights)
             fw = torch.reshape(fw, (self.num_relations * self.num_nodes, in_dim))
             output = torch.mm(adj, fw)
@@ -317,19 +339,19 @@ class RelationalGraphConvolutionNC(Module):
             af = torch.spmm(adj, features)
             af = af.view(self.num_relations, self.num_nodes, in_dim)
             output = torch.einsum('rio, rni -> no', weights, af)
-        else:
+        else: #rgc1
             # Message passing if the adjacency matrix is horizontally stacked
-            fw = torch.einsum('ni, rio -> rno', features, weights).contiguous()
-            output = torch.mm(adj, fw.view(self.num_relations * self.num_nodes, out_dim))
+            # Note: this is the same as the original R-GCN paper
+            # relation-wise matrix multiplication (i.e. matrix multiplication with a batch of matrices)
+            fw = torch.einsum('ni, rio -> rno', features, weights).contiguous() # (num_relations, num_nodes, out_dim)
+            output = torch.mm(adj, fw.view(self.num_relations * self.num_nodes, out_dim)) # (num_nodes, out_dim)
 
         assert output.size() == (self.num_nodes, out_dim)
         
         if self.bias is not None:
             output = torch.add(output, self.bias)
         
-        return output
-
-
+        return output, adj, vals
 class NodeClassifier(nn.Module):
     """ Node classification with R-GCN message passing """
     def __init__(self,
@@ -342,19 +364,18 @@ class NodeClassifier(nn.Module):
                  nclass=None,
                  edge_dropout=None,
                  decomposition=None,
-                 nemb=None,
-                 feat=None):
+                 nemb=None):
         super(NodeClassifier, self).__init__()
 
         self.nlayers = nlayers
-        self.feat = feat
+        #self.feat = feat
 
         assert (triples is not None or nnodes is not None or nrel is not None or nclass is not None), \
             "The following must be specified: triples, number of nodes, number of relations and number of classes!"
         assert 0 < nlayers < 3, "Only supports the following number of RGCN layers: 1 and 2."
 
         if nlayers == 1:
-            nhid = nclass
+            nhid = 50
 
         if nlayers == 2:
             assert nhid is not None, "Number of hidden layers not specified!"
@@ -386,14 +407,76 @@ class NodeClassifier(nn.Module):
                 decomposition=decomposition,
                 vertical_stacking=True
             )
+        #self.dense = nn.Linear(nhid, nclass, bias = True)
 
     def forward(self):
         """ Embed relational graph and then compute class probabilities """
-        x = self.rgc1(features=self.feat)
+        x = self.rgc1()
         if self.nlayers == 2:
             x = F.relu(x)
             x = self.rgc2(features=x)
+
         return x
+
+class EmbeddingNodeClassifier(NodeClassifier):
+    """ Node classification model with node embeddings as the feature matrix """
+    def __init__(self,
+                 triples=None,
+                 nnodes=None,
+                 nrel=None,
+                 nfeat=None,
+                 nhid=16,
+                 nlayers=2,
+                 nclass=None,
+                 edge_dropout=None,
+                 decomposition=None,
+                 nemb=None,
+                 emb=None):
+        self.activations = []
+        assert nemb is not None, "Size of node embedding not specified!"
+        nfeat = nemb  # Configure RGCN to accept node embeddings as feature matrix
+
+        assert nlayers == 2, "For this model only 2 layers are normally configured (for now)"
+        nhid = nemb
+
+        super(EmbeddingNodeClassifier, self)\
+            .__init__(triples, nnodes, nrel, nfeat, nhid, 1, nclass, edge_dropout, decomposition)
+
+        # This model has a custom first layer
+        self.rgcn_no_hidden = RelationalGraphConvolutionNC(triples=self.triples_plus,
+                                                         num_nodes=nnodes,
+                                                         num_relations=nrel * 2 + 1,
+                                                         in_features=nfeat,
+                                                         out_features=nhid,
+                                                         edge_dropout=edge_dropout,
+                                                         decomposition=decomposition,
+                                                         vertical_stacking=False,
+                                                         diag_weight_matrix=False)
+
+        self.dense = nn.Linear(nhid, nclass, bias = True)
+
+        # Node embeddings
+        self.node_embeddings = emb#nn.Parameter(torch.FloatTensor(nnodes, nemb)) #emb
+
+        # Initialise Parameters
+        nn.init.kaiming_normal_(self.node_embeddings, mode='fan_in')
+        
+
+    def forward(self):
+        """ Embed relational graph and then compute class probabilities """
+        activation = {}
+        x, adj, val_norm = self.rgcn_no_hidden(self.node_embeddings)
+        x = F.relu(x)
+        activation['rgcn_no_hidden'] = x.detach()
+        x, adj, val_norm = self.rgc1(features=x)
+        x = F.relu(x)
+        activation['rgc1'] = x.detach()
+        x = self.dense(x)
+        x = F.softmax(x, dim=1)
+        activation['dense'] = x.detach()
+        return x, adj, val_norm, activation
+
+
 
 def attach_dim(v, n_dim_to_prepend=0, n_dim_to_append=0):
     return v.reshape(torch.Size([1] * n_dim_to_prepend) + v.shape + torch.Size([1] * n_dim_to_append))
@@ -432,6 +515,25 @@ def stack_matrices(triples, num_nodes, num_rels, vertical_stacking=True, device=
     """
     Computes a sparse adjacency matrix for the given graph (the adjacency matrices of all
     relations are stacked vertically).
+    :param triples: A tensor of shape (num_triples, 3) containing the triples of the graph.
+    :param num_nodes: The number of nodes in the graph.
+    :param num_rels: The number of relations in the graph.
+    :param fr: A tensor of shape (num_triples,) containing the indices of the source nodes.
+    :param to: A tensor of shape (num_triples,) containing the indices of the target nodes.
+    :param rel: A tensor of shape (num_triples,) containing the indices of the relations.
+    :param offset: A tensor of shape (num_triples,) containing the offsets to add to the
+        indices of the non-zero elements of the adjacency matrix.
+    :param indices: A tensor of shape (num_triples, 2) containing the indices of the non-zero
+        elements of the adjacency matrix.
+
+    :param vertical_stacking: If True, the adjacency matrices of all relations are stacked
+        vertically. Otherwise, they are stacked horizontally.
+    :param device: The device on which the adjacency matrix should be stored.
+    :offset: The offset to add to the indices of the non-zero elements of the adjacency
+    :indices: A tensor of shape (num_triples, 2) containing the indices of the non-zero
+    :return: A tuple (indices, size) where indices is a tensor of shape (num_triples, 2)
+        containing the indices of the non-zero elements of the adjacency matrix, and size
+        is a tuple (num_rows, num_cols) containing the size of the adjacency matrix.
     """
     assert triples.dtype == torch.long
 
@@ -458,6 +560,17 @@ def sum_sparse(indices, values, size, row_normalisation=True, device='cpu'):
     Sum the rows or columns of a sparse matrix, and redistribute the
     results back to the non-sparse row/column entries
     Arguments are interpreted as defining sparse matrix.
+    :param indices: A tensor of shape (num_non_zero, 2) containing the indices of the non-zero	
+        elements of the sparse matrix.
+    :param values: A tensor of shape (num_non_zero,) containing the values of the non-zero
+        elements of the sparse matrix.
+    :param size: A tuple (num_rows, num_cols) containing the size of the sparse matrix.
+    :param row_normalisation: If True, the rows of the sparse matrix are normalised. Otherwise,
+        the columns are normalised.
+    :param device: The device on which the sparse matrix should be stored.
+    :param k: The number of non-zero elements in the sparse matrix.
+    :param r: The number of relations in the graph.
+    :return: A tensor of shape (num_rows, num_cols) containing the normalised sparse matrix.    
 
     Source: https://github.com/pbloem/gated-rgcn/blob/1bde7f28af8028f468349b2d760c17d5c908b58b/kgmodels/util/util.py#L304
     """
@@ -487,174 +600,50 @@ def locate_file(filepath):
     return directory + '/' + filepath
 
 
-class RelevancePropagationConv2d(nn.Module):
-    """Layer-wise relevance propagation for 2D convolution.
 
-    Optionally modifies layer weights according to propagation rule. Here z^+-rule
+def lrp_relevance_dense(a, w, b, rel_in):
+    '''
+    Layer-wise relevance propagation for 2D convolution.
+    :param a: activations of the layer (softmaxed)
+    :param w: weights of the layer
+    :param b: bias of the layer
+    :param rel_in: relevance of the input of the layer
+    :return: relevance of the output of the layer
+    '''
+    z = a @ w.t() #+ b
+    s = np.divide(rel_in, z.detach().numpy())
+    c = w.t() @ s.t()
+    rel_out = np.multiply(a.detach().numpy(), c.t().detach().numpy())
+    return rel_out
 
-    Attributes:
-        layer: 2D convolutional layer.
-        eps: a value added to the denominator for numerical stability.
+def lrp_relevance_rgcn(adj, a, w, b, rel_in, l_l=False):
+    '''
+    :param adj: adjacency matrix
+    :param a: activations of the layer
+    :param w: weights of the layer
+    :param b: bias of the layer
+    :param rel_in: relevance of the input of the layer
+    :return: relevance of the output of the layer
+    '''
+    if l_l:
+        z= torch.Tensor(rel_in) @ w
+        s = z.reshape(49*2835, 50)
+        out = adj@s
+    else:
+        z = a @ w
+        s = z.reshape(49 * 2835, 50) 
+        c = adj @ s
+        out = np.multiply(c.detach().numpy(), rel_in)
+    return out
 
-    """
 
-    def __init__(self, layer: torch.nn.Conv2d, mode: str = "z_plus", eps: float = 1.0e-05) -> None:
-        super().__init__()
-
-        self.layer = layer
-
-        if mode == "z_plus":
-            self.layer.weight = torch.nn.Parameter(self.layer.weight.clamp(min=0.0))
-            self.layer.bias = torch.nn.Parameter(torch.zeros_like(self.layer.bias))
-
-        self.eps = eps
-
-    def forward(self, a: torch.tensor, r: torch.tensor) -> torch.tensor:
-        r = self.relevance_filter(r, top_k_percent=1.0)
-        z = self.layer.forward(a) + self.eps
-        s = (r / z).data
-        (z * s).sum().backward()
-        c = a.grad
-        r = (a * c).data
-        return r
-    
-    def relevance_filter(r: torch.tensor, top_k_percent: float = 1.0) -> torch.tensor:
-        """Filter that allows largest k percent values to pass for each batch dimension.
-
-        Filter keeps largest k% entries of a tensor. All tensor elements are set to
-        zero except for the largest k % values. Here, k = 1 means that all relevance
-        scores are passed on to the next layer.
-
-        Args:
-            r: Tensor holding relevance scores of current layer.
-            top_k_percent: Proportion of top k values that is passed on.
-
-        Returns:
-            Tensor of same shape as input tensor.
-
-        """
-        assert 0.0 <= top_k_percent <= 1.0
-
-        if top_k_percent < 1.0:
-            size = r.size()
-            r = r.flatten(start_dim=1)
-            num_elements = r.size(-1)
-            k = int(top_k_percent * num_elements)
-            assert k > 0, f"Expected k to be larger than 0."
-            top_k = torch.topk(input=r, k=k, dim=-1)
-            r = torch.zeros_like(r)
-            r.scatter_(dim=1, index=top_k.indices, src=top_k.values)
-            return r.view(size)
-        else:
-            return r
-
-class LRPModel(nn.Module):
-    """Class wraps PyTorch model to perform layer-wise relevance propagation."""
-
-    def __init__(self, model: torch.nn.Module, top_k: float = 0.0) -> None:
-        super().__init__()
-        self.model = model
-        self.top_k = top_k
-
-        self.model.eval()  # self.model.train() activates dropout / batch normalization etc.!
-
-        # Parse network
-        self.layers = self._get_layer_operations()
-
-        # Create LRP network
-        self.lrp_layers = self._create_lrp_model()
-
-    def _create_lrp_model(self) -> torch.nn.ModuleList:
-        """Method builds the model for layer-wise relevance propagation.
-
-        Returns:
-            LRP-model as module list.
-
-        """
-        # Clone layers from original model. This is necessary as we might modify the weights.
-        layers = deepcopy(self.layers)
-        # lookup_table = layers_lookup()
-
-        # # Run backwards through layers
-        # for i, layer in enumerate(layers[::-1]):
-        #     try:
-        #         layers[i] = lookup_table[layer.__class__](layer=layer, top_k=self.top_k)
-        #     except KeyError:
-        #         message = (
-        #             f"Layer-wise relevance propagation not implemented for "
-        #             f"{layer.__class__.__name__} layer."
-        #         )
-        #         raise NotImplementedError(message)
-
-        return layers
-
-    def _get_layer_operations(self) -> torch.nn.ModuleList:
-        """Get all network operations and store them in a list.
-
-        This method is adapted to VGG networks from PyTorch's Model Zoo.
-        Modify this method to work also for other networks.
-
-        Returns:
-            Layers of original model stored in module list.
-
-        """
-        layers = torch.nn.ModuleList()
-
-      
-        # for layer in self.model.features:
-        #     layers.append(layer)
-
-        # layers.append(self.model.avgpool)
-        # layers.append(torch.nn.Flatten(start_dim=1))
-
-        # for layer in self.model.classifier:
-        #     layers.append(layer)
-
-        return layers
-
-    def forward(self, x: torch.tensor) -> torch.tensor:
-        """Forward method that first performs standard inference followed by layer-wise relevance propagation.
-
-        Args:
-            x: Input tensor representing an image / images (N, C, H, W).
-
-        Returns:
-            Tensor holding relevance scores with dimensions (N, 1, H, W).
-
-        """
-        activations = list()
-
-        # Run inference and collect activations.
-        with torch.no_grad():
-            # Replace image with ones avoids using image information for relevance computation.
-            activations.append(torch.ones_like(x))
-            for layer in self.layers:
-                x = layer.forward(x)
-                activations.append(x)
-
-        # Reverse order of activations to run backwards through model
-        activations = activations[::-1]
-        #activations = [a.data.requires_grad_(True) for a in activations]
-
-        # Initial relevance scores are the network's output activations
-        relevance = nn.CrossEntropyLoss(activations.pop(0), dim=-1)  # Unsupervised
-
-        # Perform relevance propagation
-        for i, layer in enumerate(self.lrp_layers):
-            relevance = layer.forward(activations.pop(0), relevance)
-
-        return relevance#.permute(0, 2, 3, 1).sum(dim=-1).squeeze().detach().cpu()
-
-#mit Matrizen arbeiten und mit adjacency matrix arbeiten
-#modular aufbauen
-# rgan, rgcn, dense layer reverse
 
 if __name__ == '__main__':
     homedir="C:/Users/luisa/Projekte/Masterthesis/AIFB/"
     triples, (n2i, i2n), (r2i, i2r), train, test = load_data(homedir = "C:/Users/luisa/Projekte/Masterthesis/AIFB")
     pyk_emb = load_pickle(homedir + "data/embeddings/pykeen_embedding")
-    #print(pyk_emb.shape)
-    emb = torch.tensor(pyk_emb, dtype=torch.float)
+    pyk_emb = torch.tensor(pyk_emb, dtype=torch.float)
+    lemb = len(pyk_emb[1])
     # Check for available GPUs
     use_cuda =  torch.cuda.is_available()
     device = torch.device('cuda' if use_cuda else 'cpu')
@@ -672,35 +661,37 @@ if __name__ == '__main__':
 
     classes = set([int(l) for l in test_lbl] + [int(l) for l in train_lbl])
     num_classes = len(classes)
-    num_nodes = len(pyk_emb)
+    num_nodes = len(n2i)
     num_relations = len(r2i)
-    
-    model = NodeClassifier
+
+    model = EmbeddingNodeClassifier
     model = model(
         triples=triples,
         nnodes=num_nodes,
         nrel=num_relations,
         nclass=num_classes,
-        nfeat = len(pyk_emb[1]),#len(emb),
         nhid=16,
-        nlayers=1,
+        nlayers=2,
         decomposition=None,
-        #nemb=emb
-        feat=emb)
+        nemb=lemb,
+        emb=pyk_emb)
+    
+
     optimiser = torch.optim.Adam
     optimiser = optimiser(
         model.parameters(),
-        lr=0.01,
-        weight_decay=0.0
-    )
-    epochs = 5
+        lr=0.15,
+        weight_decay=0.0)
+    epochs = 200
+
     for epoch in range(1, epochs+1):
         t1 = time.time()
-        criterion = nn.CrossEntropyLoss()
+        criterion = nn.CrossEntropyLoss() #softmax verwenden
         model.train()
         optimiser.zero_grad()
-        classes = model()[train_idx, :]
-        #print(embt)
+        classes, adj_m, val_norm, activation = model()
+        #print(adj_m)
+        classes = classes[train_idx, :]
         loss = criterion(classes, train_lbl)
         layer1_l2_penalty = 0.0
         decomposition = None
@@ -713,25 +704,44 @@ if __name__ == '__main__':
             else:
                 layer1_l2 = model.rgc1.weights.pow(2).sum()
             loss = loss + layer1_l2_penalty * layer1_l2
-
+    print(classes)
     t2 = time.time()
     loss.backward()
     optimiser.step()
     t3 = time.time()
 
     torch.save(model.state_dict(), homedir +'out/pykeen_model/test.pth')
-    #model.load_state_dict(torch.load(homedir + "data/models/pykeen_model"))
+    params = {}
+    for name, param in model.named_parameters():
+        if param.requires_grad:
+            params[name] = param.data
 
-  
 
-    with torch.no_grad():
+    act_dense = activation['dense']
+    act_rgc1 = activation['rgc1']
+    act_rgc1_no_hidden = activation['rgcn_no_hidden']
+    bias_dense = model.dense.bias
+    bias_rgc1 = model.rgc1.bias
+    bias_rgc1_no_hidden = model.rgcn_no_hidden.bias
+    weight_dense = model.dense.weight
+    weight_rgc1 = model.rgc1.weights
+    weight_rgc1_no_hidden = model.rgcn_no_hidden.weights
+    relevance, adj, val_norm, activation = model()
+    relevance = relevance[test_idx, :][0]
+    def tensor_max_value_to_1_else_0(tensor):
+        max_value = tensor.max()
+        return torch.where(tensor == max_value, torch.tensor(1.0), torch.tensor(0.0))
+    rel1 =tensor_max_value_to_1_else_0(relevance)
+    rel2 = lrp_relevance_dense(act_rgc1, weight_dense, bias_dense, rel1)
+    rel3 = lrp_relevance_rgcn(adj_m, act_rgc1_no_hidden, weight_rgc1, bias_rgc1, rel2, l_l =False)
+    rel4 = lrp_relevance_rgcn(adj_m, act_rgc1_no_hidden, weight_rgc1_no_hidden, bias_rgc1_no_hidden, rel3, l_l = True)
+    with torch.no_grad(): #no backpropagation
         model.eval()
-        classes = model()[train_idx, :].argmax(dim=-1)
-        lrp_model = LRPModel(model=model, top_k=1.0)
-        relevance = lrp_model.forward(x=train_idx[1].unsqueeze(0))
+        classes, adj, val_norm, activation = model()
+        classes = classes[train_idx, :].argmax(dim=-1)
         train_accuracy = accuracy_score(classes.cpu(), train_lbl.cpu()) * 100  # Note: Accuracy is always computed on CPU
-
-        classes = model()[test_idx, :].argmax(dim=-1)
+        classes, adj, val_norm, activation = model()
+        classes = classes[test_idx, :].argmax(dim=-1)
         test_accuracy = accuracy_score(classes.cpu(), test_lbl.cpu()) * 100  # Note: Accuracy is always computed on CPU
 
         print(f'[Epoch {epoch}] Loss: {loss.item():.5f} Forward: {(t2 - t1):.3f}s Backward: {(t3 - t2):.3f}s '
@@ -741,8 +751,6 @@ if __name__ == '__main__':
 
     print("Starting evaluation...")
     model.eval()
-    classes = model()[test_idx, :].argmax(dim=-1)
-    print(classes)
     test_accuracy = accuracy_score(classes.cpu(), test_lbl.cpu()) * 100  # Note: Accuracy is always computed on CPU
     print(classes)
     print(test_lbl)
