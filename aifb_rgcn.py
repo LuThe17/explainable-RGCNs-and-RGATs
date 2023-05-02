@@ -71,8 +71,8 @@ def load_data(homedir):
             train: dictionary mapping training node labels to indices
             test: dictionary mapping test node labels to indices
     '''
-    labels_train = pd.read_csv(homedir + "/data/trainingSet.tsv", sep="\t")
-    labels_test = pd.read_csv(homedir + "/data/testSet.tsv", sep="\t")
+    labels_train = pd.read_csv(homedir + "/data/AIFB/trainingSet.tsv", sep="\t")
+    labels_test = pd.read_csv(homedir + "/data/AIFB/testSet.tsv", sep="\t")
     labels = labels_train['label_affiliation'].astype('category').cat.codes
     train = {}
     for nod, lab in zip(labels_train['person'].values, labels):
@@ -83,7 +83,7 @@ def load_data(homedir):
         test[nod] = lab
     print('Labels loaded.')
     graph = rdf.Graph()
-    file = homedir + "/data/aifb_renamed_bn.nt"
+    file = homedir + "/data/AIFB/aifb_renamed_bn.nt"
     graph.parse(file, format=rdf.util.guess_format(file))
 
     print('RDF loaded.')
@@ -304,17 +304,17 @@ class RelationalGraphConvolutionNC(Module):
         num_triples = adj_indices.size(0)
         vals = torch.ones(num_triples, dtype=torch.float, device=device)
 
-        # Apply normalisation (vertical-stacking -> row-wise rum & horizontal-stacking -> column-wise sum)
+        # Apply normalisation (vertical-stacking -> row-wise sum & horizontal-stacking -> column-wise sum)
         
         sums = sum_sparse(adj_indices, vals, adj_size, row_normalisation=vertical_stacking, device=device)
         if not vertical_stacking:
             # Rearrange column-wise normalised value to reflect original order (because of transpose-trick)
-            n = general_edge_count
+            n = general_edge_count 
             i = self_edge_count
             sums = torch.cat([sums[n:2 * n], sums[:n], sums[-i:]], dim=0)
 
         vals = vals / sums # Normalise values by row/column sum (depending on vertical_stacking) to obtain transition probabilities (i.e. row/column stochastic matrix) 
-                           # (Note: this is not the same as the normalisation in the original R-GCN paper, which is done in the loss function)
+                           
 
         # Construct adjacency matrix
         if device == 'cuda':
@@ -343,15 +343,15 @@ class RelationalGraphConvolutionNC(Module):
             # Message passing if the adjacency matrix is horizontally stacked
             # Note: this is the same as the original R-GCN paper
             # relation-wise matrix multiplication (i.e. matrix multiplication with a batch of matrices)
-            fw = torch.einsum('ni, rio -> rno', features, weights).contiguous() # (num_relations, num_nodes, out_dim)
-            output = torch.mm(adj, fw.view(self.num_relations * self.num_nodes, out_dim)) # (num_nodes, out_dim)
+            fw = torch.einsum('ni, rio -> rno', features, weights).contiguous() # (num_relations, num_nodes, out_dim) 
+            output = torch.mm(adj, fw.view(self.num_relations * self.num_nodes, out_dim)) # (num_nodes, out_dim) # fw.view(self.num_relations * self.num_nodes, out_dim) absichern
 
         assert output.size() == (self.num_nodes, out_dim)
         
         if self.bias is not None:
             output = torch.add(output, self.bias)
         
-        return output, adj, vals
+        return output, adj, vals, fw
 class NodeClassifier(nn.Module):
     """ Node classification with R-GCN message passing """
     def __init__(self,
@@ -465,16 +465,19 @@ class EmbeddingNodeClassifier(NodeClassifier):
     def forward(self):
         """ Embed relational graph and then compute class probabilities """
         activation = {}
-        x, adj, val_norm = self.rgcn_no_hidden(self.node_embeddings)
+        fw_list = {}
+        x, adj, val_norm,fw = self.rgcn_no_hidden(self.node_embeddings)
         x = F.relu(x)
         activation['rgcn_no_hidden'] = x.detach()
-        x, adj, val_norm = self.rgc1(features=x)
+        fw_list['rgcn_no_hidden'] = fw.detach()
+        x, adj, val_norm, fw = self.rgc1(features=x)
         x = F.relu(x)
         activation['rgc1'] = x.detach()
+        fw_list['rgc1'] = fw.detach()
         x = self.dense(x)
         x = F.softmax(x, dim=1)
         activation['dense'] = x.detach()
-        return x, adj, val_norm, activation
+        return x, adj, val_norm, activation, fw_list
 
 
 
@@ -600,48 +603,71 @@ def locate_file(filepath):
     return directory + '/' + filepath
 
 
-
-def lrp_relevance_dense(a, w, b, rel_in):
+def get_relevance_for_dense_layer(a, w, b, rel_in):
     '''
-    Layer-wise relevance propagation for 2D convolution.
-    :param a: activations of the layer (softmaxed)
-    :param w: weights of the layer
-    :param b: bias of the layer
-    :param rel_in: relevance of the input of the layer
-    :return: relevance of the output of the layer
-    '''
-    z = a @ w.t() #+ b
-    s = np.divide(rel_in, z.detach().numpy())
-    c = w.t() @ s.t()
-    rel_out = np.multiply(a.detach().numpy(), c.t().detach().numpy())
-    return rel_out
-
-def lrp_relevance_rgcn(adj, a, w, b, rel_in, l_l=False):
-    '''
-    :param adj: adjacency matrix
     :param a: activations of the layer
     :param w: weights of the layer
     :param b: bias of the layer
     :param rel_in: relevance of the input of the layer
     :return: relevance of the output of the layer
     '''
-    if l_l:
-        z= torch.Tensor(rel_in) @ w
-        s = z.reshape(49*2835, 50)
-        out = adj@s
-    else:
-        z = a @ w
-        s = z.reshape(49 * 2835, 50) 
-        c = adj @ s
-        out = np.multiply(c.detach().numpy(), rel_in)
+    z = a.detach().numpy().dot(w.t().detach().numpy()) #2835x50 ; 4x50; 2835x4
+    s = np.divide(rel_in,z) # 2835x4; 2835x4; 2835x4
+    pre_res = s.detach().numpy().dot(w.detach().numpy()) # 2835x4; 4x50; 2835x50
+    out = np.multiply(a, pre_res) # 2835x50; 2835x50; 2835x50
     return out
+
+
+def lrp(activation, weights, adjacency, relevance):
+    Xp = (adjacency.T @ activation).reshape(49, 2835, 50)
+    sumzk = (Xp @ weights).sum(dim=0)+1e-9
+    s = np.divide(relevance.detach().numpy(), ((sumzk).detach().numpy()))
+    zkl = Xp @ weights
+    out = zkl * torch.Tensor(s)
+    Xp = Xp+1e-9 
+    z = np.divide(out.detach().numpy(), ((Xp).detach().numpy()))
+    f_out = Xp * z
+    rel = f_out.sum(dim=0)
+    return rel
+
+def lrp2 (activation,weights, adjacency,relevance):
+    adj = adjacency.to_dense().view(2835,2835,49)
+    Yp = activation @ weights
+    sumzk = (adj.T @ Yp).sum(dim=0)+1e-9
+    s = np.divide(relevance.detach().numpy(), ((sumzk).detach().numpy()))
+    zkl = adj.T @ Yp
+    out = zkl * torch.Tensor(s)
+    Yp = (activation @ weights)+1e-9
+    z = np.divide(out.detach().numpy(), ((Yp).detach().numpy()))
+    f_out = Yp.detach().numpy() * z
+    rel = torch.Tensor(f_out).sum(dim=0)
+    return rel
+
+
+def lrp_rgcn(activation_m, activation_f, weights_m, weights_f, adjacency, relevance_m, variant='A'):
+    if variant == 'A':
+        rel = lrp(activation_m, weights_m, adjacency, relevance_m)
+        out = lrp(activation_f, weights_f, adjacency, rel)
+    else:
+        rel = lrp2(activation_m, weights_m, adjacency, relevance_m)
+        out = lrp2(activation_f, weights_f, adjacency, rel)
+    return out
+
+def tensor_max_value_to_1_else_0(tensor, x):
+    max_value = tensor.argmax()
+    idx = test_idx[x]
+    t = torch.zeros(2835,4)
+    t[idx,max_value] = 1
+    #t =torch.sparse_coo_tensor([[idx],[max_value]],[1],[2835,4])
+    #torch.where(tensor == max_value, torch.tensor(1), torch.tensor(0.0))
+    return t
 
 
 
 if __name__ == '__main__':
     homedir="C:/Users/luisa/Projekte/Masterthesis/AIFB/"
     triples, (n2i, i2n), (r2i, i2r), train, test = load_data(homedir = "C:/Users/luisa/Projekte/Masterthesis/AIFB")
-    pyk_emb = load_pickle(homedir + "data/embeddings/pykeen_embedding")
+    pyk_emb = load_pickle(homedir + "data/AIFB/embeddings/pykeen_embedding_TransH")
     pyk_emb = torch.tensor(pyk_emb, dtype=torch.float)
     lemb = len(pyk_emb[1])
     # Check for available GPUs
@@ -680,16 +706,16 @@ if __name__ == '__main__':
     optimiser = torch.optim.Adam
     optimiser = optimiser(
         model.parameters(),
-        lr=0.15,
+        lr=0.1,
         weight_decay=0.0)
-    epochs = 200
+    epochs = 20
 
     for epoch in range(1, epochs+1):
         t1 = time.time()
         criterion = nn.CrossEntropyLoss() #softmax verwenden
         model.train()
         optimiser.zero_grad()
-        classes, adj_m, val_norm, activation = model()
+        classes, adj_m, val_norm, activation,fw = model()
         #print(adj_m)
         classes = classes[train_idx, :]
         loss = criterion(classes, train_lbl)
@@ -726,15 +752,17 @@ if __name__ == '__main__':
     weight_dense = model.dense.weight
     weight_rgc1 = model.rgc1.weights
     weight_rgc1_no_hidden = model.rgcn_no_hidden.weights
-    relevance, adj, val_norm, activation = model()
-    relevance = relevance[test_idx, :][0]
-    def tensor_max_value_to_1_else_0(tensor):
-        max_value = tensor.max()
-        return torch.where(tensor == max_value, torch.tensor(1.0), torch.tensor(0.0))
-    rel1 =tensor_max_value_to_1_else_0(relevance)
-    rel2 = lrp_relevance_dense(act_rgc1, weight_dense, bias_dense, rel1)
-    rel3 = lrp_relevance_rgcn(adj_m, act_rgc1_no_hidden, weight_rgc1, bias_rgc1, rel2, l_l =False)
-    rel4 = lrp_relevance_rgcn(adj_m, act_rgc1_no_hidden, weight_rgc1_no_hidden, bias_rgc1_no_hidden, rel3, l_l = True)
+    relevance, adj, val_norm, activation, fw = model()
+    x=19
+    selected_rel = relevance[test_idx, :][x]
+
+
+    rel1 = tensor_max_value_to_1_else_0(selected_rel,x)
+    rel2 = get_relevance_for_dense_layer(act_rgc1, weight_dense, bias_dense, rel1)
+    rel = lrp_rgcn(act_rgc1_no_hidden, pyk_emb, weight_rgc1, weight_rgc1_no_hidden, adj_m, rel2, variant='A')
+
+ 
+ 
     with torch.no_grad(): #no backpropagation
         model.eval()
         classes, adj, val_norm, activation = model()

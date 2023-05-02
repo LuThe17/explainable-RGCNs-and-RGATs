@@ -55,12 +55,12 @@ def save_rdf2vec_emb(emb_train, emb_test, emb):
     with open(homedir + "/data/rdf_embedding", "wb") as fp:   #Pickling
         pickle.dump(emb, fp)
 
-def create_pykeen_embedding(train, test, entities):
+def create_pykeen_embedding(train, test, entities, type = 'TransE'):
     
     result = pipeline(
         training=train,
         testing=test,
-        model="TransE",
+        model=type,
         device="cpu",
         epochs=200,
     )
@@ -85,12 +85,12 @@ def create_pykeen_embedding(train, test, entities):
     pykeen_emb_test = embeddings_np[140:]
     return pykeen_emb_train, pykeen_emb_test, entity_embeddings
 
-def save_pykeen_emb (emb_train, emb_test, emb):
-    with open(homedir + "/data/embeddings/train_pykeen_embedding", "wb") as fp:   #Pickling
+def save_pykeen_emb (emb_train, emb_test, emb, type):
+    with open(homedir + "/data/AIFB/embeddings/train_pykeen_embedding_"+type, "wb") as fp:   #Pickling
         pickle.dump(emb_train, fp)
-    with open(homedir + "/data/embeddings/test_pykeen_embedding", "wb") as fp:   #Pickling
+    with open(homedir + "/data/AIFB/embeddings/test_pykeen_embedding_"+type, "wb") as fp:   #Pickling
         pickle.dump(emb_test, fp)
-    with open (homedir + "/data/embeddings/pykeen_embedding", "wb") as fp:
+    with open (homedir + "/data/AIFB/embeddings/pykeen_embedding_"+ type, "wb") as fp:
         pickle.dump(emb, fp)
 
 def remove_aff_mem_emp(homedir, graph):
@@ -195,35 +195,15 @@ def Gaussian_classifier(train_emb, test_emb, traindata, testdata):
     score = Gaussian_classifier.score(test_emb, testdata["label_affiliation"])
     return predictions, score
 
-def st(node):
-    """
-    Maps an rdflib node to a unique string. We use str(node) for URIs (so they can be matched to the classes) and
-    we use .n3() for everything else, so that different nodes don't become unified.
-
-    Source: https://github.com/pbloem/gated-rgcn/blob/1bde7f28af8028f468349b2d760c17d5c908b58b/kgmodels/data.py#L16
-    """
-    if type(node) == URIRef:
-        return str(node)
-    else:
-        return node.n3()
     
 
 if __name__ == '__main__':
     homedir = "C:/Users/luisa/Projekte/Masterthesis/AIFB"
     
-    kg = homedir + '/data/aifb_renamed_bn.nt'
+    kg = homedir + '/data/AIFB/aifb_renamed_bn.nt'
     g = Graph()
     g = g.parse(kg)
-    # nodes = set()
-    # relations = Counter()
 
-    # for s, p, o in g:
-    #     nodes.add(st(s))
-    #     nodes.add(st(o))
-
-    #     relations[st(p)] += 1
-
-    # i2n = list(nodes)
     # kg = remove_aff_mem_emp(homedir, kg)
     # kg = remove_literal_in_graph(kg)
 
@@ -233,25 +213,30 @@ if __name__ == '__main__':
 
     #df = kg_to_tsv(g)
    
-    traindata = pd.read_csv(homedir +"/data/trainingSet.tsv", sep="\t") # train und test zusammen
-    testdata = pd.read_csv(homedir + "/data/testSet.tsv", sep="\t")
+    traindata = pd.read_csv(homedir +"/data/AIFB/trainingSet.tsv", sep="\t") # train und test zusammen
+    testdata = pd.read_csv(homedir + "/data/AIFB/testSet.tsv", sep="\t")
     entities = traindata['person'].append(testdata['person'])
+    emb_type = 'TransF'
     testpy = testdata[:2]
-    pykeen_data = TriplesFactory.from_path(homedir + "/data/aifb_renamed_bn.tsv", sep="\t")
-    pykeen_test = TriplesFactory.from_path(homedir + "/data/testSetpy.tsv", sep="\t")
-    pykeen_emb_train, pykeen_emb_test, pykeen_embeddings  = create_pykeen_embedding(pykeen_data, pykeen_test, entities)
+    pykeen_data = TriplesFactory.from_path(homedir + "/data/AIFB/aifb_renamed_bn.tsv", sep="\t")
+    pykeen_test = TriplesFactory.from_path(homedir + "/data/AIFB/testSetpy.tsv", sep="\t")
+    pykeen_emb_train, pykeen_emb_test, pykeen_embeddings  = create_pykeen_embedding(pykeen_data, pykeen_test, entities, emb_type)
     # train_emb, test_emb, rdf2vec_embeddings = create_rdf2vec_embedding(kg, entities)
-    save_pykeen_emb(pykeen_emb_train, pykeen_emb_test, pykeen_embeddings)
+    save_pykeen_emb(pykeen_emb_train, pykeen_emb_test, pykeen_embeddings, emb_type)
+
     # #save_rdf2vec_emb(train_emb, test_emb, rdf2vec_embeddings)
-    # #pred_rdf_G, score_rdf_G = Gaussian_classifier(train_emb, test_emb, traindata, testdata)
-    # pred_rdf_py, score_py_G = Gaussian_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata) # size:140x50
+
+    # pred_rdf_G, score_rdf_G = Gaussian_classifier(train_emb, test_emb, traindata, testdata)
+    pred_py_G, score_py_G = Gaussian_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata) # size:140x50
     # #pred_rdf_SVM, score_rdf_SVM = SVM_classifier(train_emb, test_emb, traindata, testdata)
-    # pred_py_SVM, score_py_SVM = SVM_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata)
+    pred_py_SVM, score_py_SVM = SVM_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata)
+
     # #np.savetxt(homedir + "/data/results/prediction_Gaussianclassifier.txt", pred,fmt="%s")
+
     # print('Score_rdf_Gaussian Kernel: ', score_rdf_G)
-    # print('Score_pykeen_Gaussian Kernel: ', score_py_G)
+    print('Score_pykeen_Gaussian Kernel: ', score_py_G)
     # print('Score_rdf_SVM: ', score_rdf_SVM)
-    # print('Score_pykeen_SVM: ', score_py_SVM)
+    print('Score_pykeen_SVM: ', score_py_SVM)
     
 
 
