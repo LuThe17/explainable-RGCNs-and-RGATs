@@ -320,7 +320,7 @@ class RelationalGraphConvolutionNC(Module):
         if device == 'cuda':
             adj = torch.cuda.sparse.FloatTensor(indices=adj_indices.t(), values=vals, size=adj_size)
         else:
-            adj = torch.sparse.FloatTensor(indices=adj_indices.t(), values=vals, size=adj_size)
+            adj = torch.sparse.FloatTensor(indices=adj_indices.t(), values=vals, size=adj_size) # normale Adjazenzmatrix, nicht transponiert
 
         if self.diag_weight_matrix:
             assert weights.size() == (num_relations, in_dim)
@@ -619,26 +619,33 @@ def get_relevance_for_dense_layer(a, w, b, rel_in):
 
 
 def lrp(activation, weights, adjacency, relevance):
-    Xp = (adjacency.T @ activation).reshape(49, 2835, 50)
-    sumzk = (Xp @ weights).sum(dim=0)+1e-9
-    s = np.divide(relevance.detach().numpy(), ((sumzk).detach().numpy()))
-    zkl = Xp @ weights
-    out = zkl * torch.Tensor(s)
+    #1.Lrp Schritt
+    adj = adjacency.to_dense().view(2835,49,2835)
+    Xp = (adj @ activation).transpose(0,1)
+    sumzk = (Xp @ weights.mT).sum(dim=0)+1e-9
+    s = torch.div(relevance,sumzk)
+    zkl = s @ weights 
+    out = Xp * zkl
+
+
     Xp = Xp+1e-9 
-    z = np.divide(out.detach().numpy(), ((Xp).detach().numpy()))
-    f_out = Xp * z
-    rel = f_out.sum(dim=0)
+    z = out / Xp
+    f_out = adj.T.transpose(0,1) @ z
+    rel = (activation * f_out).sum(dim=0)
+
     return rel
 
 def lrp2 (activation,weights, adjacency,relevance):
     adj = adjacency.to_dense().view(2835,2835,49)
     Yp = activation @ weights
     sumzk = (adj.T @ Yp).sum(dim=0)+1e-9
-    s = np.divide(relevance.detach().numpy(), ((sumzk).detach().numpy()))
-    zkl = adj.T @ Yp
-    out = zkl * torch.Tensor(s)
+    s = relevance / sumzk
+
+    zkl = adj.T @ s
+    out = zkl * Yp
+
     Yp = (activation @ weights)+1e-9
-    z = np.divide(out.detach().numpy(), ((Yp).detach().numpy()))
+    z = out/Yp
     f_out = Yp.detach().numpy() * z
     rel = torch.Tensor(f_out).sum(dim=0)
     return rel
@@ -755,13 +762,20 @@ if __name__ == '__main__':
     relevance, adj, val_norm, activation, fw = model()
     x=19
     selected_rel = relevance[test_idx, :][x]
-
-
+    
+       
     rel1 = tensor_max_value_to_1_else_0(selected_rel,x)
+    #with open('variables.pkl', 'wb') as f:
+    #    pickle.dump([act_rgc1, weight_dense, bias_dense, rel1, act_rgc1_no_hidden, pyk_emb, weight_rgc1, weight_rgc1_no_hidden, adj_m], f)
+    # with open('variables.pkl', 'wb') as f:
+    #     pickle.dump([act_rgc1, weight_dense, bias_dense, rel1, act_rgc1_no_hidden, pyk_emb, weight_rgc1, weight_rgc1_no_hidden, adj_m], f)
+
+    # with open('variables.pkl', 'rb') as f:
+    #     act_rgc1, weight_dense, bias_dense, rel1, act_rgc1_no_hidden, pyk_emb, weight_rgc1, weight_rgc1_no_hidden, adj_m = pickle.load(f)
     rel2 = get_relevance_for_dense_layer(act_rgc1, weight_dense, bias_dense, rel1)
     rel = lrp_rgcn(act_rgc1_no_hidden, pyk_emb, weight_rgc1, weight_rgc1_no_hidden, adj_m, rel2, variant='A')
 
- 
+    
  
     with torch.no_grad(): #no backpropagation
         model.eval()
