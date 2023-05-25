@@ -87,13 +87,14 @@ def load_data(homedir):
 
     print('Graph loaded.')
     edges = torch.Tensor(edges)
+    edge_index = edges[:,[0,2]]
     #create adjacency matrix
     adj = sp.coo_matrix((np.ones(edges.shape[0]), (edges[:, 0], edges[:, 1])), shape=(len(i2n), len(i2n)), dtype=np.float32)
     # build symmetric adjacency matrix
     adj = adj + adj.T.multiply(adj.T > adj) - adj.multiply(adj.T > adj)
     adj = normalize_adj(adj + sp.eye(adj.shape[0]))
     adj = torch.FloatTensor(np.array(adj.todense()))
-    return edges, (n2i, i2n), (r2i, i2r), train, test
+    return adj, edges, (n2i, i2n), (r2i, i2r), train, test
 
 def normalize_adj(mx):
     """Row-normalize sparse matrix"""
@@ -102,3 +103,9 @@ def normalize_adj(mx):
     r_inv_sqrt[np.isinf(r_inv_sqrt)] = 0.
     r_mat_inv_sqrt = sp.diags(r_inv_sqrt)
     return mx.dot(r_mat_inv_sqrt).transpose().dot(r_mat_inv_sqrt)
+
+def accuracy(output, labels):
+    preds = output.max(1)[1].type_as(labels)
+    correct = preds.eq(labels).double()
+    correct = correct.sum()
+    return correct / len(labels)

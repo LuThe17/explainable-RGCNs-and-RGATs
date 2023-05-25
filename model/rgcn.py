@@ -287,7 +287,7 @@ class NodeClassifier(nn.Module):
                 decomposition=decomposition,
                 vertical_stacking=True
             )
-        #self.dense = nn.Linear(nhid, nclass, bias = True)
+    
 
     def forward(self):
         """ Embed relational graph and then compute class probabilities """
