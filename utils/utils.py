@@ -94,7 +94,9 @@ def load_data(homedir):
     adj = adj + adj.T.multiply(adj.T > adj) - adj.multiply(adj.T > adj)
     adj = normalize_adj(adj + sp.eye(adj.shape[0]))
     adj = torch.FloatTensor(np.array(adj.todense()))
-    return adj, edges, (n2i, i2n), (r2i, i2r), train, test
+
+    triples_plus = add_inverse_and_self(edges, len(i2n), len(i2r))
+    return adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples_plus
 
 def normalize_adj(mx):
     """Row-normalize sparse matrix"""
@@ -109,3 +111,20 @@ def accuracy(output, labels):
     correct = preds.eq(labels).double()
     correct = correct.sum()
     return correct / len(labels)
+
+
+def add_inverse_and_self(triples, num_nodes, num_rels, device='cpu'):
+    """ Adds inverse relations and self loops to a tensor of triples """
+
+    # Swap around head and tail. Create new relation ids for inverse relations.
+    inverse_relations = torch.cat([triples[:, 2, None], triples[:, 1, None] + num_rels, triples[:, 0, None]], dim=1)
+    assert inverse_relations.size() == triples.size()
+
+    # Create a new relation id for self loop relation.
+    all = torch.arange(num_nodes, device=device)[:, None]
+    id  = torch.empty(size=(num_nodes, 1), device=device, dtype=torch.long).fill_(2*num_rels)
+    self_loops = torch.cat([all, id, all], dim=1)
+    assert self_loops.size() == (num_nodes, 3)
+
+    # Note: Self-loops are appended to the end and this makes it easier to apply different edge dropout rates.
+    return torch.cat([triples, inverse_relations, self_loops], dim=0)

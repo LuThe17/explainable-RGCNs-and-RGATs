@@ -244,7 +244,7 @@ def get_lrp_variables(model):
 if __name__ == '__main__':
     #get_data()
     homedir="C:/Users/luisa/Projekte/Masterthesis/AIFB/"
-    adj, triples, (n2i, i2n), (r2i, i2r), train, test = utils.load_data(homedir = "C:/Users/luisa/Projekte/Masterthesis/AIFB")
+    adj, triples, (n2i, i2n), (r2i, i2r), train, test, triples_plus = utils.load_data(homedir = "C:/Users/luisa/Projekte/Masterthesis/AIFB")
     pyk_emb = utils.load_pickle(homedir + "data/AIFB/embeddings/pykeen_embedding_TransH")
     pyk_emb = torch.tensor(pyk_emb, dtype=torch.float)
     lemb = len(pyk_emb[1])
@@ -254,9 +254,13 @@ if __name__ == '__main__':
 
     edge_index = triples[:,[0,2]].T
     edge_index = edge_index.type(torch.long)
+    edge_index_plus = triples_plus[:,[0,2]].T
+    edge_index_plus = edge_index_plus.type(torch.long)
     edge_type = triples[:,1].T
     edge_type = edge_type.to(torch.long)
-    #pyk_emb = pyk_emb.to(torch.long)
+    edge_type_plus = triples_plus[:,1].T
+    edge_type_plus = edge_type_plus.to(torch.long)
+
 
 
     # Convert train and test datasets to torch tensors
@@ -274,6 +278,7 @@ if __name__ == '__main__':
     num_classes = len(classes)
     num_nodes = len(n2i)
     num_relations = len(r2i)
+    num_rel_plus = len(triples_plus[:,1].unique())
     hidden = 50
     dropout = 0.6
     nb_heads = 4
@@ -310,7 +315,7 @@ if __name__ == '__main__':
         gat_evaluation()
     
     elif model== 'RGAT':
-        epochs= 50
+        epochs= 100
         model = RGAT
         model = model(50,50, num_classes, num_relations)
         loss = rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl, model)

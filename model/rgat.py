@@ -395,11 +395,11 @@ class RGATLayer(MessagePassing):
             if self.num_bases is None:
                 w = self.weight
             w = torch.index_select(w, 0, edge_type)
-            outi = torch.bmm(x_i.unsqueeze(1), w).squeeze(-2)
-            outj = torch.bmm(x_j.unsqueeze(1), w).squeeze(-2)
+            outi = torch.bmm(x_i.unsqueeze(1), w).squeeze(-2) #gi (1)
+            outj = torch.bmm(x_j.unsqueeze(1), w).squeeze(-2) #gj (1)
 
-        qi = torch.matmul(outi, self.q)
-        kj = torch.matmul(outj, self.k)
+        qi = torch.matmul(outi, self.q) #(3)
+        kj = torch.matmul(outj, self.k) #(3)
 
         alpha_edge, alpha = 0, torch.tensor([0])
         if edge_attr is not None:
@@ -419,8 +419,8 @@ class RGATLayer(MessagePassing):
             if edge_attr is not None:
                 alpha = torch.add(qi, kj) + alpha_edge
             else:
-                alpha = torch.add(qi, kj)
-            alpha = F.leaky_relu(alpha, self.negative_slope)
+                alpha = torch.add(qi, kj) #(4) 
+            alpha = F.leaky_relu(alpha, self.negative_slope) #(4) Eij(r)
         elif self.attention_mode == "multiplicative-self-attention":
             if edge_attr is not None:
                 alpha = (qi * kj) * alpha_edge
@@ -431,7 +431,7 @@ class RGATLayer(MessagePassing):
             across_out = torch.zeros_like(alpha)
             for r in range(self.num_relations):
                 mask = edge_type == r
-                across_out[mask] = softmax(alpha[mask], index[mask])
+                across_out[mask] = softmax(alpha[mask], index[mask])#(11) Relation-specific attention mechanism, (6)
             alpha = across_out
         elif self.attention_mechanism == "across-relation":
             alpha = softmax(alpha, index, ptr, size_i)
@@ -499,7 +499,7 @@ class RGATLayer(MessagePassing):
 
         if self.attention_mode == "additive-self-attention":
             return alpha.view(-1, self.heads, 1) * outj.view(
-                -1, self.heads, self.out_channels)
+                -1, self.heads, self.out_channels) # (8) combining the attention mechanism of (6) with the neigborhood aggregation step of schlichtkrull et al. (2018)
         else:
             return (alpha.view(-1, self.heads, self.dim, 1) *
                     outj.view(-1, self.heads, 1, self.out_channels))
