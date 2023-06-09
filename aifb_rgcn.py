@@ -34,6 +34,17 @@ def get_relevance_for_dense_layer(a, w, b, rel_in):
     out = np.multiply(a, pre_res) # 2835x50; 2835x50; 2835x50
     return out
 
+def lrp_rgat_layer(x_j, w, alpha, rel, s1):
+
+    ralpha, rgj = rel* s1, rel*(1-s1)
+    gj = torch.bmm(x_j[1].unsqueeze(1), w[1]).squeeze(-2)
+    
+    z = (alpha[1].view(-1, 1, 1) @ gj.view(
+                -1, 1, 50))
+    s = torch.div(ralpha, z)
+    zkl = s @ gj
+    out = alpha[1] * zkl 
+    return
 
 def lrp(activation, weights, adjacency, relevance):
     #1.Lrp Schritt
@@ -43,7 +54,6 @@ def lrp(activation, weights, adjacency, relevance):
     s = torch.div(relevance,sumzk)
     zkl = s @ weights 
     out = Xp * zkl
-
 
     Xp = Xp+1e-9 
     z = out / Xp
@@ -83,6 +93,14 @@ def lrp_rgcn(act_rgc1, weight_dense, bias_dense, relevance, act_rgc1_no_hidden, 
         rel = lrp2(act_rgc1_no_hidden, weight_rgc1, adjacency, rel2)
         out = lrp2(pyk_emb, weight_rgc1_no_hidden, adjacency, rel)
     return out
+
+def lrp_rgat(parameter_list, relevance, s1):
+    x=19
+    selected_rel = relevance[test_idx, :][x]
+    rel1 = tensor_max_value_to_1_else_0(selected_rel,x)
+    print(rel1.to_sparse_coo())
+    lrp_rgat_layer(parameter_list[17], parameter_list[10],parameter_list[15], rel1, s1)
+
 
 def tensor_max_value_to_1_else_0(tensor, x):
     max_value = tensor.argmax()
@@ -209,19 +227,22 @@ def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_
     for epoch in range(1, epochs+1):
         model.train()
         optimizer.zero_grad()
-        out = model(pyk_emb, edge_index, edge_type)
+        out, parameter_list = model(pyk_emb, edge_index, edge_type)
         loss = F.nll_loss(out[train_idx], train_lbl)
         loss.backward()
         optimizer.step()
         loss = float(loss)
     with torch.no_grad():
         model.eval()
-        pred = model(pyk_emb, edge_index, edge_type).argmax(dim=-1)
+        pred, parameter_list = model(pyk_emb, edge_index, edge_type)
+        #lrp_rgat(parameter_list, pred, s1 = 0.8)
+        pred = pred.argmax(dim=-1)
+
         train_acc = float((pred[train_idx] == train_y).float().mean())
         test_acc = float((pred[test_idx] == test_y).float().mean())
         print(f'Epoch: {epoch:02d}, Loss: {loss:.4f}, Train: {train_acc:.4f} '
           f'Test: {test_acc:.4f}')
-    return loss
+    return loss, pred, parameter_list
         
 
 
@@ -318,4 +339,4 @@ if __name__ == '__main__':
         epochs= 100
         model = RGAT
         model = model(50,50, num_classes, num_relations)
-        loss = rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl, model)
+        loss, pred, parameter_list = rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl, model)
