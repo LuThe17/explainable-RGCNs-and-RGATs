@@ -19,10 +19,60 @@ class RGAT(torch.nn.Module):
         self.rgatlayer2 = RGATLayer(hidden_channels, hidden_channels, num_relations)
 
     def forward(self, x, edge_index, edge_type):
-        x = self.rgatlayer1(x, edge_index, edge_type).relu()
-        x = self.rgatlayer2(x, edge_index, edge_type).relu()
-        return F.log_softmax(x, dim=-1)
+        parameter_list = []
+        x, w, k, q, kj, qi, alpha, xi, xj = self.rgatlayer1(x, edge_index, edge_type)
+        x = x.relu()
+        name = 'l1'
+        params = x, w, k, q, kj, qi, alpha, xi, xj
+        names = 'x', 'w', 'k', 'q', 'kj', 'qi', 'alpha', 'xi', 'xj'
+        for par, names in zip(params,names):
+            parameter_list.append((f"{names}_{name}", par))
+        x, w, k, q, kj, qi, alpha, xi, xj = self.rgatlayer2(x, edge_index, edge_type)
+        x = x.relu()
+        name = 'l2'
+        params = x, w, k, q, kj, qi, alpha, xi, xj
+        names = 'x', 'w', 'k', 'q', 'kj', 'qi', 'alpha', 'xi', 'xj'
+        for par2, names in zip(params,names):
+            parameter_list.append((f"{names}_{name}", par2))
+        x = F.log_softmax(x, dim=-1)
+        return x, parameter_list
 
+def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weights):
+    G = x @ self.weight
+    gi = G[edge_type, edge_index[1],:]
+    gj = G[edge_type, edge_index[0],:]
+
+    sparse= torch.stack([edge_index[0], edge_type], dim=0)
+    gj2 = torch.sparse_coo_tensor(sparse, gj, size=(2835, 24, 50), dtype=gj.dtype).to_dense().view(2835*24,50)
+
+    index = edge_index[1]
+    qi = torch.matmul(gi, self.q) #(3)
+    kj = torch.matmul(gj, self.k) #(3)
+
+    alpha_edge, alpha = 0, torch.tensor([0])
+
+    if self.attention_mode == "additive-self-attention":
+        # if edge_attr is not None:
+        #     alpha = torch.add(qi, kj) + alpha_edge
+        # else:
+        alpha = torch.add(qi, kj) #(4) 
+        Eij = F.leaky_relu(alpha, self.negative_slope) #(4) Eij(r)
+        across_out = torch.zeros_like(alpha)
+        for r in range(self.num_relations):
+            mask = edge_type == r
+            across_out[mask] = softmax(Eij[mask], index[mask])#(11) Relation-specific attention mechanism, (6)
+        alpha = across_out
+
+        size = (len(x[:]), len(x[:]) *len(torch.unique(edge_type)))
+        fr, to = edge_index[1], edge_index[0]
+        off = edge_type * len(x[:])
+
+        to = off + to
+        indices = torch.cat([fr[:, None], to[:, None]], dim=1)
+        adj_alpha = torch.sparse.FloatTensor(indices=indices.T, values=alpha.squeeze(), size=size)        
+        out = adj_alpha.to_dense() @ G.view(2835*24,50) #gj performt schlechter
+        return out, x, self.weight, self.k, self.q, kj, qi, alpha, gi, gj
+    
 
 class RGATLayer(MessagePassing):
     r"""The relational graph attentional operator from the `"Relational Graph
@@ -189,7 +239,7 @@ class RGATLayer(MessagePassing):
         num_bases: Optional[int] = None,
         num_blocks: Optional[int] = None,
         mod: Optional[str] = None,
-        attention_mechanism: str = "across-relation",
+        attention_mechanism: str = "within-relation",
         attention_mode: str = "additive-self-attention",
         heads: int = 1,
         dim: int = 1,
@@ -349,26 +399,29 @@ class RGATLayer(MessagePassing):
                 :obj:`(edge_index, attention_weights)`, holding the computed
                 attention weights for each edge. (default: :obj:`None`)
         """
-        # propagate_type: (x: Tensor, edge_type: OptTensor, edge_attr: OptTensor)  # noqa
-        out = self.propagate(edge_index=edge_index, edge_type=edge_type, x=x,
-                             size=size, edge_attr=edge_attr)
 
-        alpha = self._alpha
-        assert alpha is not None
-        self._alpha = None
+        out, x, w, k, q, kj, qi, alpha, xi, xj = mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weights)
+        #propagate_type: (x: Tensor, edge_type: OptTensor, edge_attr: OptTensor)  # noqa
+        #out2 = self.propagate(edge_index=edge_index, edge_type=edge_type, x=x,
+        #                      size=size, edge_attr=edge_attr)
 
-        if isinstance(return_attention_weights, bool):
-            if isinstance(edge_index, Tensor):
-                if is_torch_sparse_tensor(edge_index):
-                    # TODO TorchScript requires to return a tuple
-                    adj = set_sparse_value(edge_index, alpha)
-                    return out, (adj, alpha)
-                else:
-                    return out, (edge_index, alpha)
-            elif isinstance(edge_index, SparseTensor):
-                return out, edge_index.set_value(alpha, layout='coo')
-        else:
-            return out
+        # alpha = self._alpha
+        # assert alpha is not None
+        # self._alpha = None
+
+        # if isinstance(return_attention_weights, bool):
+        #     if isinstance(edge_index, Tensor):
+        #         if is_torch_sparse_tensor(edge_index):
+        #             # TODO TorchScript requires to return a tuple
+        #             adj = set_sparse_value(edge_index, alpha)
+        #             return out, (adj, alpha)
+        #         else:
+        #             return out, (edge_index, alpha)
+        #     elif isinstance(edge_index, SparseTensor):
+        #         return out, edge_index.set_value(alpha, layout='coo')
+        # else:
+        return out, w, k, q, kj, qi, alpha, xi, xj
+
 
     def message(self, x_i: Tensor, x_j: Tensor, edge_type: Tensor,
                 edge_attr: OptTensor, index: Tensor, ptr: OptTensor,
@@ -499,7 +552,7 @@ class RGATLayer(MessagePassing):
 
         if self.attention_mode == "additive-self-attention":
             return alpha.view(-1, self.heads, 1) * outj.view(
-                -1, self.heads, self.out_channels) # (8) combining the attention mechanism of (6) with the neigborhood aggregation step of schlichtkrull et al. (2018)
+                -1, self.heads, self.out_channels), w, self.q, self.k, kj, qi, alpha # (8) combining the attention mechanism of (6) with the neigborhood aggregation step of schlichtkrull et al. (2018)
         else:
             return (alpha.view(-1, self.heads, self.dim, 1) *
                     outj.view(-1, self.heads, 1, self.out_channels))
@@ -532,3 +585,6 @@ class RGATLayer(MessagePassing):
         return '{}({}, {}, heads={})'.format(self.__class__.__name__,
                                              self.in_channels,
                                              self.out_channels, self.heads)
+    
+
+    
