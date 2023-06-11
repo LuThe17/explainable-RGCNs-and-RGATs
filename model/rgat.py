@@ -17,25 +17,27 @@ class RGAT(torch.nn.Module):
         super().__init__()
         self.rgatlayer1 = RGATLayer(in_channels, hidden_channels, num_relations)
         self.rgatlayer2 = RGATLayer(hidden_channels, hidden_channels, num_relations)
+        self.dense = Linear(hidden_channels, out_channels)
 
     def forward(self, x, edge_index, edge_type):
         parameter_list = []
-        x, w, k, q, kj, qi, alpha, xi, xj = self.rgatlayer1(x, edge_index, edge_type)
-        x = x.relu()
+        out, w, k, q, kj, qi, alpha, xi, xj, adj_eij, adj_index = self.rgatlayer1(x, edge_index, edge_type)
+        out = F.relu(out)
         name = 'l1'
-        params = x, w, k, q, kj, qi, alpha, xi, xj
-        names = 'x', 'w', 'k', 'q', 'kj', 'qi', 'alpha', 'xi', 'xj'
+        params = out, w, k, q, kj, qi, alpha, xi, xj, adj_eij, adj_index
+        names = 'out', 'w', 'k', 'q', 'kj', 'qi', 'alpha', 'xi', 'xj', 'adj_eij', 'adj_index'
         for par, names in zip(params,names):
             parameter_list.append((f"{names}_{name}", par))
-        x, w, k, q, kj, qi, alpha, xi, xj = self.rgatlayer2(x, edge_index, edge_type)
-        x = x.relu()
+        out, w, k, q, kj, qi, alpha, xi, xj, adj_eij, adj_index = self.rgatlayer2(out, edge_index, edge_type)
+        out = F.relu(out)
         name = 'l2'
-        params = x, w, k, q, kj, qi, alpha, xi, xj
-        names = 'x', 'w', 'k', 'q', 'kj', 'qi', 'alpha', 'xi', 'xj'
+        params = out, w, k, q, kj, qi, alpha, xi, xj, adj_eij, adj_index
+        names =  'out', 'w', 'k', 'q', 'kj', 'qi', 'alpha', 'xi', 'xj', 'adj_eij', 'adj_index'
         for par2, names in zip(params,names):
             parameter_list.append((f"{names}_{name}", par2))
-        x = F.log_softmax(x, dim=-1)
-        return x, parameter_list
+        out = self.dense(out)
+        out = F.softmax(out, dim=-1)
+        return out, parameter_list, x
 
 def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weights):
     G = x @ self.weight
@@ -45,7 +47,7 @@ def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weigh
     sparse= torch.stack([edge_index[0], edge_type], dim=0)
     gj2 = torch.sparse_coo_tensor(sparse, gj, size=(2835, 24, 50), dtype=gj.dtype).to_dense().view(2835*24,50)
 
-    index = edge_index[1]
+    index = edge_index[1] #x_i
     qi = torch.matmul(gi, self.q) #(3)
     kj = torch.matmul(gj, self.k) #(3)
 
@@ -57,21 +59,27 @@ def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weigh
         # else:
         alpha = torch.add(qi, kj) #(4) 
         Eij = F.leaky_relu(alpha, self.negative_slope) #(4) Eij(r)
+        
+        size = (len(x[:]), len(x[:]) *len(torch.unique(edge_type)))
+        fr, to = edge_index[1], edge_index[0]
+        off = edge_type * len(x[:])
+        to = off + to
+        indices = torch.cat([fr[:, None], to[:, None]], dim=1)
+      
+        adj_eij = torch.sparse.FloatTensor(indices=indices.T, values=Eij.squeeze(), size=size)
+        adj_index = torch.sparse.FloatTensor(indices=indices.T, values=index, size=size)
+
         across_out = torch.zeros_like(alpha)
         for r in range(self.num_relations):
             mask = edge_type == r
             across_out[mask] = softmax(Eij[mask], index[mask])#(11) Relation-specific attention mechanism, (6)
         alpha = across_out
 
-        size = (len(x[:]), len(x[:]) *len(torch.unique(edge_type)))
-        fr, to = edge_index[1], edge_index[0]
-        off = edge_type * len(x[:])
-
-        to = off + to
-        indices = torch.cat([fr[:, None], to[:, None]], dim=1)
+  
         adj_alpha = torch.sparse.FloatTensor(indices=indices.T, values=alpha.squeeze(), size=size)        
+        
         out = adj_alpha.to_dense() @ G.view(2835*24,50) #gj performt schlechter
-        return out, x, self.weight, self.k, self.q, kj, qi, alpha, gi, gj
+        return out, self.weight, self.k, self.q, kj, qi, adj_alpha, gi, gj, adj_eij, adj_index
     
 
 class RGATLayer(MessagePassing):
@@ -228,7 +236,6 @@ class RGATLayer(MessagePassing):
         **kwargs (optional): Additional arguments of
             :class:`torch_geometric.nn.conv.MessagePassing`.
     """
-
     _alpha: OptTensor
 
     def __init__(
@@ -399,15 +406,15 @@ class RGATLayer(MessagePassing):
                 :obj:`(edge_index, attention_weights)`, holding the computed
                 attention weights for each edge. (default: :obj:`None`)
         """
-
-        out, x, w, k, q, kj, qi, alpha, xi, xj = mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weights)
+        
+        out, w, k, q, kj, qi, alpha, xi, xj, adj_eij, adj_index = mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weights)
         #propagate_type: (x: Tensor, edge_type: OptTensor, edge_attr: OptTensor)  # noqa
         #out2 = self.propagate(edge_index=edge_index, edge_type=edge_type, x=x,
-        #                      size=size, edge_attr=edge_attr)
+        #                    size=size, edge_attr=edge_attr)
 
-        # alpha = self._alpha
-        # assert alpha is not None
-        # self._alpha = None
+        #alpha = self._alpha
+        #assert alpha is not None
+        #self._alpha = None
 
         # if isinstance(return_attention_weights, bool):
         #     if isinstance(edge_index, Tensor):
@@ -420,13 +427,14 @@ class RGATLayer(MessagePassing):
         #     elif isinstance(edge_index, SparseTensor):
         #         return out, edge_index.set_value(alpha, layout='coo')
         # else:
-        return out, w, k, q, kj, qi, alpha, xi, xj
+        return out, w, k, q, kj, qi, alpha, xi, xj, adj_eij, adj_index
 
 
     def message(self, x_i: Tensor, x_j: Tensor, edge_type: Tensor,
                 edge_attr: OptTensor, index: Tensor, ptr: OptTensor,
                 size_i: Optional[int]) -> Tensor:
 
+        print(index) #x_i
         if self.num_bases is not None:  # Basis-decomposition =================
             w = torch.matmul(self.att, self.basis.view(self.num_bases, -1))
             w = w.view(self.num_relations, self.in_channels,
