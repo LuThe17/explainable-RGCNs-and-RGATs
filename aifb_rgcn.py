@@ -49,6 +49,7 @@ def lrp_rgat_layer(x, w, alpha, rel, s1, s2, lrp_step):
         s2 = torch.div(rgj, z2)
         zkl2 = a.T.mT @ s2
         out_g = (zkl2 * g).sum(dim=0)
+        print(out_g.to_dense().sum())
         return out_alpha, out_g
     elif lrp_step == 'relevance_h':
         z = (x @ w.mT + 1e-10).sum(dim=0)

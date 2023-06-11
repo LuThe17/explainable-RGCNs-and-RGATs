@@ -65,10 +65,13 @@ def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weigh
         off = edge_type * len(x[:])
         to = off + to
         indices = torch.cat([fr[:, None], to[:, None]], dim=1)
-      
-        adj_eij = torch.sparse.FloatTensor(indices=indices.T, values=Eij.squeeze(), size=size)
-        adj_index = torch.sparse.FloatTensor(indices=indices.T, values=index, size=size)
-
+        indices2 = torch.cat([edge_index[1][:, None], edge_type[:, None]], dim =1)
+        size2= 2835, 24
+        adj_eij = torch.sparse.FloatTensor(indices=indices2.T, values=Eij.squeeze(), size=size2).to_dense()
+        adj_index = torch.sparse.FloatTensor(indices=indices2.T, values=index, size=size2).to_dense()
+        #soft = torch.zeros_like(adj_eij)
+        #for r in range(self.num_relations):
+        #    soft[:,r] = softmax(adj_eij[:,r], adj_index[:,r]) #(5)
         across_out = torch.zeros_like(alpha)
         for r in range(self.num_relations):
             mask = edge_type == r
