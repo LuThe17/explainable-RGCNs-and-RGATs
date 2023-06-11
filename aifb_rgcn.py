@@ -28,24 +28,45 @@ def get_relevance_for_dense_layer(a, w, b, rel_in):
     :param rel_in: relevance of the input of the layer
     :return: relevance of the output of the layer
     '''
-    z = a.detach().numpy().dot(w.t().detach().numpy()) #2835x50 ; 4x50; 2835x4
+    z = a.detach().numpy().dot(w.t().detach().numpy()) + 1e-10#2835x50 ; 4x50; 2835x4
     s = np.divide(rel_in,z) # 2835x4; 2835x4; 2835x4
     pre_res = s.detach().numpy().dot(w.detach().numpy()) # 2835x4; 4x50; 2835x50
     out = np.multiply(a, pre_res) # 2835x50; 2835x50; 2835x50
     return out
 
-def lrp_rgat_layer(x_j, w, alpha, rel, s1):
+def lrp_rgat_layer(x, w, alpha, rel, s1, s2, lrp_step):
+    if lrp_step == 'relevance_alphaandg':
+        ralpha, rgj = rel* s1, rel*(1-s1)
+        g = x @ w
+        
+        z = alpha @ g.view(24*2835,50) + 1e-10
+        s = torch.div(ralpha, z)
+        zkl = (s @ g.mT).mT
+        out_alpha = alpha * zkl.reshape(24*2835,2835).T
 
-    ralpha, rgj = rel* s1, rel*(1-s1)
-    gj = torch.bmm(x_j[1].unsqueeze(1), w[1]).squeeze(-2)
+        a = alpha.to_dense().view(2835,2835,24)
+        z2 =(a.T @ g).sum(dim=0)+1e-10
+        s2 = torch.div(rgj, z2)
+        zkl2 = a.T.mT @ s2
+        out_g = (zkl2 * g).sum(dim=0)
+        return out_alpha, out_g
+    elif lrp_step == 'relevance_h':
+        z = (x @ w.mT + 1e-10).sum(dim=0)
+        s = torch.div(rel, z) 
+        pre_res = s @ w 
+        out = x * pre_res 
+        return out.sum(dim=0)
+    elif lrp_step == 'relevance_softmax':
+        reij, reik = rel * s2, rel * (1-s2)
+
+        z = x.to_dense() @ (1-w.to_dense().T) + 1e-10
+
+        return None
+    else:
+
+        return None    
+
     
-    z = (alpha[1].view(-1, 1, 1) @ gj.view(
-                -1, 1, 50))
-    s = torch.div(ralpha, z)
-    zkl = s @ gj
-    out = alpha[1] * zkl 
-    return
-
 def lrp(activation, weights, adjacency, relevance):
     #1.Lrp Schritt
     adj = adjacency.to_dense().view(2835,49,2835)
@@ -94,14 +115,17 @@ def lrp_rgcn(act_rgc1, weight_dense, bias_dense, relevance, act_rgc1_no_hidden, 
         out = lrp2(pyk_emb, weight_rgc1_no_hidden, adjacency, rel)
     return out
 
-def lrp_rgat(parameter_list, relevance, s1):
+def lrp_rgat(parameter_list, input, weight_dense, relevance, s1):
     x=19
-    selected_rel = relevance[test_idx, :][x]
+    selected_rel = relevance[test_idx,:][x]
     rel1 = tensor_max_value_to_1_else_0(selected_rel,x)
     print(rel1.to_sparse_coo())
-    lrp_rgat_layer(parameter_list[17], parameter_list[10],parameter_list[15], rel1, s1)
-
-
+    for i in parameter_list:
+        globals()[i[0]] = i[1]
+    rel2 = get_relevance_for_dense_layer(out_l2, weight_dense, None, rel1)
+    r_alpha, rg =  lrp_rgat_layer(out_l1, w_l2, alpha_l2,rel2, s1, None, lrp_step='relevance_alphaandg')
+    rh = lrp_rgat_layer(input, w_l2, None, rg, None, None, lrp_step='relevance_h')
+    rel_softmax = lrp_rgat_layer(adj_eij_l2, adj_index_l2, None, r_alpha, None, 0.2, lrp_step='relevance_softmax')
 def tensor_max_value_to_1_else_0(tensor, x):
     max_value = tensor.argmax()
     idx = test_idx[x]
@@ -227,17 +251,18 @@ def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_
     for epoch in range(1, epochs+1):
         model.train()
         optimizer.zero_grad()
-        out, parameter_list = model(pyk_emb, edge_index, edge_type)
+        out, parameter_list, input = model(pyk_emb, edge_index, edge_type)
         loss = F.nll_loss(out[train_idx], train_lbl)
         loss.backward()
         optimizer.step()
         loss = float(loss)
     with torch.no_grad():
         model.eval()
-        pred, parameter_list = model(pyk_emb, edge_index, edge_type)
-        #lrp_rgat(parameter_list, pred, s1 = 0.8)
+        pred, parameter_list, input = model(pyk_emb, edge_index, edge_type)
+        weight_dense = model.dense.weight
+        lrp_rgat(parameter_list, input, weight_dense, pred, s1 = 0.8)
         pred = pred.argmax(dim=-1)
-
+        
         train_acc = float((pred[train_idx] == train_y).float().mean())
         test_acc = float((pred[test_idx] == test_y).float().mean())
         print(f'Epoch: {epoch:02d}, Loss: {loss:.4f}, Train: {train_acc:.4f} '
@@ -336,7 +361,7 @@ if __name__ == '__main__':
         gat_evaluation()
     
     elif model== 'RGAT':
-        epochs= 100
+        epochs= 5
         model = RGAT
-        model = model(50,50, num_classes, num_relations)
+        model = model(50, 50, num_classes, num_relations)
         loss, pred, parameter_list = rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl, model)
