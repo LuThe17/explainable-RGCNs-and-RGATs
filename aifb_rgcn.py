@@ -34,7 +34,7 @@ def get_relevance_for_dense_layer(a, w, b, rel_in):
     out = np.multiply(a, pre_res) # 2835x50; 2835x50; 2835x50
     return out
 
-def lrp_rgat_layer(x, w, alpha, rel, s1, s2, lrp_step):
+def lrp_rgat_layer(x, w, alpha, rel, s1, s2, num_neighbors, lrp_step):
     if lrp_step == 'relevance_alphaandg':
         g = x @ w
         z = (((alpha @ g) * s1) + ((alpha @ g) * (1-s1)) + 1e-10 ).sum(dim=0)
@@ -57,11 +57,16 @@ def lrp_rgat_layer(x, w, alpha, rel, s1, s2, lrp_step):
         exponential = x
         sum_exp = w
         y = torch.where(sum_exp == 0, torch.zeros_like(sum_exp), torch.div(1,sum_exp))
-        z = (((exponential @ y.mT) * s2) + ((exponential @ y.mT) * (1-s2)) + 1e-10 )
+        z = (((exponential * y) * s2) + ((exponential * y) * (1-s2)) + 1e-10 )
         s = torch.div(rel, z)
-        zkl = s @ y.mT
+        zkl = s * y
         out_exp =exponential * zkl * s2
 
+        softmax_output = torch.where(sum_exp == 0, torch.zeros_like(exponential), exponential / sum_exp)
+        exp = torch.where(softmax_output == 0, torch.zeros_like(softmax_output), (1-softmax_output))
+        ant = torch.where(num_neighbors == 0 , torch.zeros_like(num_neighbors), exp/num_neighbors)
+        zkl2 = s * exponential
+        out_y = ant * zkl2 * (1-s2)
         return out_exp
     else:
 
@@ -124,9 +129,9 @@ def lrp_rgat(parameter_list, input, weight_dense, relevance, s1):
     for i in parameter_list:
         globals()[i[0]] = i[1]
     rel2 = get_relevance_for_dense_layer(out_l2, weight_dense, None, rel1)
-    r_alpha, rg =  lrp_rgat_layer(out_l1, w_l2, alpha2_l2, rel2, s1, None, lrp_step='relevance_alphaandg')
-    rh = lrp_rgat_layer(input, w_l2, None, rg, None, None, lrp_step='relevance_h')
-    rel_softmax = lrp_rgat_layer(exponential_l2, resmat_l2, None, r_alpha, None, 0.2, lrp_step='relevance_softmax')
+    r_alpha, rg =  lrp_rgat_layer(out_l1, w_l2, alpha2_l2, rel2, s1, None, None, lrp_step='relevance_alphaandg')
+    rh = lrp_rgat_layer(input, w_l2, None, rg, None, None, None, lrp_step='relevance_h')
+    rel_softmax = lrp_rgat_layer(exponential_l2, resmat_l2, None, r_alpha, None, 0.2, num_neighbors_l2, lrp_step='relevance_softmax')
 def tensor_max_value_to_1_else_0(tensor, x):
     max_value = tensor.argmax()
     idx = test_idx[x]
@@ -365,7 +370,7 @@ if __name__ == '__main__':
         gat_evaluation()
     
     elif model== 'RGAT':
-        epochs= 2
+        epochs= 1
         model = RGAT
         model = model(50, 50, num_classes, num_relations)
         loss, pred, parameter_list = rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl, model)
