@@ -12,26 +12,26 @@ from torch_geometric.typing import Adj, OptTensor, Size, SparseTensor
 from torch_geometric.utils import is_torch_sparse_tensor, scatter, softmax
 from torch_geometric.utils.sparse import set_sparse_value
 
-def customized_softmax(input_tensor, dim=None):
+def customized_softmax(input_tensor,edge_index,edge_type, dim=None):
     input_tensor2 = input_tensor.clone()
-    #max_values, _ = torch.max(input_tensor, dim=dim, keepdim=True)
-    #input_tensor -= max_values
-    exponential = torch.where(input_tensor2 == 0, torch.zeros_like(input_tensor2), torch.exp(input_tensor2))
+    max_values, _ = torch.max(input_tensor, dim=0, keepdim=True)
+    input_tensor -= max_values
+    exponential = torch.where(input_tensor2 == 0, torch.zeros_like(input_tensor2), torch.exp(input_tensor))
     print(exponential.sum())
     
     resmat = torch.zeros(24, 2835)
     num_neighbors = torch.zeros(24, 2835)
     # Iterate over the relations
     for relation in range(input_tensor.size()[0]):
-        sum_over_row = torch.sum(exponential[relation], dim=0)
-        sum_neighbor = torch.count_nonzero(exponential[relation], dim=0)
-        sum_neighbor = torch.where(sum_neighbor==0, torch.zeros_like(sum_neighbor), sum_neighbor - 1)
+        sum_over_row = torch.sum(exponential[relation], dim=1)
+        sum_neighbor = torch.count_nonzero(exponential[relation], dim=1)
+        sum_neighbor = torch.where(sum_neighbor==1, sum_neighbor, sum_neighbor - 1)
         resmat[relation] = sum_over_row
         num_neighbors[relation] = sum_neighbor
 
     resmat = resmat.unsqueeze(2).expand(-1, -1, 2835)
     num_neighbors2 = num_neighbors.unsqueeze(2).expand(-1, -1, 2835)
-    softmax_output = torch.where(exponential == 0, torch.zeros_like(exponential), torch.where(resmat==0, 0 ,exponential / resmat))
+    softmax_output = torch.where(exponential == 0, torch.zeros_like(exponential), exponential/resmat)
     print(softmax_output.sum())
     print(resmat.to_sparse_coo())
     print(exponential.to_sparse_coo())
@@ -69,7 +69,7 @@ def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weigh
 
     size = int(max(edge_type)+1), len(x[:,]), len(x[:,])
     values = torch.ones_like(edge_index[0])
-    M = torch.sparse.FloatTensor(indices = torch.stack((edge_type, edge_index[1], edge_index[0])), values = values, size = size)
+    M = torch.sparse.FloatTensor(indices = torch.stack((edge_type, edge_index[0], edge_index[1])), values = values, size = size)
     M = M.float()
     G = x @ self.weight
     Gm = M.to_dense() @ G
@@ -80,8 +80,8 @@ def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weigh
     qi2 = torch.zeros(24,2835,2835)
     kj2 = torch.zeros(24,2835,2835)
 
-    qi2[edge_type, edge_index[1], edge_index[0]] = qi[edge_type,edge_index[1]]
-    kj2[edge_type, edge_index[1], edge_index[0]] = kj[edge_type,edge_index[1]]
+    qi2[edge_type, edge_index[0], edge_index[1]] = qi[edge_type,edge_index[0]]
+    kj2[edge_type, edge_index[0], edge_index[1]] = kj[edge_type,edge_index[0]]
 
     if self.attention_mode == "additive-self-attention":
         
@@ -90,7 +90,7 @@ def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weigh
         alpha = torch.add(qi2, kj2) #(4)
         Eij2 = F.leaky_relu(alpha, self.negative_slope) #(4) Eij(r)
         #alpha = F.softmax(Eij, dim=0)
-        alpha3, exponential, resmat, num_neighbors = customized_softmax(Eij2, dim=0)
+        alpha3, exponential, resmat, num_neighbors = customized_softmax(Eij2, edge_index, edge_type, dim=0)
         print(alpha3.to_sparse_coo())
         
         out = (alpha3 @ G).sum(dim=0) 
@@ -323,10 +323,10 @@ class RGATLayer(MessagePassing):
         # The learnable parameters to compute both attention logits and
         # attention coefficients:
         self.q = Parameter(
-            torch.Tensor(self.num_relations, self.heads * self.out_channels,
+            torch.Tensor(self.num_relations, self.heads * self.out_channels, 
                          self.heads * self.dim)) 
         self.k = Parameter(
-            torch.Tensor(self.num_relations, self.heads * self.out_channels,
+            torch.Tensor(self.num_relations, self.heads * self.out_channels, 
                          self.heads * self.dim))
 
         if bias and concat:

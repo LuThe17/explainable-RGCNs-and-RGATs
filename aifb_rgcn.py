@@ -47,6 +47,7 @@ def lrp_rgat_layer(x, w, alpha, rel, s1, s2, num_neighbors, lrp_step):
         out_g = out_g.sum(dim=0)
         print(out_g.to_dense().sum())
         return out_alpha, out_g
+    
     elif lrp_step == 'relevance_h':
         z = (x @ w.mT + 1e-10).sum(dim=0)
         s = torch.div(rel, z) 
@@ -61,13 +62,21 @@ def lrp_rgat_layer(x, w, alpha, rel, s1, s2, num_neighbors, lrp_step):
         s = torch.div(rel, z)
         zkl = s * y
         out_exp =exponential * zkl * s2
-
+        torch.count_nonzero(exponential, dim=0)
         softmax_output = torch.where(sum_exp == 0, torch.zeros_like(exponential), exponential / sum_exp)
         exp = torch.where(softmax_output == 0, torch.zeros_like(softmax_output), (1-softmax_output))
-        ant = torch.where(num_neighbors == 0 , torch.zeros_like(num_neighbors), exp/num_neighbors)
+        num_neighbors = torch.zeros(24, 2835)
+        # Iterate over the relations
+        for relation in range(exp.size()[0]):
+            sum_neighbor = torch.count_nonzero(exp[relation], dim = 1)
+            sum_neighbor2 = torch.where(sum_neighbor==1, sum_neighbor, sum_neighbor - 1)
+            sum_neighbor3 = torch.where(sum_neighbor==0, torch.zeros_like(sum_neighbor), sum_neighbor2)
+            num_neighbors[relation] = sum_neighbor3
+        num_neighbors2= num_neighbors.unsqueeze(2).expand(-1,-1,2835)
+        ant = torch.where(num_neighbors2 == 0 , torch.zeros_like(num_neighbors2), exp/num_neighbors2)
         zkl2 = s * exponential
         out_y = ant * zkl2 * (1-s2)
-        return out_exp
+        return out_exp, out_y
     else:
 
         return None   
