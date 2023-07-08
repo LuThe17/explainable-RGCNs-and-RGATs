@@ -16,11 +16,12 @@ import csv
 from pykeen.pipeline import pipeline
 from rdflib.namespace import RDF
 from collections import Counter
+from rdflib.plugins.parsers import notation3
+import gzip
 
 
 
-homedir = "C:/Users/luisa/Projekte/Masterthesis/AIFB"
-def kg_to_tsv(g):
+def kg_to_tsv(g, dir):
     df = pd.DataFrame(columns=['subject','predicate','object'])
     #g = Graph()
     #g.parse(data)
@@ -28,13 +29,13 @@ def kg_to_tsv(g):
         if isinstance(o, Literal):
             continue
         df = pd.concat([df, pd.DataFrame([[s,p,o]], columns=['subject','predicate','object'])])
-    df.to_csv(homedir +"/data/aifb_renamed_bn.tsv", sep="\t", index=False, header=None)
+    df.to_csv(homedir +dir, sep="\t", index=False, header=None)
     return df
 
 def create_rdf2vec_embedding(kg, entities):
     kg = KG(kg)
     transformer = RDF2VecTransformer(
-        Word2Vec(epochs=250), # mehr Epochen (100/200), mehr als 75% accuracy
+        Word2Vec(epochs=10), # mehr Epochen (100/200), mehr als 75% accuracy
         walkers=[RandomWalker(1, 2, with_reverse=False, n_jobs=2)],
     )
     embeddings, literals = transformer.fit_transform(kg, entities)  # gesamter Graph
@@ -55,7 +56,7 @@ def save_rdf2vec_emb(emb_train, emb_test, emb):
     with open(homedir + "/data/rdf_embedding", "wb") as fp:   #Pickling
         pickle.dump(emb, fp)
 
-def create_pykeen_embedding(train, test, entities, type = 'TransE'):
+def create_pykeen_embedding(train, test, entities, traindata, type = 'TransE'):
     
     result = pipeline(
         training=train,
@@ -81,16 +82,16 @@ def create_pykeen_embedding(train, test, entities, type = 'TransE'):
     print(embeddings)
     embeddings_np = np.array(embeddings)
 
-    pykeen_emb_train = embeddings_np[:140]
-    pykeen_emb_test = embeddings_np[140:]
+    pykeen_emb_train = embeddings_np[:traindata.shape[0]]
+    pykeen_emb_test = embeddings_np[traindata.shape[0]:]
     return pykeen_emb_train, pykeen_emb_test, entity_embeddings
 
-def save_pykeen_emb (emb_train, emb_test, emb, type):
-    with open(homedir + "/data/AIFB/embeddings/train_pykeen_embedding_"+type, "wb") as fp:   #Pickling
+def save_pykeen_emb (emb_train, emb_test, emb, type, name):
+    with open(homedir + "/data/"+name+"/embeddings/train_pykeen_embedding_"+type+".pickle", "wb") as fp:   #Pickling
         pickle.dump(emb_train, fp)
-    with open(homedir + "/data/AIFB/embeddings/test_pykeen_embedding_"+type, "wb") as fp:   #Pickling
+    with open(homedir + "/data/"+name+"/embeddings/test_pykeen_embedding_"+type+".pickle", "wb") as fp:   #Pickling
         pickle.dump(emb_test, fp)
-    with open (homedir + "/data/AIFB/embeddings/pykeen_embedding_"+ type, "wb") as fp:
+    with open (homedir + "/data/"+name+"/embeddings/pykeen_embedding_"+ type+".pickle", "wb") as fp:
         pickle.dump(emb, fp)
 
 def remove_aff_mem_emp(homedir, graph):
@@ -179,59 +180,114 @@ def rename_bnode_in_graph(g):
         
     return g
 
-def SVM_classifier(train_emb, test_emb, traindata, testdata):
+def SVM_classifier(train_emb, test_emb, traindata, testdata, label_header):
     SVM_classifier = svm.SVC(kernel='rbf', C=1.0, random_state=42)
     print(len(train_emb))
-    print(traindata["label_affiliation"].shape)
-    SVM_classifier.fit(train_emb, traindata["label_affiliation"])
+    print(traindata[label_header].shape)
+    SVM_classifier.fit(train_emb, traindata[label_header])
     predictions = SVM_classifier.predict(test_emb)
-    score = SVM_classifier.score(test_emb, testdata["label_affiliation"])
+    score = SVM_classifier.score(test_emb, testdata[label_header])
     return predictions, score
 
-def Gaussian_classifier(train_emb, test_emb, traindata, testdata):
+def Gaussian_classifier(train_emb, test_emb, traindata, testdata, label_header):
     Gaussian_classifier = GaussianProcessClassifier(1.0 * RBF(1.0))
-    Gaussian_classifier.fit(train_emb, traindata["label_affiliation"])
+    Gaussian_classifier.fit(train_emb, traindata[label_header])
     predictions = Gaussian_classifier.predict(test_emb)
-    score = Gaussian_classifier.score(test_emb, testdata["label_affiliation"])
+    score = Gaussian_classifier.score(test_emb, testdata[label_header])
     return predictions, score
 
     
 
 if __name__ == '__main__':
-    homedir = "C:/Users/luisa/Projekte/Masterthesis/AIFB"
-    
-    kg = homedir + '/data/AIFB/aifb_renamed_bn.nt'
-    g = Graph()
-    g = g.parse(kg)
+    name = 'MUTAG'
+    if name == 'AIFB':
+        homedir = 'C:/Users/luisa/Projekte/Masterthesis/AIFB'
+        kg_dir = '/data/AIFB/complete_dataset.tsv'
+        train_dir = "/data/AIFB/trainingSet.tsv"
+        test_dir = "/data/AIFB/testSet.tsv"
+        pytest_dir = "/data/AIFB/testSetpy.tsv"
+        label_header = 'label_affiliation'
+        nodes_header = 'person'
+    elif name == 'MUTAG':
+        homedir = 'C:/Users/luisa/Projekte/Masterthesis/AIFB'
+        kg_dir = '/data/MUTAG/mutag_stripped.nt'
+        kg_dir2 = '/data/MUTAG/mutag_renamed_bn_2.tsv'
+        train_dir = "/data/MUTAG/trainingSet.tsv"
+        test_dir = "/data/MUTAG/testSet.tsv"
+        pytest_dir = "/data/MUTAG/testSetpy.tsv"
+        label_header = 'label_mutagenic'
+        nodes_header = 'bond'
+        # with open(homedir + "/data/"+name+"/embeddings/train_pykeen_embedding_"+"TransE"+".pickle", "rb") as fp:   #Pickling
+        #     emb_train = pickle.load(fp)
+        # with open(homedir + "/data/"+name+"/embeddings/test_pykeen_embedding_"+"TransE", "rb") as fp:   #Pickling
+        #     emb_test = pickle.load(fp)
+        # with open (homedir + "/data/"+name+"/embeddings/pykeen_embedding_"+ "TransE", "rb") as fp:
+        #     emb = pickle.load(fp)
+        # g = Graph()
+        # g.parse(homedir +"/data/MUTAG/carcinogenesis.owl", format="xml")
+        # is_mutagenic = rdflib.term.URIRef("http://dl-learner.org/carcinogenesis#isMutagenic")
+        # g.remove((None, is_mutagenic, None))
+        # with open((homedir + kg_dir), "wb") as output:
+        #     g.serialize(output, format="nt")
+        # g.close()
+        # file = homedir + kg_dir
+        # if file.endswith('nt.gz'):
+        #     with gzip.open(file, 'rb') as f:
+        #         g.parse(file=f, format='nt')
+    elif name == 'BGS':
+        homedir = 'C:/Users/luisa/Projekte/Masterthesis/AIFB'
+        kg_dir = '/data/BGS/bgs_renamed_bn.tsv'
+        kg_dir2= '/data/BGS/bgs_stripped_2.nt'
+        train_dir = "/data/BGS/trainingSet(lith).tsv"
+        test_dir = "/data/BGS/testSet(lith).tsv"
+        pytest_dir = "/data/BGS/testSetpy.tsv"
+        label_header = 'label_lithogenesis'
+        nodes_header = 'rock'
+        g = Graph()
+        # try:
+        #     g.parse(homedir +"/data/BGS/completeDataset.nt", format="nt")
+        # except Exception as e:
+        #     print(f"Error while parsing the graph: {e}")
 
-    # kg = remove_aff_mem_emp(homedir, kg)
-    # kg = remove_literal_in_graph(kg)
+        # lith = rdflib.term.URIRef("http://data.bgs.ac.uk/ref/Lexicon/hasLithogenesis")
+        # g.remove((None, lith, None))
+        # with gzip.open((homedir + kg_dir2), "wb") as output:
+        #     g.serialize(output, format="nt")
+        # g.close()
+
+        # if file.endswith('nt'):
+        #     with gzip.open(file, 'rb') as f:
+        #         g.parse(file=f, format='nt')
+
+    #g = Graph()
+    #g.parse(homedir + kg_dir, format='nt')
+    #kg = remove_aff_mem_emp(homedir, kg)
+    # kg = remove_literal_in_graph(g)
 
     # kg = rename_bnode_in_graph(kg)
-    # kg.serialize(format="nt", destination= homedir +"/data/aifb_renamed_bn.nt")
+    # #kg.serialize(format="nt", destination= homedir + '/data/BGS/bgs_renamed_bn.nt')
 
+    # df = kg_to_tsv(kg, kg_dir2)
 
-    #df = kg_to_tsv(g)
-   
-    traindata = pd.read_csv(homedir +"/data/AIFB/trainingSet.tsv", sep="\t") # train und test zusammen
-    testdata = pd.read_csv(homedir + "/data/AIFB/testSet.tsv", sep="\t")
-    entities = traindata['person'].append(testdata['person'])
-    emb_type = 'TransF'
-    testpy = testdata[:2]
-    pykeen_data = TriplesFactory.from_path(homedir + "/data/AIFB/aifb_renamed_bn.tsv", sep="\t")
-    pykeen_test = TriplesFactory.from_path(homedir + "/data/AIFB/testSetpy.tsv", sep="\t")
-    pykeen_emb_train, pykeen_emb_test, pykeen_embeddings  = create_pykeen_embedding(pykeen_data, pykeen_test, entities, emb_type)
+    traindata = pd.read_csv(homedir + train_dir, sep="\t") # train und test zusammen
+    testdata = pd.read_csv(homedir + test_dir, sep="\t")
+    entities = traindata[nodes_header].append(testdata[nodes_header])
+    emb_type = 'TransE'
+    #testpy = testdata[:2]
+    pykeen_data = TriplesFactory.from_path(homedir + kg_dir2, sep="\t")
+    pykeen_test = TriplesFactory.from_path(homedir + pytest_dir, sep="\t")
+    pykeen_emb_train, pykeen_emb_test, pykeen_embeddings  = create_pykeen_embedding(pykeen_data, pykeen_test, entities, traindata, emb_type)
     # train_emb, test_emb, rdf2vec_embeddings = create_rdf2vec_embedding(kg, entities)
-    save_pykeen_emb(pykeen_emb_train, pykeen_emb_test, pykeen_embeddings, emb_type)
+    save_pykeen_emb(pykeen_emb_train, pykeen_emb_test, pykeen_embeddings, emb_type, name)
 
     # #save_rdf2vec_emb(train_emb, test_emb, rdf2vec_embeddings)
 
     # pred_rdf_G, score_rdf_G = Gaussian_classifier(train_emb, test_emb, traindata, testdata)
-    pred_py_G, score_py_G = Gaussian_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata) # size:140x50
+    pred_py_G, score_py_G = Gaussian_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header) # size:140x50
     # #pred_rdf_SVM, score_rdf_SVM = SVM_classifier(train_emb, test_emb, traindata, testdata)
-    pred_py_SVM, score_py_SVM = SVM_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata)
+    pred_py_SVM, score_py_SVM = SVM_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header)
 
-    # #np.savetxt(homedir + "/data/results/prediction_Gaussianclassifier.txt", pred,fmt="%s")
+    #np.savetxt(homedir + "/data/results/prediction_Gaussianclassifier.txt", pred,fmt="%s")
 
     # print('Score_rdf_Gaussian Kernel: ', score_rdf_G)
     print('Score_pykeen_Gaussian Kernel: ', score_py_G)
