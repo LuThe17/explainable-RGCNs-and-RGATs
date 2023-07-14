@@ -201,7 +201,7 @@ def Gaussian_classifier(train_emb, test_emb, traindata, testdata, label_header):
     
 
 if __name__ == '__main__':
-    name = 'MUTAG'
+    name = 'BGS'
     if name == 'AIFB':
         homedir = 'C:/Users/luisa/Projekte/Masterthesis/AIFB'
         kg_dir = '/data/AIFB/complete_dataset.tsv'
@@ -237,15 +237,20 @@ if __name__ == '__main__':
         #     with gzip.open(file, 'rb') as f:
         #         g.parse(file=f, format='nt')
     elif name == 'BGS':
-        homedir = 'C:/Users/luisa/Projekte/Masterthesis/AIFB'
+        homedir = '/pfs/work7/workspace/scratch/ma_luitheob-master/AIFB'
         kg_dir = '/data/BGS/bgs_renamed_bn.tsv'
-        kg_dir2= '/data/BGS/bgs_stripped_2.nt'
+        kg_dir2= '/data/BGS/bgs_renamed_bn.nt.gz'
         train_dir = "/data/BGS/trainingSet(lith).tsv"
         test_dir = "/data/BGS/testSet(lith).tsv"
         pytest_dir = "/data/BGS/testSetpy.tsv"
         label_header = 'label_lithogenesis'
         nodes_header = 'rock'
         g = Graph()
+        print('PARSE BGS STRIPPED.nt.gz')
+        with gzip.open(homedir + '/data/BGS/bgs_stripped.nt.gz', "rb") as out:
+            g.parse(file=out, format='nt')
+        print('FINISH PARSING BGS STRIPPED.nt.gz')
+        #g.parse(homedir + '/data/BGS/bgs_stripped.nt.gz', format='nt')
         # try:
         #     g.parse(homedir +"/data/BGS/completeDataset.nt", format="nt")
         # except Exception as e:
@@ -253,9 +258,7 @@ if __name__ == '__main__':
 
         # lith = rdflib.term.URIRef("http://data.bgs.ac.uk/ref/Lexicon/hasLithogenesis")
         # g.remove((None, lith, None))
-        # with gzip.open((homedir + kg_dir2), "wb") as output:
-        #     g.serialize(output, format="nt")
-        # g.close()
+
 
         # if file.endswith('nt'):
         #     with gzip.open(file, 'rb') as f:
@@ -265,19 +268,23 @@ if __name__ == '__main__':
     #g = Graph()
     #g.parse(homedir + kg_dir, format='nt')
     #kg = remove_aff_mem_emp(homedir, kg)
-    # kg = remove_literal_in_graph(g)
+    print('########### REMOVE LITERALS IN GRAPH ################')
+    kg = remove_literal_in_graph(g)
+    print('################  RENAME BNODE IN GRAPH #############')
+    kg = rename_bnode_in_graph(kg)
+    print('###########  SERIALIZE KG  #############')
+    # with gzip.open((homedir + kg_dir2), "wb") as output:
+    #     kg.serialize(output, format="nt")
+    # kg.close()
 
-    # kg = rename_bnode_in_graph(kg)
-    # #kg.serialize(format="nt", destination= homedir + '/data/BGS/bgs_renamed_bn.nt')
-
-    # df = kg_to_tsv(kg, kg_dir2)
-
+    df = kg_to_tsv(kg, kg_dir)
+    print('TRAIN EMBEDDING')
     traindata = pd.read_csv(homedir + train_dir, sep="\t") # train und test zusammen
     testdata = pd.read_csv(homedir + test_dir, sep="\t")
     entities = traindata[nodes_header].append(testdata[nodes_header])
     emb_type = 'TransE'
     #testpy = testdata[:2]
-    pykeen_data = TriplesFactory.from_path(homedir + kg_dir2, sep="\t")
+    pykeen_data = TriplesFactory.from_path(homedir + kg_dir, sep="\t")
     pykeen_test = TriplesFactory.from_path(homedir + pytest_dir, sep="\t")
     pykeen_emb_train, pykeen_emb_test, pykeen_embeddings  = create_pykeen_embedding(pykeen_data, pykeen_test, entities, traindata, emb_type)
     # train_emb, test_emb, rdf2vec_embeddings = create_rdf2vec_embedding(kg, entities)
