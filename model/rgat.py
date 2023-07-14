@@ -17,7 +17,7 @@ def customized_softmax(input_tensor,edge_index,edge_type, dim=None):
     max_values, _ = torch.max(input_tensor, dim=0, keepdim=True)
     input_tensor -= max_values
     exponential = torch.where(input_tensor2 == 0, torch.zeros_like(input_tensor2), torch.exp(input_tensor))
-    print(exponential.sum())
+    print("Exponential sum: ", exponential.sum())
     
     resmat = torch.zeros(24, 2835)
     num_neighbors = torch.zeros(24, 2835)
@@ -32,9 +32,9 @@ def customized_softmax(input_tensor,edge_index,edge_type, dim=None):
     resmat = resmat.unsqueeze(2).expand(-1, -1, 2835)
     num_neighbors2 = num_neighbors.unsqueeze(2).expand(-1, -1, 2835)
     softmax_output = torch.where(exponential == 0, torch.zeros_like(exponential), exponential/resmat)
-    print(softmax_output.to_sparse_coo())
-    print(resmat.to_sparse_coo())
-    print(exponential.to_sparse_coo())
+    print("Softmax_output: ",softmax_output.to_sparse_coo())
+    print("Resmat: ",resmat.to_sparse_coo())
+    print("Exponential: ", exponential.to_sparse_coo())
     return softmax_output, exponential, resmat, num_neighbors2
 
 class RGAT(torch.nn.Module):
@@ -46,18 +46,18 @@ class RGAT(torch.nn.Module):
 
     def forward(self, x, edge_index, edge_type):
         parameter_list = []
-        out, w, k, q, kj, qi, M, Gm, alpha, alpha2, Eij, exponential, resmat, num_neighbors = self.rgatlayer1(x, edge_index, edge_type)
+        out, w, k, q, kj, qi, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors = self.rgatlayer1(x, edge_index, edge_type)
         out = F.relu(out)
         name = 'l1'
-        params = out, w, k, q, kj, qi, M, Gm, alpha, alpha2, Eij, exponential, resmat, num_neighbors
-        names = 'out', 'w', 'k', 'q', 'kj', 'qi',  'M', 'Gm', 'alpha', 'alpha2', 'Eij', 'exponential', 'resmat', 'num_neighbors'
+        params = out, w, k, q, kj, qi, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors
+        names = 'out', 'w', 'k', 'q', 'kj', 'qi',  'M', 'Gmi', 'Gmj', 'alpha3', 'Eij2', 'exponential', 'resmat', 'num_neighbors'
         for par, names in zip(params,names):
             parameter_list.append((f"{names}_{name}", par))
         out, w, k, q, kj, qi, M, Gm, alpha, alpha2, Eij, exponential, resmat, num_neighbors = self.rgatlayer2(out, edge_index, edge_type)
         out = F.relu(out)
         name = 'l2'
-        params = out, w, k, q, kj, qi, M, Gm, alpha, alpha2, Eij, exponential, resmat, num_neighbors
-        names =  'out', 'w', 'k', 'q', 'kj', 'qi', 'M', 'Gm', 'alpha', 'alpha2', 'Eij', 'exponential', 'resmat', 'num_neighbors'
+        params = out, w, k, q, kj, qi, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors
+        names =  'out', 'w', 'k', 'q', 'kj', 'qi',  'M', 'Gmi', 'Gmj', 'alpha3', 'Eij2', 'exponential', 'resmat', 'num_neighbors'
         for par2, names in zip(params,names):
             parameter_list.append((f"{names}_{name}", par2))
         out = self.dense(out)
@@ -72,30 +72,36 @@ def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weigh
     M = torch.sparse.FloatTensor(indices = torch.stack((edge_type, edge_index[0], edge_index[1])), values = values, size = size)
     M = M.float()
     G = x @ self.weight
-    Gm = M.to_dense() @ G
+    Gmi = M.to_dense() @ G
+    Gmj = M.to_dense().transpose(1,2) @ G
 
-    qi = torch.matmul(Gm, self.q).squeeze() #(3)
-    kj = torch.matmul(Gm, self.k).squeeze() #(3)
+    qi = torch.matmul(Gmi, self.q).squeeze() #(3)
+    kj = torch.matmul(Gmj, self.k).squeeze() #(3)
 
-    qi2 = torch.zeros(24,2835,2835)
-    kj2 = torch.zeros(24,2835,2835)
+    #qi2 = torch.zeros(24,2835,2835)
+    #kj2 = torch.zeros(24,2835,2835)
 
-    qi2[edge_type, edge_index[0], edge_index[1]] = qi[edge_type,edge_index[0]]
-    kj2[edge_type, edge_index[0], edge_index[1]] = kj[edge_type,edge_index[0]]
+    #qi2[edge_type, edge_index[0], edge_index[1]] = qi[edge_type,edge_index[0]]
+    #kj2[edge_type, edge_index[0], edge_index[1]] = kj[edge_type,edge_index[1]]
+
+
+    E = torch.zeros(24,2835,2835)
+    E[edge_type, edge_index[0], edge_index[1]] = qi[edge_type,edge_index[0]] + kj[edge_type,edge_index[1]]
+
 
     if self.attention_mode == "additive-self-attention":
         
         #Eij = torch.add(qi, kj) #(4) 
         #Eij = F.leaky_relu(Eij, self.negative_slope) #(4) Eij(r)
-        alpha = torch.add(qi2, kj2) #(4)
-        Eij2 = F.leaky_relu(alpha, self.negative_slope) #(4) Eij(r)
+        #alpha = torch.add(qi2, kj2) #(4)
+        Eij2 = F.leaky_relu(E, self.negative_slope) #(4) Eij(r)
         #alpha = F.softmax(Eij, dim=0)
         alpha3, exponential, resmat, num_neighbors = customized_softmax(Eij2, edge_index, edge_type, dim=0)
-        print(alpha3.to_sparse_coo())
+        print("Alpha3: ", alpha3.to_sparse_coo())
         
         out = (alpha3 @ G).sum(dim=0) 
 
-        return out, self.weight, self.k, self.q, kj2, qi2, M, Gm, alpha, alpha3, Eij2, exponential, resmat, num_neighbors
+        return out, self.weight, self.k, self.q, kj, qi, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors
     
 
 class RGATLayer(MessagePassing):
@@ -422,8 +428,7 @@ class RGATLayer(MessagePassing):
                 :obj:`(edge_index, attention_weights)`, holding the computed
                 attention weights for each edge. (default: :obj:`None`)
         """
-        
-        out, w, k, q, kj, qi, alpha, xi, xj, adj_eij, adj_index, exponential, resmat, num_neighbors = mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weights)
+        out, w, k, q, kj, qi, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors = mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weights)
         #propagate_type: (x: Tensor, edge_type: OptTensor, edge_attr: OptTensor)  # noqa
         #out2 = self.propagate(edge_index=edge_index, edge_type=edge_type, x=x,
         #                    size=size, edge_attr=edge_attr)
@@ -444,7 +449,7 @@ class RGATLayer(MessagePassing):
         #         return out, edge_index.set_value(alpha, layout='coo')
         # else:
         #print(out)
-        return out, w, k, q, kj, qi, alpha, xi, xj, adj_eij, adj_index, exponential, resmat, num_neighbors
+        return out, w, k, q, kj, qi, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors
 
 
     def message(self, x_i: Tensor, x_j: Tensor, edge_type: Tensor,

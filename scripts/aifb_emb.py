@@ -18,7 +18,9 @@ from rdflib.namespace import RDF
 from collections import Counter
 from rdflib.plugins.parsers import notation3
 import gzip
-
+import sys
+sys.path.append('..')
+from utils import utils
 
 
 def kg_to_tsv(g, dir):
@@ -258,7 +260,8 @@ if __name__ == '__main__':
         # if file.endswith('nt'):
         #     with gzip.open(file, 'rb') as f:
         #         g.parse(file=f, format='nt')
-
+    elif name == 'IMDB':
+        
     #g = Graph()
     #g.parse(homedir + kg_dir, format='nt')
     #kg = remove_aff_mem_emp(homedir, kg)

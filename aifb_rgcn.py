@@ -59,12 +59,14 @@ def lrp_rgat_layer(x, w, alpha, rel, s1, s2, num_neighbors, lrp_step):
         sum_exp = w
         y = torch.where(sum_exp == 0, torch.zeros_like(sum_exp), torch.div(1,sum_exp))
         z = (((exponential * y) * s2) + ((exponential * y) * (1-s2)) + 1e-10 )
-        s = torch.div(rel, z)
-        zkl = s * y
-        out_exp =exponential * zkl * s2
+        p = torch.div(rel, z)
+        zkl = p * y
+        out_exp = exponential * zkl * s2
+
         torch.count_nonzero(exponential, dim=0)
-        softmax_output = torch.where(sum_exp == 0, torch.zeros_like(exponential), exponential / sum_exp)
+        softmax_output = torch.where(exponential == 0, torch.zeros_like(exponential), exponential / sum_exp)
         exp = torch.where(softmax_output == 0, torch.zeros_like(softmax_output), (1-softmax_output))
+        exp = torch.where(softmax_output==1, exp+1, exp)
         num_neighbors = torch.zeros(24, 2835)
         # Iterate over the relations
         for relation in range(exp.size()[0]):
@@ -74,8 +76,12 @@ def lrp_rgat_layer(x, w, alpha, rel, s1, s2, num_neighbors, lrp_step):
             num_neighbors[relation] = sum_neighbor3
         num_neighbors2= num_neighbors.unsqueeze(2).expand(-1,-1,2835)
         ant = torch.where(num_neighbors2 == 0 , torch.zeros_like(num_neighbors2), exp/num_neighbors2)
-        zkl2 = s * exponential
-        out_y = y * zkl2 * (1-s2) #ant
+
+        z2 = (((exponential * y) * s2) + ((exponential * y) * (1-s2)) + 1e-10 )
+        p2 = torch.div(rel, z2)
+        zkl2 = p2 * exponential
+
+        out_y = zkl2 * (1-s2) * y *ant#ant
         return out_exp, out_y
     else:
         gm = (M_l2.to_dense()@(out_l1 @ w_l2 )).sum(dim=0)
@@ -154,9 +160,10 @@ def lrp_rgat(parameter_list, input, weight_dense, relevance, s1):
     for i in parameter_list:
         globals()[i[0]] = i[1]
     rel2 = get_relevance_for_dense_layer(out_l2, weight_dense, None, rel1)
-    r_alpha, rg =  lrp_rgat_layer(out_l1, w_l2, alpha2_l2, rel2, s1, None, None, lrp_step='relevance_alphaandg')
+    r_alpha, rg =  lrp_rgat_layer(out_l1, w_l2, alpha3_l2, rel2, s1, None, None, lrp_step='relevance_alphaandg')
     rh = lrp_rgat_layer(input, w_l2, None, rg, None, None, None, lrp_step='relevance_h')
     rel_softmax = lrp_rgat_layer(exponential_l2, resmat_l2, None, r_alpha, None, 0.2, num_neighbors_l2, lrp_step='relevance_softmax')
+    rel_q_k = lrp_rgat_layer(Gmi_l2, q_l2, )
 def tensor_max_value_to_1_else_0(tensor, x):
     max_value = tensor.argmax()
     idx = test_idx[x]
@@ -280,10 +287,12 @@ def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_
     #model = RGAT(16, 16, dataset.num_classes, dataset.num_relations).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=0.0005)
     for epoch in range(1, epochs+1):
+        criterion = nn.CrossEntropyLoss()
         model.train()
         optimizer.zero_grad()
         out, parameter_list, input = model(pyk_emb, edge_index, edge_type)
-        loss = F.nll_loss(out[train_idx], train_lbl)
+        loss = criterion(out[train_idx], train_lbl)
+        print("Loss, epoch: ", loss, epoch)
         loss.backward()
         #torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
 
@@ -395,7 +404,7 @@ if __name__ == '__main__':
         gat_evaluation()
     
     elif model== 'RGAT':
-        epochs= 1
+        epochs= 2
         model = RGAT
         model = model(50, 50, num_classes, num_relations)
         loss, pred, parameter_list = rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl, model)
