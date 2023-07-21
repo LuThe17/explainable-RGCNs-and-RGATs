@@ -64,7 +64,7 @@ def create_pykeen_embedding(train, test, entities, traindata, type = 'TransE'):
         training=train,
         testing=test,
         model=type,
-        device="cpu",
+        device="gpu",
         epochs=200,
     )
     model = result.model
@@ -246,10 +246,10 @@ if __name__ == '__main__':
         label_header = 'label_lithogenesis'
         nodes_header = 'rock'
         g = Graph()
-        print('PARSE BGS STRIPPED.nt.gz')
-        with gzip.open(homedir + '/data/BGS/bgs_stripped.nt.gz', "rb") as out:
-            g.parse(file=out, format='nt')
-        print('FINISH PARSING BGS STRIPPED.nt.gz')
+        #print('PARSE BGS STRIPPED.nt.gz')
+        #with gzip.open(homedir + '/data/BGS/bgs_stripped.nt.gz', "rb") as out:
+        #    g.parse(file=out, format='nt')
+        #print('FINISH PARSING BGS STRIPPED.nt.gz')
         #g.parse(homedir + '/data/BGS/bgs_stripped.nt.gz', format='nt')
         # try:
         #     g.parse(homedir +"/data/BGS/completeDataset.nt", format="nt")
@@ -263,26 +263,26 @@ if __name__ == '__main__':
         # if file.endswith('nt'):
         #     with gzip.open(file, 'rb') as f:
         #         g.parse(file=f, format='nt')
-    elif name == 'IMDB':
+    #elif name == 'IMDB':
         
     #g = Graph()
     #g.parse(homedir + kg_dir, format='nt')
     #kg = remove_aff_mem_emp(homedir, kg)
-    print('########### REMOVE LITERALS IN GRAPH ################')
-    kg = remove_literal_in_graph(g)
-    print('################  RENAME BNODE IN GRAPH #############')
-    kg = rename_bnode_in_graph(kg)
-    print('###########  SERIALIZE KG  #############')
+    #print('########### REMOVE LITERALS IN GRAPH ################')
+    #kg = remove_literal_in_graph(g)
+    #print('################  RENAME BNODE IN GRAPH #############')
+    #kg = rename_bnode_in_graph(kg)
+    #print('###########  SERIALIZE KG  #############')
     # with gzip.open((homedir + kg_dir2), "wb") as output:
     #     kg.serialize(output, format="nt")
     # kg.close()
 
-    df = kg_to_tsv(kg, kg_dir)
+    #df = kg_to_tsv(kg, kg_dir)
     print('TRAIN EMBEDDING')
     traindata = pd.read_csv(homedir + train_dir, sep="\t") # train und test zusammen
     testdata = pd.read_csv(homedir + test_dir, sep="\t")
     entities = traindata[nodes_header].append(testdata[nodes_header])
-    emb_type = 'TransE'
+    emb_type = 'TransH'
     #testpy = testdata[:2]
     pykeen_data = TriplesFactory.from_path(homedir + kg_dir, sep="\t")
     pykeen_test = TriplesFactory.from_path(homedir + pytest_dir, sep="\t")
