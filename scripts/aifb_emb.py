@@ -17,10 +17,12 @@ from pykeen.pipeline import pipeline
 from rdflib.namespace import RDF
 from collections import Counter
 from rdflib.plugins.parsers import notation3
+from sklearn.model_selection import GridSearchCV
 import gzip
+from sklearn.metrics import classification_report, accuracy_score
 import sys
-sys.path.append('..')
-from utils import utils
+#sys.path.append('../utils')
+#from utils import utils
 
 
 def kg_to_tsv(g, dir):
@@ -65,7 +67,8 @@ def create_pykeen_embedding(train, test, entities, traindata, type = 'TransE'):
         testing=test,
         model=type,
         device="cpu",
-        epochs=200,
+        epochs=5,
+    
     )
     model = result.model
 
@@ -183,12 +186,22 @@ def rename_bnode_in_graph(g):
     return g
 
 def SVM_classifier(train_emb, test_emb, traindata, testdata, label_header):
-    SVM_classifier = svm.SVC(kernel='rbf', C=1.0, random_state=42)
+    SVM_classifier = svm.SVC()
+    param_grid = {'C': [0.1, 1, 10, 100, 1000],
+              'gamma': [1, 0.1, 0.01, 0.001, 0.0001],
+              'kernel': ['rbf','linear']}
     print(len(train_emb))
     print(traindata[label_header].shape)
-    SVM_classifier.fit(train_emb, traindata[label_header])
+    grid = GridSearchCV(SVM_classifier,param_grid)
+    grid.fit(train_emb, traindata[label_header])
+    grid_svc = grid.predict(test_emb)
+    print(grid.best_params_)
+    print(grid.best_estimator_.get_params())
+    #print(classification_report(test_emb,grid_svc))
+    #SVM_classifier.fit(train_emb, traindata[label_header])
     predictions = SVM_classifier.predict(test_emb)
     score = SVM_classifier.score(test_emb, testdata[label_header])
+
     return predictions, score
 
 def Gaussian_classifier(train_emb, test_emb, traindata, testdata, label_header):
@@ -201,10 +214,10 @@ def Gaussian_classifier(train_emb, test_emb, traindata, testdata, label_header):
     
 
 if __name__ == '__main__':
-    name = 'BGS'
+    name = 'AIFB'
     if name == 'AIFB':
         homedir = 'C:/Users/luisa/Projekte/Masterthesis/AIFB'
-        kg_dir = '/data/AIFB/complete_dataset.tsv'
+        kg_dir = '/data/AIFB/aifb_renamed_bn.tsv'
         train_dir = "/data/AIFB/trainingSet.tsv"
         test_dir = "/data/AIFB/testSet.tsv"
         pytest_dir = "/data/AIFB/testSetpy.tsv"
@@ -219,7 +232,7 @@ if __name__ == '__main__':
         pytest_dir = "/data/MUTAG/testSetpy.tsv"
         label_header = 'label_mutagenic'
         nodes_header = 'bond'
-        # with open(homedir + "/data/"+name+"/embeddings/train_pykeen_embedding_"+"TransE"+".pickle", "rb") as fp:   #Pickling
+        ''' # with open(homedir + "/data/"+name+"/embeddings/train_pykeen_embedding_"+"TransE"+".pickle", "rb") as fp:   #Pickling
         #     emb_train = pickle.load(fp)
         # with open(homedir + "/data/"+name+"/embeddings/test_pykeen_embedding_"+"TransE", "rb") as fp:   #Pickling
         #     emb_test = pickle.load(fp)
@@ -235,7 +248,7 @@ if __name__ == '__main__':
         # file = homedir + kg_dir
         # if file.endswith('nt.gz'):
         #     with gzip.open(file, 'rb') as f:
-        #         g.parse(file=f, format='nt')
+        #         g.parse(file=f, format='nt')'''
     elif name == 'BGS':
         homedir = '/pfs/work7/workspace/scratch/ma_luitheob-master/AIFB'
         kg_dir = '/data/BGS/bgs_renamed_bn.tsv'
@@ -263,39 +276,38 @@ if __name__ == '__main__':
         # if file.endswith('nt'):
         #     with gzip.open(file, 'rb') as f:
         #         g.parse(file=f, format='nt')
-    elif name == 'IMDB':
+    #elif name == 'IMDB':
         
     #g = Graph()
     #g.parse(homedir + kg_dir, format='nt')
     #kg = remove_aff_mem_emp(homedir, kg)
-    print('########### REMOVE LITERALS IN GRAPH ################')
-    kg = remove_literal_in_graph(g)
-    print('################  RENAME BNODE IN GRAPH #############')
-    kg = rename_bnode_in_graph(kg)
-    print('###########  SERIALIZE KG  #############')
+    #print('########### REMOVE LITERALS IN GRAPH ################')
+    #kg = remove_literal_in_graph(g)
+    #print('################  RENAME BNODE IN GRAPH #############')
+    #kg = rename_bnode_in_graph(kg)
+    #print('###########  SERIALIZE KG  #############')
     # with gzip.open((homedir + kg_dir2), "wb") as output:
     #     kg.serialize(output, format="nt")
     # kg.close()
 
-    df = kg_to_tsv(kg, kg_dir)
-    print('TRAIN EMBEDDING')
+    #df = kg_to_tsv(kg, kg_dir)
+    #print('TRAIN EMBEDDING')
     traindata = pd.read_csv(homedir + train_dir, sep="\t") # train und test zusammen
     testdata = pd.read_csv(homedir + test_dir, sep="\t")
     entities = traindata[nodes_header].append(testdata[nodes_header])
-    emb_type = 'TransE'
+    emb_type = ['DistMult', 'TransE', 'TransH']
     #testpy = testdata[:2]
     pykeen_data = TriplesFactory.from_path(homedir + kg_dir, sep="\t")
     pykeen_test = TriplesFactory.from_path(homedir + pytest_dir, sep="\t")
-    pykeen_emb_train, pykeen_emb_test, pykeen_embeddings  = create_pykeen_embedding(pykeen_data, pykeen_test, entities, traindata, emb_type)
-    # train_emb, test_emb, rdf2vec_embeddings = create_rdf2vec_embedding(kg, entities)
-    save_pykeen_emb(pykeen_emb_train, pykeen_emb_test, pykeen_embeddings, emb_type, name)
-
-    # #save_rdf2vec_emb(train_emb, test_emb, rdf2vec_embeddings)
-
-    # pred_rdf_G, score_rdf_G = Gaussian_classifier(train_emb, test_emb, traindata, testdata)
-    pred_py_G, score_py_G = Gaussian_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header) # size:140x50
-    # #pred_rdf_SVM, score_rdf_SVM = SVM_classifier(train_emb, test_emb, traindata, testdata)
-    pred_py_SVM, score_py_SVM = SVM_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header)
+    for embs in emb_type:
+        pykeen_emb_train, pykeen_emb_test, pykeen_embeddings  = create_pykeen_embedding(pykeen_data, pykeen_test, entities, traindata, embs)
+        # train_emb, test_emb, rdf2vec_embeddings = create_rdf2vec_embedding(kg, entities)
+        save_pykeen_emb(pykeen_emb_train, pykeen_emb_test, pykeen_embeddings, emb_type, name)
+        # #save_rdf2vec_emb(train_emb, test_emb, rdf2vec_embeddings)
+        # pred_rdf_G, score_rdf_G = Gaussian_classifier(train_emb, test_emb, traindata, testdata)
+        pred_py_G, score_py_G = Gaussian_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header) # size:140x50
+        # #pred_rdf_SVM, score_rdf_SVM = SVM_classifier(train_emb, test_emb, traindata, testdata)
+        pred_py_SVM, score_py_SVM = SVM_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header)
 
     #np.savetxt(homedir + "/data/results/prediction_Gaussianclassifier.txt", pred,fmt="%s")
 

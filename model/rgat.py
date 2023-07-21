@@ -46,18 +46,18 @@ class RGAT(torch.nn.Module):
 
     def forward(self, x, edge_index, edge_type):
         parameter_list = []
-        out, w, k, q, kj, qi, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors = self.rgatlayer1(x, edge_index, edge_type)
+        out, w, k, q, K, Q, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors = self.rgatlayer1(x, edge_index, edge_type)
         out = F.relu(out)
         name = 'l1'
-        params = out, w, k, q, kj, qi, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors
-        names = 'out', 'w', 'k', 'q', 'kj', 'qi',  'M', 'Gmi', 'Gmj', 'alpha3', 'Eij2', 'exponential', 'resmat', 'num_neighbors'
+        params = out, w, k, q, K, Q, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors
+        names = 'out', 'w', 'k', 'q', 'K', 'Q',  'M', 'Gmi', 'Gmj', 'alpha3', 'Eij2', 'exponential', 'resmat', 'num_neighbors'
         for par, names in zip(params,names):
             parameter_list.append((f"{names}_{name}", par))
-        out, w, k, q, kj, qi, M, Gm, alpha, alpha2, Eij, exponential, resmat, num_neighbors = self.rgatlayer2(out, edge_index, edge_type)
+        out, w, k, q, K, Q, M, Gm, alpha, alpha2, Eij, exponential, resmat, num_neighbors = self.rgatlayer2(out, edge_index, edge_type)
         out = F.relu(out)
         name = 'l2'
-        params = out, w, k, q, kj, qi, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors
-        names =  'out', 'w', 'k', 'q', 'kj', 'qi',  'M', 'Gmi', 'Gmj', 'alpha3', 'Eij2', 'exponential', 'resmat', 'num_neighbors'
+        params = out, w, k, q, K, Q, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors
+        names =  'out', 'w', 'k', 'q', 'K', 'Q',  'M', 'Gmi', 'Gmj', 'alpha3', 'Eij2', 'exponential', 'resmat', 'num_neighbors'
         for par2, names in zip(params,names):
             parameter_list.append((f"{names}_{name}", par2))
         out = self.dense(out)
@@ -75,18 +75,12 @@ def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weigh
     Gmi = M.to_dense() @ G
     Gmj = M.to_dense().transpose(1,2) @ G
 
-    qi = torch.matmul(Gmi, self.q).squeeze() #(3)
-    kj = torch.matmul(Gmj, self.k).squeeze() #(3)
-
-    #qi2 = torch.zeros(24,2835,2835)
-    #kj2 = torch.zeros(24,2835,2835)
-
-    #qi2[edge_type, edge_index[0], edge_index[1]] = qi[edge_type,edge_index[0]]
-    #kj2[edge_type, edge_index[0], edge_index[1]] = kj[edge_type,edge_index[1]]
+    Q = torch.matmul(Gmi, self.q).squeeze() #(3)
+    K = torch.matmul(Gmj, self.k).squeeze() #(3)
 
 
     E = torch.zeros(24,2835,2835)
-    E[edge_type, edge_index[0], edge_index[1]] = qi[edge_type,edge_index[0]] + kj[edge_type,edge_index[1]]
+    E[edge_type, edge_index[0], edge_index[1]] = Q[edge_type,edge_index[0]] + K[edge_type,edge_index[1]]
 
 
     if self.attention_mode == "additive-self-attention":
@@ -101,7 +95,7 @@ def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weigh
         
         out = (alpha3 @ G).sum(dim=0) 
 
-        return out, self.weight, self.k, self.q, kj, qi, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors
+        return out, self.weight, self.k, self.q, K, Q, M, Gmi, Gmj, alpha3, E, exponential, resmat, num_neighbors
     
 
 class RGATLayer(MessagePassing):
@@ -428,7 +422,7 @@ class RGATLayer(MessagePassing):
                 :obj:`(edge_index, attention_weights)`, holding the computed
                 attention weights for each edge. (default: :obj:`None`)
         """
-        out, w, k, q, kj, qi, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors = mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weights)
+        out, w, k, q, K, Q, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors = mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weights)
         #propagate_type: (x: Tensor, edge_type: OptTensor, edge_attr: OptTensor)  # noqa
         #out2 = self.propagate(edge_index=edge_index, edge_type=edge_type, x=x,
         #                    size=size, edge_attr=edge_attr)
@@ -449,7 +443,7 @@ class RGATLayer(MessagePassing):
         #         return out, edge_index.set_value(alpha, layout='coo')
         # else:
         #print(out)
-        return out, w, k, q, kj, qi, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors
+        return out, w, k, q, K, Q, M, Gmi, Gmj, alpha3, Eij2, exponential, resmat, num_neighbors
 
 
     def message(self, x_i: Tensor, x_j: Tensor, edge_type: Tensor,
