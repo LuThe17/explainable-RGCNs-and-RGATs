@@ -58,10 +58,7 @@ def lrp_rgat_layer(x, w, alpha, rel, s1, s2, num_neighbors, lrp_step):
         exponential = x
         sum_exp = w
         y = torch.where(sum_exp == 0, torch.zeros_like(sum_exp), torch.div(1,sum_exp))
-        z = (((exponential * y) * s2) + ((exponential * y) * (1-s2)) + 1e-10 )
-        p = torch.div(rel, z)
-        zkl = p * y
-        out_exp = exponential * zkl * s2
+        out_exp = rel * s2
 
         torch.count_nonzero(exponential, dim=0)
         softmax_output = torch.where(exponential == 0, torch.zeros_like(exponential), exponential / sum_exp)
@@ -76,30 +73,47 @@ def lrp_rgat_layer(x, w, alpha, rel, s1, s2, num_neighbors, lrp_step):
             num_neighbors[relation] = sum_neighbor3
         num_neighbors2= num_neighbors.unsqueeze(2).expand(-1,-1,2835)
         ant = torch.where(num_neighbors2 == 0 , torch.zeros_like(num_neighbors2), exp/num_neighbors2)
+    
+        sum_rel = torch.zeros(24,2835)
+        for relation in range(rel.size()[0]):
+            sum_rel[relation]  = rel[relation].sum(dim=1)
+        zkl = rel * ant
+        ant_zkl = torch.zeros(24,2835)
+        for relation in range(rel.size()[0]):
+            ant_zkl[relation]  = zkl[relation].sum(dim=1)
+        ant_zkl = torch.where(ant_zkl==0, torch.zeros_like(ant_zkl),sum_rel/ant_zkl).unsqueeze(2).expand(-1,-1,2835)
 
-        z2 = (((exponential * y) * s2) + ((exponential * y) * (1-s2)) + 1e-10 )
-        p2 = torch.div(rel, z2)
-        zkl2 = p2 * exponential
+        out_y = zkl * (1-s2) * ant_zkl
+        output = out_exp+ out_y
+        return output
+    elif lrp_step == 'relevance_q_k':
+        half_values = 0.5 * rel
+        indices = rel.to_sparse_coo().indices()
+        rel_q = torch.sparse_coo_tensor(indices[:2], half_values.to_sparse_coo().values(), size=(24,2835))
+        rel_k = torch.sparse_coo_tensor(torch.stack([indices[0],indices[-1]]), half_values.to_sparse_coo().values(), size=(24,2835))
 
-        out_y = zkl2 * (1-s2) * y *ant#ant
-        return out_exp, out_y
-    else:
-        gm = (M_l2.to_dense()@(out_l1 @ w_l2 )).sum(dim=0)
-        km = (gm @ k_l2).squeeze()
-        qm = (gm @ q_l2).squeeze()
-        qm2, km2 = torch.zeros(24, 2835,2835), torch.zeros(24,2835,2835)
-        qm2[edge_type, edge_index[0], edge_index[1]] = qm[edge_type,edge_index[0]]
-        km2[edge_type, edge_index[0], edge_index[1]] = km[edge_type,edge_index[0]]    
+        z =( Gmi_l2 @ q_l2).squeeze() + 1e-19
+        s = torch.div(rel_q.to_dense(), z)
+        zkl = s.T @ q_l2.squeeze()
+        out_q = Gmi_l2 * zkl
 
-        z = (qm2 * 0.5) + (km2*0.5) + 1e-19
-        s = torch.div(out_y, z)
-        zkl = s.sum(dim=2).mT @ q_l2.squeeze()
+###########################################
+        Q = ((Gmi_l2 @ q_l2) * 0.5).squeeze()
+        K = ((Gmj_l2 @ k_l2) * 0.5).squeeze()
 
-        zkl2 = g.mT @ q_l2
-        out_g = (zkl2 * g) * (1-s1)
-        out_g = out_g.sum(dim=0)
-        print(out_g.to_dense().sum())
-        return out_alpha, out_g
+        sum_q_k = torch.zeros(24,2835,2835)
+        sum_q_k[edge_type, edge_index[0], edge_index[1]] = (Q[edge_type,edge_index[0]] + K[edge_type,edge_index[1]]) # E
+        sum_q_k += 1e-19
+
+        s = torch.div(rel, sum_q_k) # Relevance/E
+        indices = s.to_sparse_coo().indices()
+        s_q = torch.sparse_coo_tensor(indices[:2], s.to_sparse_coo().values(), size=(24,2835))
+        s_k = torch.sparse_coo_tensor(torch.stack([indices[0],indices[-1]]), s.to_sparse_coo().values(), size=(24,2835))
+
+ 
+
+
+        return 
 
         return None   
 
@@ -163,7 +177,7 @@ def lrp_rgat(parameter_list, input, weight_dense, relevance, s1):
     r_alpha, rg =  lrp_rgat_layer(out_l1, w_l2, alpha3_l2, rel2, s1, None, None, lrp_step='relevance_alphaandg')
     rh = lrp_rgat_layer(input, w_l2, None, rg, None, None, None, lrp_step='relevance_h')
     rel_softmax = lrp_rgat_layer(exponential_l2, resmat_l2, None, r_alpha, None, 0.2, num_neighbors_l2, lrp_step='relevance_softmax')
-    rel_q_k = lrp_rgat_layer(Gmi_l2, q_l2, )
+    rel_q_k = lrp_rgat_layer(Gmi_l2, q_l2, None, rel_softmax, None, None, None, 'relevance_q_k')
 def tensor_max_value_to_1_else_0(tensor, x):
     max_value = tensor.argmax()
     idx = test_idx[x]
