@@ -302,17 +302,17 @@ if __name__ == '__main__':
     for embs in emb_type:
         pykeen_emb_train, pykeen_emb_test, pykeen_embeddings  = create_pykeen_embedding(pykeen_data, pykeen_test, entities, traindata, embs)
         # train_emb, test_emb, rdf2vec_embeddings = create_rdf2vec_embedding(kg, entities)
-        save_pykeen_emb(pykeen_emb_train, pykeen_emb_test, pykeen_embeddings, emb_type, name)
+        save_pykeen_emb(pykeen_emb_train, pykeen_emb_test, pykeen_embeddings, emb_type, embs)
         # #save_rdf2vec_emb(train_emb, test_emb, rdf2vec_embeddings)
         # pred_rdf_G, score_rdf_G = Gaussian_classifier(train_emb, test_emb, traindata, testdata)
-        pred_py_G, score_py_G = Gaussian_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header) # size:140x50
+        #pred_py_G, score_py_G = Gaussian_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header) # size:140x50
         # #pred_rdf_SVM, score_rdf_SVM = SVM_classifier(train_emb, test_emb, traindata, testdata)
         pred_py_SVM, score_py_SVM = SVM_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header)
 
     #np.savetxt(homedir + "/data/results/prediction_Gaussianclassifier.txt", pred,fmt="%s")
 
     # print('Score_rdf_Gaussian Kernel: ', score_rdf_G)
-    print('Score_pykeen_Gaussian Kernel: ', score_py_G)
+    #print('Score_pykeen_Gaussian Kernel: ', score_py_G)
     # print('Score_rdf_SVM: ', score_rdf_SVM)
     print('Score_pykeen_SVM: ', score_py_SVM)
     
