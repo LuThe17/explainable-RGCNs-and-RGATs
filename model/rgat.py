@@ -78,18 +78,13 @@ def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weigh
     Q = torch.matmul(Gmi, self.q).squeeze() #(3)
     K = torch.matmul(Gmj, self.k).squeeze() #(3)
 
-
     E = torch.zeros(24,2835,2835)
     E[edge_type, edge_index[0], edge_index[1]] = Q[edge_type,edge_index[0]] + K[edge_type,edge_index[1]]
 
 
     if self.attention_mode == "additive-self-attention":
         
-        #Eij = torch.add(qi, kj) #(4) 
-        #Eij = F.leaky_relu(Eij, self.negative_slope) #(4) Eij(r)
-        #alpha = torch.add(qi2, kj2) #(4)
         Eij2 = F.leaky_relu(E, self.negative_slope) #(4) Eij(r)
-        #alpha = F.softmax(Eij, dim=0)
         alpha3, exponential, resmat, num_neighbors = customized_softmax(Eij2, edge_index, edge_type, dim=0)
         print("Alpha3: ", alpha3.to_sparse_coo())
         

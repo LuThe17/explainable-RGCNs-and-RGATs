@@ -11,7 +11,10 @@ from sklearn import svm
 from sklearn.gaussian_process import GaussianProcessClassifier
 from sklearn.gaussian_process.kernels import RBF
 import pickle
+import torch
+import dgl
 import collections
+import torch_geometric.datasets as datasets
 import csv
 from pykeen.pipeline import pipeline
 from rdflib.namespace import RDF
@@ -21,9 +24,40 @@ from sklearn.model_selection import GridSearchCV
 import gzip
 from sklearn.metrics import classification_report, accuracy_score
 import sys
+import networkx as nx
+import scipy
+
 #sys.path.append('../utils')
 #from utils import utils
 
+def load_IMDB_data(prefix='C:/Users/luisa/Projekte/Masterthesis/AIFB/data/IMDB/preprocessed/IMDB_processed'):
+    #homedir = 'C:/Users/luisa/Projekte/Masterthesis/AIFB'
+    G00 = nx.read_adjlist(prefix + '/0/0-1-0.adjlist', create_using=nx.MultiDiGraph)
+    G01 = nx.read_adjlist(prefix + '/0/0-2-0.adjlist', create_using=nx.MultiDiGraph)
+    G10 = nx.read_adjlist(prefix + '/1/1-0-1.adjlist', create_using=nx.MultiDiGraph)
+    G11 = nx.read_adjlist(prefix + '/1/1-0-2-0-1.adjlist', create_using=nx.MultiDiGraph)
+    G20 = nx.read_adjlist(prefix + '/2/2-0-2.adjlist', create_using=nx.MultiDiGraph)
+    G21 = nx.read_adjlist(prefix + '/2/2-0-1-0-2.adjlist', create_using=nx.MultiDiGraph)
+    idx00 = np.load(prefix + '/0/0-1-0_idx.npy')
+    idx01 = np.load(prefix + '/0/0-2-0_idx.npy')
+    idx10 = np.load(prefix + '/1/1-0-1_idx.npy')
+    idx11 = np.load(prefix + '/1/1-0-2-0-1_idx.npy')
+    idx20 = np.load(prefix + '/2/2-0-2_idx.npy')
+    idx21 = np.load(prefix + '/2/2-0-1-0-2_idx.npy')
+    features_0 = scipy.sparse.load_npz(prefix + '/features_0.npz')
+    features_1 = scipy.sparse.load_npz(prefix + '/features_1.npz')
+    features_2 = scipy.sparse.load_npz(prefix + '/features_2.npz')
+    adjM = scipy.sparse.load_npz(prefix + '/adjM.npz')
+    type_mask = np.load(prefix + '/node_types.npy')
+    labels = np.load(prefix + '/labels.npy')
+    train_val_test_idx = np.load(prefix + '/train_val_test_idx.npz')
+    return [[G00, G01], [G10, G11], [G20, G21]], \
+           [[idx00, idx01], [idx10, idx11], [idx20, idx21]], \
+           [features_0, features_1, features_2],\
+           adjM, \
+           type_mask,\
+           labels,\
+           train_val_test_idx
 
 def kg_to_tsv(g, dir):
     df = pd.DataFrame(columns=['subject','predicate','object'])
@@ -214,8 +248,60 @@ def Gaussian_classifier(train_emb, test_emb, traindata, testdata, label_header):
     
 
 if __name__ == '__main__':
-    name = 'AIFB'
-    if name == 'AIFB':
+    name = 'IMDB'
+    if name == 'IMDB':
+        data = datasets.IMDB
+        path = 'C:/Users/luisa/Projekte/Masterthesis/AIFB/data/IMDB'
+        metapaths = [[('movie', 'actor'), ('actor', 'movie')],
+             [('movie', 'director'), ('director', 'movie')]]
+        transform = T.AddMetaPaths(metapaths=metapaths, drop_orig_edge_types=True,
+                           drop_unconnected_node_types=True)
+        dataset = datasets.IMDB(path, transform=transform)
+        data = dataset[0]
+        print(data)
+        # feats_type = 2
+        # nx_G_lists, edge_metapath_indices_lists, features_list, adjM, type_mask, labels, train_val_test_idx = load_IMDB_data()
+        # device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+        # features_list = [torch.FloatTensor(features.todense()).to(device) for features in features_list]
+        # if feats_type == 0:
+        #     in_dims = [features.shape[1] for features in features_list]
+        # elif feats_type == 1:
+        #     in_dims = [features_list[0].shape[1]] + [10] * (len(features_list) - 1)
+        #     for i in range(1, len(features_list)):
+        #         features_list[i] = torch.zeros((features_list[i].shape[0], 10)).to(device)
+        # elif feats_type == 2:
+        #     in_dims = [features.shape[0] for features in features_list]
+        #     in_dims[0] = features_list[0].shape[1]
+        #     for i in range(1, len(features_list)):
+        #         dim = features_list[i].shape[0]
+        #         indices = np.vstack((np.arange(dim), np.arange(dim)))
+        #         indices = torch.LongTensor(indices)
+        #         values = torch.FloatTensor(np.ones(dim))
+        #         features_list[i] = torch.sparse.FloatTensor(indices, values, torch.Size([dim, dim])).to(device)
+        # elif feats_type == 3:
+        #     in_dims = [features.shape[0] for features in features_list]
+        #     for i in range(len(features_list)):
+        #         dim = features_list[i].shape[0]
+        #         indices = np.vstack((np.arange(dim), np.arange(dim)))
+        #         indices = torch.LongTensor(indices)
+        #         values = torch.FloatTensor(np.ones(dim))
+        #         features_list[i] = torch.sparse.FloatTensor(indices, values, torch.Size([dim, dim])).to(device)
+        # edge_metapath_indices_lists = [[torch.LongTensor(indices).to(device) for indices in indices_list] for indices_list in
+        #                             edge_metapath_indices_lists]
+        # labels = torch.LongTensor(labels).to(device)
+        # g_lists = []
+        # for nx_G_list in nx_G_lists:
+        #     g_lists.append([])
+        #     for nx_G in nx_G_list:
+        #         g = dgl.DGLGraph(multigraph=True)
+        #         g.add_nodes(nx_G.number_of_nodes())
+        #         g.add_edges(*list(zip(*sorted(map(lambda tup: (int(tup[0]), int(tup[1])), nx_G.edges())))))
+        #         g_lists[-1].append(g)
+        # train_idx = train_val_test_idx['train_idx']
+        # val_idx = train_val_test_idx['val_idx']
+        # test_idx = train_val_test_idx['test_idx']
+    
+    elif name == 'AIFB':
         homedir = 'C:/Users/luisa/Projekte/Masterthesis/AIFB'
         kg_dir = '/data/AIFB/aifb_renamed_bn.tsv'
         train_dir = "/data/AIFB/trainingSet.tsv"
@@ -302,17 +388,17 @@ if __name__ == '__main__':
     for embs in emb_type:
         pykeen_emb_train, pykeen_emb_test, pykeen_embeddings  = create_pykeen_embedding(pykeen_data, pykeen_test, entities, traindata, embs)
         # train_emb, test_emb, rdf2vec_embeddings = create_rdf2vec_embedding(kg, entities)
-        save_pykeen_emb(pykeen_emb_train, pykeen_emb_test, pykeen_embeddings, emb_type, name)
+        save_pykeen_emb(pykeen_emb_train, pykeen_emb_test, pykeen_embeddings, emb_type, embs)
         # #save_rdf2vec_emb(train_emb, test_emb, rdf2vec_embeddings)
         # pred_rdf_G, score_rdf_G = Gaussian_classifier(train_emb, test_emb, traindata, testdata)
-        pred_py_G, score_py_G = Gaussian_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header) # size:140x50
+        #pred_py_G, score_py_G = Gaussian_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header) # size:140x50
         # #pred_rdf_SVM, score_rdf_SVM = SVM_classifier(train_emb, test_emb, traindata, testdata)
         pred_py_SVM, score_py_SVM = SVM_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header)
 
     #np.savetxt(homedir + "/data/results/prediction_Gaussianclassifier.txt", pred,fmt="%s")
 
     # print('Score_rdf_Gaussian Kernel: ', score_rdf_G)
-    print('Score_pykeen_Gaussian Kernel: ', score_py_G)
+    #print('Score_pykeen_Gaussian Kernel: ', score_py_G)
     # print('Score_rdf_SVM: ', score_rdf_SVM)
     print('Score_pykeen_SVM: ', score_py_SVM)
     

@@ -49,8 +49,9 @@ def lrp_rgat_layer(x, w, alpha, rel, s1, s2, num_neighbors, lrp_step):
         return out_alpha, out_g
     
     elif lrp_step == 'relevance_h':
+        rel_g = (alpha.sum(dim=0) + rel + s1.sum(dim=0))
         z = (x @ w.mT + 1e-10).sum(dim=0)
-        s = torch.div(rel, z) 
+        s = torch.div(rel_g, z) 
         pre_res = s @ w 
         out = x * pre_res 
         return out.sum(dim=0)
@@ -87,35 +88,30 @@ def lrp_rgat_layer(x, w, alpha, rel, s1, s2, num_neighbors, lrp_step):
         output = out_exp+ out_y
         return output
     elif lrp_step == 'relevance_q_k':
-        half_values = 0.5 * rel
-        indices = rel.to_sparse_coo().indices()
-        rel_q = torch.sparse_coo_tensor(indices[:2], half_values.to_sparse_coo().values(), size=(24,2835))
-        rel_k = torch.sparse_coo_tensor(torch.stack([indices[0],indices[-1]]), half_values.to_sparse_coo().values(), size=(24,2835))
+        G = out_l1 @ w_l2
+        Gmi = M_l2.to_dense() @ G
+        Gmj = M_l2.to_dense().transpose(1,2) @ G
 
-        z =( Gmi_l2 @ q_l2).squeeze() + 1e-19
-        s = torch.div(rel_q.to_dense(), z)
-        zkl = s.T @ q_l2.squeeze()
-        out_q = Gmi_l2 * zkl
+        Q = torch.matmul(Gmi, q_l2).squeeze() #(3)
+        K = torch.matmul(Gmj, k_l2).squeeze() #(3)
+        E = torch.zeros(24,2835,2835)
+        E[edge_type, edge_index[0], edge_index[1]] = Q[edge_type,edge_index[0]] + K[edge_type,edge_index[1]]
+        rel_q = torch.where(E ==0, torch.zeros_like(E),(Q.unsqueeze(2).expand(-1,-1,2835)/E)*rel)
+        rel_k = torch.where (E ==0 , torch.zeros_like(E), (K.unsqueeze(1).expand(-1,2835,-1)/E)*rel)
+  
+        Q = torch.matmul(Gmi, q_l2).squeeze() +1e-19
+        s_q = (rel_q/Q.unsqueeze(2).expand(-1,-1,2835))
+        zkl_q = s_q.mT @ Gmi
+        rel_Q = zkl_q * q_l2.mT
 
-###########################################
-        Q = ((Gmi_l2 @ q_l2) * 0.5).squeeze()
-        K = ((Gmj_l2 @ k_l2) * 0.5).squeeze()
+        K = torch.matmul(Gmj, k_l2).squeeze() +1e-19
+        s_k = (rel_k/(K.unsqueeze(1).expand(-1,2835,-1)))
+        zkl_k = s_k @ Gmj
+        rel_K = zkl_k * k_l2.mT
 
-        sum_q_k = torch.zeros(24,2835,2835)
-        sum_q_k[edge_type, edge_index[0], edge_index[1]] = (Q[edge_type,edge_index[0]] + K[edge_type,edge_index[1]]) # E
-        sum_q_k += 1e-19
-
-        s = torch.div(rel, sum_q_k) # Relevance/E
-        indices = s.to_sparse_coo().indices()
-        s_q = torch.sparse_coo_tensor(indices[:2], s.to_sparse_coo().values(), size=(24,2835))
-        s_k = torch.sparse_coo_tensor(torch.stack([indices[0],indices[-1]]), s.to_sparse_coo().values(), size=(24,2835))
-
- 
-
-
-        return 
-
-        return None   
+                                         
+        return rel_Q, rel_K
+   
 
     
 def lrp(activation, weights, adjacency, relevance):
@@ -166,25 +162,39 @@ def lrp_rgcn(act_rgc1, weight_dense, bias_dense, relevance, act_rgc1_no_hidden, 
         out = lrp2(pyk_emb, weight_rgc1_no_hidden, adjacency, rel)
     return out
 
-def lrp_rgat(parameter_list, input, weight_dense, relevance, s1):
-    x=19
-    selected_rel = relevance[test_idx,:][x]
-    rel1 = tensor_max_value_to_1_else_0(selected_rel,x)
+def lrp_rgat(parameter_list, input, weight_dense, relevance, s1, s2,x):
+    #x=19
+    selected_rel = relevance[test_idx,:][x[0]]
+    rel1 = tensor_max_value_to_1_else_0(selected_rel,x[0])
     print(rel1.to_sparse_coo())
     for i in parameter_list:
         globals()[i[0]] = i[1]
     rel2 = get_relevance_for_dense_layer(out_l2, weight_dense, None, rel1)
     r_alpha, rg =  lrp_rgat_layer(out_l1, w_l2, alpha3_l2, rel2, s1, None, None, lrp_step='relevance_alphaandg')
-    rh = lrp_rgat_layer(input, w_l2, None, rg, None, None, None, lrp_step='relevance_h')
-    rel_softmax = lrp_rgat_layer(exponential_l2, resmat_l2, None, r_alpha, None, 0.2, num_neighbors_l2, lrp_step='relevance_softmax')
-    rel_q_k = lrp_rgat_layer(Gmi_l2, q_l2, None, rel_softmax, None, None, None, 'relevance_q_k')
+    rel_softmax = lrp_rgat_layer(exponential_l2, resmat_l2, None, r_alpha, None, s2, num_neighbors_l2, lrp_step='relevance_softmax')
+    rel_q, rel_k = lrp_rgat_layer(out_l1, w_l2, None, rel_softmax, None, None, None, 'relevance_q_k')
+    rel_h = lrp_rgat_layer(input, w_l2, rel_q, rg, rel_k, None,None,lrp_step='relevance_h')
+    return rel_h
 def tensor_max_value_to_1_else_0(tensor, x):
     max_value = tensor.argmax()
     idx = test_idx[x]
     t = torch.zeros(2835,4)
     t[idx,max_value] = 1
     return t
+def get_highest_relevance(rel):
+    global high
+    mask = rel == rel.max()
+    indices = torch.nonzero(mask)
+    high = rel.max()
+    return high, indices
 
+def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight_dense, relevance, s1, s2):
+    for i in enumerate(test_idx):
+        rel = lrp_rgat(parameter_list, input, weight_dense, relevance, s1, s2,i)
+        get_highest_relevance(rel)
+        analyse_highest_relevance(rel)
+        change_highest_relevance(rel, high)
+        predict_new_result(rel,high,change)
 def gat_train(epochs):
     optimiser = torch.optim.Adam
     optimiser = optimiser(
@@ -216,9 +226,6 @@ def gat_train(epochs):
         print("Test set results:",
         "loss= {:.4f}".format(loss_test.data.item()),
         "accuracy= {:.4f}".format(acc_test.data.item()))
-    
-
-
     print('Training is complete!')
     return 
 
@@ -317,6 +324,7 @@ def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_
         pred, parameter_list, input = model(pyk_emb, edge_index, edge_type)
 
         weight_dense = model.dense.weight
+        analyse_lrp(pyk_emb, edge_index, edge_type, model, parameter_list, input, weight_dense, pred, s1 = 0.8, s2 = 0.2)
         lrp_rgat(parameter_list, input, weight_dense, pred, s1 = 0.8)
         pred2 = pred.argmax(dim=-1)
         
