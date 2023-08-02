@@ -230,6 +230,8 @@ class RelationalGraphConvolutionNC(Module):
         if self.bias is not None:
             output = torch.add(output, self.bias)
         
+        if self.in_features is None:
+            return output, adj
         return output, adj, vals, fw
     
 class NodeClassifier(nn.Module):
@@ -287,16 +289,22 @@ class NodeClassifier(nn.Module):
                 decomposition=decomposition,
                 vertical_stacking=True
             )
-    
+        self.dense = nn.Linear(nhid, nclass, bias = True)
 
     def forward(self):
         """ Embed relational graph and then compute class probabilities """
-        x = self.rgc1()
+        activation = {}
+        x, adj = self.rgc1()
         if self.nlayers == 2:
             x = F.relu(x)
-            x = self.rgc2(features=x)
-
-        return x
+            activation['layer1'] = x.detach()
+            x, adj, vals, fw = self.rgc2(x)
+        x = F.relu(x)
+        activation['layer2'] = x.detach()
+        x = self.dense(x)
+        x = F.softmax(x, dim=1)
+        activation['dense'] = x.detach()
+        return x, adj, None, activation, None
 
 class EmbeddingNodeClassifier(NodeClassifier):
     """ Node classification model with node embeddings as the feature matrix """
@@ -336,7 +344,7 @@ class EmbeddingNodeClassifier(NodeClassifier):
         self.dense = nn.Linear(nhid, nclass, bias = True)
 
         # Node embeddings
-        self.node_embeddings = emb#nn.Parameter(torch.FloatTensor(nnodes, nemb)) #emb
+        self.node_embeddings = emb# nn.Parameter(torch.FloatTensor(nnodes, nemb)) #emb
 
         # Initialise Parameters
         nn.init.kaiming_normal_(self.node_embeddings, mode='fan_in')
@@ -350,7 +358,7 @@ class EmbeddingNodeClassifier(NodeClassifier):
         x = F.relu(x)
         activation['rgcn_no_hidden'] = x.detach()
         fw_list['rgcn_no_hidden'] = fw.detach()
-        x, adj, val_norm, fw = self.rgc1(features=x)
+        x, adj, val_norm, fw = self.rgc1(features=x) # features=x
         x = F.relu(x)
         activation['rgc1'] = x.detach()
         fw_list['rgc1'] = fw.detach()
@@ -496,4 +504,3 @@ def add_inverse_and_self(triples, num_nodes, num_rels, device='cpu'):
 
     # Note: Self-loops are appended to the end and this makes it easier to apply different edge dropout rates.
     return torch.cat([triples, inverse_relations, self_loops], dim=0)
-

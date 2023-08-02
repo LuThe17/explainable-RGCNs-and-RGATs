@@ -11,7 +11,10 @@ from utils import utils
 from model import rgcn, gat 
 from model.rgat import RGAT, RGATLayer
 from data.entities import Entities
+from gtn_dataset import IMDBDataset, ACMDataset, DBLPDataset
 import os.path as osp
+import torch_geometric
+from torch_geometric.transforms import NormalizeFeatures
 
 def get_data():
     path = osp.join(osp.dirname(osp.realpath(__file__)), '..', 'data', 'Entities')
@@ -191,7 +194,7 @@ def get_highest_relevance(rel):
 def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight_dense, relevance, s1, s2):
     for i in enumerate(test_idx):
         rel = lrp_rgat(parameter_list, input, weight_dense, relevance, s1, s2,i)
-        get_highest_relevance(rel)
+        high, indices = get_highest_relevance(rel)
         analyse_highest_relevance(rel)
         change_highest_relevance(rel, high)
         predict_new_result(rel,high,change)
@@ -240,8 +243,8 @@ def rgcn_train(epochs):
     optimiser = torch.optim.Adam
     optimiser = optimiser(
     model.parameters(),
-    lr=0.1,
-    weight_decay=0.0)
+    lr=0.2,
+    weight_decay=0.05)
 
     for epoch in range(1, epochs+1):
         t1 = time.time()
@@ -353,21 +356,23 @@ def get_lrp_variables(model):
 
 
 if __name__ == '__main__':
-    #get_data()
     homedir="C:/Users/luisa/Projekte/Masterthesis/AIFB/"
-    adj, triples, (n2i, i2n), (r2i, i2r), train, test, triples_plus = utils.load_data(homedir = "C:/Users/luisa/Projekte/Masterthesis/AIFB")
-    pyk_emb = utils.load_pickle(homedir + "data/AIFB/embeddings/pykeen_embedding_TransH")
+    adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus = utils.load_data(homedir = "C:/Users/luisa/Projekte/Masterthesis/AIFB")
+    pyk_emb = utils.load_pickle(homedir + "data/AIFB/embeddings/pykeen_embedding_DistMult.pickle")
     pyk_emb = torch.tensor(pyk_emb, dtype=torch.float)
+    dataet = IMDBDataset()
+    g = dataet[0]
     lemb = len(pyk_emb[1])
+    #dataset = torch_geometric.datasets.IMDB(root='data/IMDB')
     # Check for available GPUs
     use_cuda =  torch.cuda.is_available()
     device = torch.device('cuda' if use_cuda else 'cpu')
 
-    edge_index = triples[:,[0,2]].T
+    edge_index = edges[:,[0,2]].T
     edge_index = edge_index.type(torch.long)
     edge_index_plus = triples_plus[:,[0,2]].T
     edge_index_plus = edge_index_plus.type(torch.long)
-    edge_type = triples[:,1].T
+    edge_type = edges[:,1].T
     edge_type = edge_type.to(torch.long)
     edge_type_plus = triples_plus[:,1].T
     edge_type_plus = edge_type_plus.to(torch.long)
@@ -395,15 +400,15 @@ if __name__ == '__main__':
     nb_heads = 1
     alpha = 0.2
 
-    model = 'RGAT'
-    if model == 'RGCN':
+    model = 'RGCN_emb'
+    if model == 'RGCN_emb':
         model = rgcn.EmbeddingNodeClassifier
         model = model(
-            triples=triples,
+            triples=edges,
             nnodes=num_nodes,
             nrel=num_relations,
             nclass=num_classes,
-            nhid=16,
+            nhid=50,
             nlayers=2,
             decomposition=None,
             nemb=lemb,
@@ -414,7 +419,18 @@ if __name__ == '__main__':
          relevance, adj, val_norm, activation, fw) =  get_lrp_variables(model)
         lrp_rgcn(act_rgc1, weight_dense, bias_dense, relevance, act_rgc1_no_hidden, weight_rgc1, weight_rgc1_no_hidden, adj, 'A')
         rgcn_evaluation()
-
+    elif model == 'RGCN_no_emb':
+        model = rgcn.NodeClassifier
+        model = model(
+            triples = edges,
+            nnodes=num_nodes,
+            nrel=num_relations,
+            nclass=num_classes,
+            nhid=16,
+            nlayers=2,
+            decomposition=None)
+        loss = rgcn_train(epochs=10)
+        rgcn_evaluation()
     elif model == 'GAT':
         model = gat.GAT
         model = model(nfeat=lemb, 
