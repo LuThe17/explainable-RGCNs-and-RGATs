@@ -57,7 +57,7 @@ def st(node):
     else:
         return node.n3()
 
-def load_data(homedir):
+def load_data(homedir,filename):
     '''
     Input: homedir: path to the directory where the data is stored
     Output: edges: list of edges
@@ -68,19 +68,44 @@ def load_data(homedir):
             train: dictionary mapping training node labels to indices
             test: dictionary mapping test node labels to indices
     '''
-    labels_train = pd.read_csv(homedir + "/data/AIFB/trainingSet.tsv", sep="\t")
-    labels_test = pd.read_csv(homedir + "/data/AIFB/testSet.tsv", sep="\t")
-    labels = labels_train['label_affiliation'].astype('category').cat.codes
+    if filename == 'AIFB':
+        kg_dir = '/data/AIFB/aifb_renamed_bn.nt'
+        train_dir = "/data/AIFB/trainingSet.tsv"
+        test_dir = "/data/AIFB/testSet.tsv"
+        pytest_dir = "/data/AIFB/testSetpy.tsv"
+        label_header = 'label_affiliation'
+        nodes_header = 'person'
+    elif filename == 'MUTAG':
+        #kg_dir = '/data/MUTAG/mutag_stripped.nt'
+        kg_dir = '/data/MUTAG/mutag_renamed_bn.nt'
+        train_dir = "/data/MUTAG/trainingSet.tsv"
+        test_dir = "/data/MUTAG/testSet.tsv"
+        pytest_dir = "/data/MUTAG/testSetpy.tsv"
+        label_header = 'label_mutagenic'
+        nodes_header = 'bond'
+    elif filename == 'BGS':
+        #homedir = '/pfs/work7/workspace/scratch/ma_luitheob-master/AIFB'
+        kg_dir = '/data/BGS/bgs_renamed_bn.nt.gz'
+        #kg_dir2= '/data/BGS/bgs_renamed_bn.nt.gz'
+        train_dir = "/data/BGS/trainingSet(lith).tsv"
+        test_dir = "/data/BGS/testSet(lith).tsv"
+        pytest_dir = "/data/BGS/testSetpy.tsv"
+        label_header = 'label_lithogenesis'
+        nodes_header = 'rock'
+    
+    labels_train = pd.read_csv(homedir + train_dir, sep="\t")
+    labels_test = pd.read_csv(homedir + test_dir, sep="\t")
+    labels = labels_train[label_header].astype('category').cat.codes
     train = {}
-    for nod, lab in zip(labels_train['person'].values, labels):
+    for nod, lab in zip(labels_train[nodes_header].values, labels):
         train[nod] = lab
-    labels = labels_test['label_affiliation'].astype('category').cat.codes
+    labels = labels_test[label_header].astype('category').cat.codes
     test = {}
-    for nod, lab in zip(labels_test['person'].values, labels):
+    for nod, lab in zip(labels_test[nodes_header].values, labels):
         test[nod] = lab
     print('Labels loaded.')
     graph = rdf.Graph()
-    file = homedir + "/data/AIFB/aifb_renamed_bn.nt"
+    file = homedir + kg_dir
     graph.parse(file, format=rdf.util.guess_format(file))
 
     print('RDF loaded.')

@@ -357,7 +357,7 @@ def get_lrp_variables(model):
 
 if __name__ == '__main__':
     homedir="C:/Users/luisa/Projekte/Masterthesis/AIFB/"
-    adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus = utils.load_data(homedir = "C:/Users/luisa/Projekte/Masterthesis/AIFB")
+    adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus = utils.load_data(homedir = "C:/Users/luisa/Projekte/Masterthesis/AIFB", filename= 'BGS')
     pyk_emb = utils.load_pickle(homedir + "data/AIFB/embeddings/pykeen_embedding_DistMult.pickle")
     pyk_emb = torch.tensor(pyk_emb, dtype=torch.float)
     dataet = IMDBDataset()
