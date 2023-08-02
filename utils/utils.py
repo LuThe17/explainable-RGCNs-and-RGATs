@@ -125,7 +125,7 @@ def load_data(homedir):
     adj = torch.FloatTensor(np.array(adj.todense()))
 
     triples_plus = add_inverse_and_self(edges, len(i2n), len(i2r))
-    return adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples_plus
+    return adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus
 
 def normalize_adj(mx):
     """Row-normalize sparse matrix"""
