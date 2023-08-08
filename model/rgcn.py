@@ -14,7 +14,7 @@ class RelationalGraphConvolutionNC(Module):
     (as described in https://arxiv.org/abs/1703.06103)
     """
     def __init__(self,
-                 triples=None,
+                 #triples=None,
                  num_nodes=None,
                  num_relations=None,
                  in_features=None,
@@ -28,8 +28,8 @@ class RelationalGraphConvolutionNC(Module):
                  reset_mode='glorot_uniform'):
         super(RelationalGraphConvolutionNC, self).__init__()
 
-        assert (triples is not None or num_nodes is not None or num_relations is not None or out_features is not None), \
-            "The following must be specified: triples, number of nodes, number of relations and output dimension!"
+        #assert (triples is not None or num_nodes is not None or num_relations is not None or out_features is not None), \
+        "The following must be specified: triples, number of nodes, number of relations and output dimension!"
 
         # If featureless, use number of nodes instead as input dimension
         in_dim = in_features if in_features is not None else num_nodes
@@ -40,7 +40,7 @@ class RelationalGraphConvolutionNC(Module):
         num_bases = decomposition['num_bases'] if decomposition is not None and 'num_bases' in decomposition else None
         num_blocks = decomposition['num_blocks'] if decomposition is not None and 'num_blocks' in decomposition else None
 
-        self.triples = triples
+        #self.triples = triples
         self.num_nodes = num_nodes
         self.num_relations = num_relations
         self.in_features = in_features
@@ -129,7 +129,7 @@ class RelationalGraphConvolutionNC(Module):
         else:
             raise NotImplementedError(f'{reset_mode} parameter initialisation method has not been implemented')
 
-    def forward(self, features=None):
+    def forward(self, x, triples):
         '''
         Perform a single pass of message propagation
         :num_nodes: Number of nodes in the graph
@@ -143,10 +143,10 @@ class RelationalGraphConvolutionNC(Module):
         :return: Tensor of shape (num_nodes, out_features) containing the new features of each node
         '''
 
-        assert (features is None) == (self.in_features is None), "in_features not provided!"
-
+        #assert (features is None) == (self.in_features is None), "in_features not provided!"
+        triples = torch.tensor(triples, dtype=torch.long)
         in_dim = self.in_features if self.in_features is not None else self.num_nodes
-        triples = self.triples
+        #triples = self.triples
         out_dim = self.out_features
         edge_dropout = self.edge_dropout
         weight_decomp = self.weight_decomp
@@ -206,23 +206,23 @@ class RelationalGraphConvolutionNC(Module):
         else:
             assert weights.size() == (num_relations, in_dim, out_dim)
 
-        if self.in_features is None:
+        if x is None:
             # Message passing if no features are given
             output = torch.mm(adj, weights.view(num_relations * in_dim, out_dim))
         elif self.diag_weight_matrix: # rgc_no_hidden
-            fw = torch.einsum('ij,kj->kij', features, weights)
+            fw = torch.einsum('ij,kj->kij', x, weights)
             fw = torch.reshape(fw, (self.num_relations * self.num_nodes, in_dim))
             output = torch.mm(adj, fw)
         elif self.vertical_stacking:
             # Message passing if the adjacency matrix is vertically stacked
-            af = torch.spmm(adj, features)
+            af = torch.spmm(adj, x)
             af = af.view(self.num_relations, self.num_nodes, in_dim)
             output = torch.einsum('rio, rni -> no', weights, af)
         else: #rgc1
             # Message passing if the adjacency matrix is horizontally stacked
             # Note: this is the same as the original R-GCN paper
             # relation-wise matrix multiplication (i.e. matrix multiplication with a batch of matrices)
-            fw = torch.einsum('ni, rio -> rno', features, weights).contiguous() # (num_relations, num_nodes, out_dim) 
+            fw = torch.einsum('ni, rio -> rno', x, weights).contiguous() # (num_relations, num_nodes, out_dim) 
             output = torch.mm(adj, fw.view(self.num_relations * self.num_nodes, out_dim)) # (num_nodes, out_dim) # fw.view(self.num_relations * self.num_nodes, out_dim) absichern
 
         assert output.size() == (self.num_nodes, out_dim)
@@ -232,12 +232,12 @@ class RelationalGraphConvolutionNC(Module):
         
         if self.in_features is None:
             return output, adj
-        return output, adj, vals, fw
+        return output, adj
     
 class NodeClassifier(nn.Module):
     """ Node classification with R-GCN message passing """
     def __init__(self,
-                 triples=None,
+                 #triples=None,
                  nnodes=None,
                  nrel=None,
                  nfeat=None,
@@ -252,8 +252,8 @@ class NodeClassifier(nn.Module):
         self.nlayers = nlayers
         #self.feat = feat
 
-        assert (triples is not None or nnodes is not None or nrel is not None or nclass is not None), \
-            "The following must be specified: triples, number of nodes, number of relations and number of classes!"
+       # assert (triples is not None or nnodes is not None or nrel is not None or nclass is not None), \
+        "The following must be specified: triples, number of nodes, number of relations and number of classes!"
         assert 0 < nlayers < 3, "Only supports the following number of RGCN layers: 1 and 2."
 
         if nlayers == 1:
@@ -262,14 +262,14 @@ class NodeClassifier(nn.Module):
         if nlayers == 2:
             assert nhid is not None, "Number of hidden layers not specified!"
 
-        triples = torch.tensor(triples, dtype=torch.long)
-        with torch.no_grad():
-            self.register_buffer('triples', triples)
+        #triples = torch.tensor(triples, dtype=torch.long)
+        #with torch.no_grad():
+            #self.register_buffer('triples', triples)
             # Add inverse relations and self-loops to triples
-            self.register_buffer('triples_plus', add_inverse_and_self(triples, nnodes, nrel))
+            #self.register_buffer('triples_plus', add_inverse_and_self(triples, nnodes, nrel))
 
-        self.rgc1 = RelationalGraphConvolutionNC(
-            triples=self.triples_plus,
+        self.rgcn_no_hidden = RelationalGraphConvolutionNC(
+            #triples=self.triples_plus,
             num_nodes=nnodes,
             num_relations=nrel * 2 + 1,
             in_features=nfeat,
@@ -279,37 +279,37 @@ class NodeClassifier(nn.Module):
             vertical_stacking=False,
         )
         if nlayers == 2:
-            self.rgc2 = RelationalGraphConvolutionNC(
-                triples=self.triples_plus,
+            self.rgc1 = RelationalGraphConvolutionNC(
+                #triples=self.triples_plus,
                 num_nodes=nnodes,
                 num_relations=nrel * 2 + 1,
                 in_features=nhid,
-                out_features=nclass,
+                out_features=nhid,
                 edge_dropout=edge_dropout,
                 decomposition=decomposition,
-                vertical_stacking=True
+                vertical_stacking=False
             )
         self.dense = nn.Linear(nhid, nclass, bias = True)
 
-    def forward(self):
+    def forward(self, x, triples):
         """ Embed relational graph and then compute class probabilities """
         activation = {}
-        x, adj = self.rgc1()
+        x, adj = self.rgcn_no_hidden(x, triples)
         if self.nlayers == 2:
             x = F.relu(x)
-            activation['layer1'] = x.detach()
-            x, adj, vals, fw = self.rgc2(x)
+            activation['rgcn_no_hidden'] = x.detach()
+            x, adj, = self.rgc1(x, triples)
         x = F.relu(x)
-        activation['layer2'] = x.detach()
+        activation['rgc1'] = x.detach()
         x = self.dense(x)
         x = F.softmax(x, dim=1)
         activation['dense'] = x.detach()
-        return x, adj, None, activation, None
+        return x, adj, activation
 
 class EmbeddingNodeClassifier(NodeClassifier):
     """ Node classification model with node embeddings as the feature matrix """
     def __init__(self,
-                 triples=None,
+                 #triples=None,
                  nnodes=None,
                  nrel=None,
                  nfeat=None,
@@ -318,8 +318,8 @@ class EmbeddingNodeClassifier(NodeClassifier):
                  nclass=None,
                  edge_dropout=None,
                  decomposition=None,
-                 nemb=None,
-                 emb=None):
+                 nemb=None):
+                 #emb=None):
         self.activations = []
         assert nemb is not None, "Size of node embedding not specified!"
         nfeat = nemb  # Configure RGCN to accept node embeddings as feature matrix
@@ -328,10 +328,10 @@ class EmbeddingNodeClassifier(NodeClassifier):
         nhid = nemb
 
         super(EmbeddingNodeClassifier, self)\
-            .__init__(triples, nnodes, nrel, nfeat, nhid, 1, nclass, edge_dropout, decomposition)
+            .__init__(nnodes, nrel, nfeat, nhid, 1, nclass, edge_dropout, decomposition)
 
         # This model has a custom first layer
-        self.rgcn_no_hidden = RelationalGraphConvolutionNC(triples=self.triples_plus,
+        self.rgcn_no_hidden = RelationalGraphConvolutionNC(#triples=self.triples_plus,
                                                          num_nodes=nnodes,
                                                          num_relations=nrel * 2 + 1,
                                                          in_features=nfeat,
@@ -340,32 +340,39 @@ class EmbeddingNodeClassifier(NodeClassifier):
                                                          decomposition=decomposition,
                                                          vertical_stacking=False,
                                                          diag_weight_matrix=False)
+        self.rgc1 = RelationalGraphConvolutionNC(
+            #triples=self.triples_plus,
+            num_nodes=nnodes,
+            num_relations=nrel * 2 + 1,
+            in_features=nhid,
+            out_features=nhid,
+            edge_dropout=edge_dropout,
+            decomposition=decomposition,
+            vertical_stacking=False
+            )
 
         self.dense = nn.Linear(nhid, nclass, bias = True)
 
         # Node embeddings
-        self.node_embeddings = emb# nn.Parameter(torch.FloatTensor(nnodes, nemb)) #emb
+        #self.node_embeddings = emb# nn.Parameter(torch.FloatTensor(nnodes, nemb)) #emb
 
         # Initialise Parameters
-        nn.init.kaiming_normal_(self.node_embeddings, mode='fan_in')
+        #nn.init.kaiming_normal_(self.x, mode='fan_in')
         
 
-    def forward(self):
+    def forward(self, x, triples):
         """ Embed relational graph and then compute class probabilities """
         activation = {}
-        fw_list = {}
-        x, adj, val_norm,fw = self.rgcn_no_hidden(self.node_embeddings)
-        x = F.relu(x)
-        activation['rgcn_no_hidden'] = x.detach()
-        fw_list['rgcn_no_hidden'] = fw.detach()
-        x, adj, val_norm, fw = self.rgc1(features=x) # features=x
-        x = F.relu(x)
-        activation['rgc1'] = x.detach()
-        fw_list['rgc1'] = fw.detach()
-        x = self.dense(x)
-        x = F.softmax(x, dim=1)
-        activation['dense'] = x.detach()
-        return x, adj, val_norm, activation, fw_list
+        out, adj = self.rgcn_no_hidden(x, triples)
+        out = F.relu(out)
+        activation['rgcn_no_hidden'] = out.detach()
+        out, adj = self.rgc1(out, triples) # features=x
+        out = F.relu(out)
+        activation['rgc1'] = out.detach()
+        out = self.dense(out)
+        out = F.softmax(out, dim=1)
+        activation['dense'] = out.detach()
+        return out, adj, activation
 
 
 def attach_dim(v, n_dim_to_prepend=0, n_dim_to_append=0):

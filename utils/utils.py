@@ -8,6 +8,9 @@ import rdflib as rdf
 from collections import Counter
 from rdflib.term import URIRef
 import networkx as nx
+import torch.nn.functional as F
+import torch.nn as nn
+import gzip
 import scipy
 
 
@@ -106,7 +109,11 @@ def load_data(homedir,filename):
     print('Labels loaded.')
     graph = rdf.Graph()
     file = homedir + kg_dir
-    graph.parse(file, format=rdf.util.guess_format(file))
+    if file.endswith('.gz'):
+        with gzip.open(file, 'rb') as f:
+            graph.parse(f, format=rdf.util.guess_format(file))
+    else:
+        graph.parse(file, format=rdf.util.guess_format(file))
 
     print('RDF loaded.')
 

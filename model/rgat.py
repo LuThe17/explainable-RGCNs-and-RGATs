@@ -12,7 +12,7 @@ from torch_geometric.typing import Adj, OptTensor, Size, SparseTensor
 from torch_geometric.utils import is_torch_sparse_tensor, scatter, softmax
 from torch_geometric.utils.sparse import set_sparse_value
 
-def customized_softmax(input_tensor,edge_index,edge_type, dim=None):
+def customized_softmax(input_tensor, edge_index, edge_type, dim=None):
     input_tensor2 = input_tensor.clone()
     max_values, _ = torch.max(input_tensor, dim=0, keepdim=True)
     input_tensor -= max_values
@@ -66,11 +66,19 @@ class RGAT(torch.nn.Module):
         return out, parameter_list, x
 
 def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weights):
+    if not isinstance(x,list):
+        size = int(max(edge_type)+1), len(x[:,]), len(x[:,])
+        values = torch.ones_like(edge_index[0])
+        M = torch.sparse.FloatTensor(indices = torch.stack((edge_type, edge_index[0], edge_index[1])), values = values, size = size)
+        M = M.float()
+    else:
+        size = int(max(edge_type)+1), x[0], x[0]
+        values = torch.ones_like(edge_index[0])
+        M = torch.sparse.FloatTensor(indices = torch.stack((edge_type, edge_index[0], edge_index[1])), values = values, size = size)
+        M = M.float().to_dense()
+        out = M.view(self.num_relations * self.in_channels, self.in_channels).T @ self.weight.view(self.num_relations * self.in_channels, self.out_channels)
+        return out, self.weight, None, None, None, None, M, None, None, None, None, None, None, None
 
-    size = int(max(edge_type)+1), len(x[:,]), len(x[:,])
-    values = torch.ones_like(edge_index[0])
-    M = torch.sparse.FloatTensor(indices = torch.stack((edge_type, edge_index[0], edge_index[1])), values = values, size = size)
-    M = M.float()
     G = x @ self.weight
     Gmi = M.to_dense() @ G
     Gmj = M.to_dense().transpose(1,2) @ G
