@@ -208,7 +208,9 @@ class RelationalGraphConvolutionNC(Module):
 
         if x is None:
             # Message passing if no features are given
-            output = torch.mm(adj, weights.view(num_relations * in_dim, out_dim))
+            input = nn.Embedding(num_nodes, in_dim).weight
+            fw = torch.einsum('ni, rio -> rno', input, weights).contiguous() # (num_relations, num_nodes, out_dim) 
+            output = torch.mm(adj, fw.view(self.num_relations * self.num_nodes, out_dim))
         elif self.diag_weight_matrix: # rgc_no_hidden
             fw = torch.einsum('ij,kj->kij', x, weights)
             fw = torch.reshape(fw, (self.num_relations * self.num_nodes, in_dim))
@@ -230,9 +232,9 @@ class RelationalGraphConvolutionNC(Module):
         if self.bias is not None:
             output = torch.add(output, self.bias)
         
-        if self.in_features is None:
-            return output, adj
-        return output, adj
+        if x is None:
+            return output, adj, input
+        return output, adj, None
     
 class NodeClassifier(nn.Module):
     """ Node classification with R-GCN message passing """
@@ -272,7 +274,7 @@ class NodeClassifier(nn.Module):
             #triples=self.triples_plus,
             num_nodes=nnodes,
             num_relations=nrel * 2 + 1,
-            in_features=nfeat,
+            in_features=nhid,
             out_features=nhid,
             edge_dropout=edge_dropout,
             decomposition=decomposition,
@@ -294,11 +296,13 @@ class NodeClassifier(nn.Module):
     def forward(self, x, triples):
         """ Embed relational graph and then compute class probabilities """
         activation = {}
-        x, adj = self.rgcn_no_hidden(x, triples)
+        x, adj, input = self.rgcn_no_hidden(x, triples)
+        if input is not None:
+            activation['input'] = input.detach()
         if self.nlayers == 2:
             x = F.relu(x)
             activation['rgcn_no_hidden'] = x.detach()
-            x, adj, = self.rgc1(x, triples)
+            x, adj, input= self.rgc1(x, triples)
         x = F.relu(x)
         activation['rgc1'] = x.detach()
         x = self.dense(x)
@@ -363,10 +367,10 @@ class EmbeddingNodeClassifier(NodeClassifier):
     def forward(self, x, triples):
         """ Embed relational graph and then compute class probabilities """
         activation = {}
-        out, adj = self.rgcn_no_hidden(x, triples)
+        out, adj, input = self.rgcn_no_hidden(x, triples)
         out = F.relu(out)
         activation['rgcn_no_hidden'] = out.detach()
-        out, adj = self.rgc1(out, triples) # features=x
+        out, adj, input  = self.rgc1(out, triples) # features=x
         out = F.relu(out)
         activation['rgc1'] = out.detach()
         out = self.dense(out)

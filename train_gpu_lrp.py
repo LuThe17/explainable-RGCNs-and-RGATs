@@ -16,6 +16,8 @@ from gtn_dataset import IMDBDataset, ACMDataset, DBLPDataset
 import os.path as osp
 import torch_geometric
 from torch_geometric.transforms import NormalizeFeatures
+import networkx as ntx
+import matplotlib.pyplot as plt
 
 def get_data():
     path = osp.join(osp.dirname(osp.realpath(__file__)), '..', 'data', 'Entities')
@@ -69,7 +71,7 @@ def rgcn_train(epochs, emb, triples):
     optimiser = optimiser(
     model.parameters(),
     lr=0.01,
-    weight_decay=0.01)
+    weight_decay=0.05)
 
     for epoch in range(1, epochs+1):
         t1 = time.time()
@@ -112,11 +114,11 @@ def rgcn_train(epochs, emb, triples):
 
     with torch.no_grad(): #no backpropagation
         model.eval()
-        classes, adj, val_norm, activation, fw = model()
+        classes, adj,  activation = model(emb, triples)
         classes = classes.to(device)
         classes = classes[train_idx, :].argmax(dim=-1)
         train_accuracy = accuracy_score(classes.cpu(), train_lbl.cpu()) * 100  # Note: Accuracy is always computed on CPU
-        classes, adj, val_norm, activation, fw = model()
+        classes, adj, activation = model(emb, triples)
         classes = classes.to(device)
         classes = classes[test_idx, :].argmax(dim=-1)
         test_accuracy = accuracy_score(classes.cpu(), test_lbl.cpu()) * 100  # Note: Accuracy is always computed on CPU
@@ -189,13 +191,24 @@ def get_lrp_variables(model, emb, triples_plus):
 
 
 if __name__ == '__main__':
-    homedir='/pfs/work7/workspace/scratch/ma_luitheob-master/AIFB/'
+    homedir='C:/Users/luisa/Projekte/Masterthesis/AIFB/'
+    dataset_name = 'AIFB'
     global test_idx, test_y, train_idx, train_y, edge_index, edge_type, pyk_emb
-    adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus = utils_gpu.load_data(homedir = '/pfs/work7/workspace/scratch/ma_luitheob-master/AIFB', filename= 'BGS')
+    adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus = utils_gpu.load_data(homedir = 'C:/Users/luisa/Projekte/Masterthesis/AIFB/', filename= dataset_name)
     pyk_emb = utils_gpu.load_pickle(homedir + "data/AIFB/embeddings/pykeen_embedding_DistMult.pickle")
     pyk_emb = torch.tensor(pyk_emb, dtype=torch.float)
     #dataet = IMDBDataset()
     #g = dataet[0]
+    # source = [s[0].item() for s in triples_plus]
+    # target = [s[2].item() for s in triples_plus]
+    # relations = [s[1].item() for s in triples_plus]
+
+    # data_kgf = pd.DataFrame({'source': source, 'target':target, 'edge': relations})
+    # graph = ntx.from_pandas_edgelist(data_kgf, 'source', 'target', edge_attr=True, create_using=ntx.MultiDiGraph())
+    # plt.figure(figsize=(14,14))
+    # posn = ntx.spring_layout(graph)
+    # ntx.draw(graph, with_labels=True, node_color='green')
+    # plt.show()
     lemb = len(pyk_emb[1])
     #dataset = torch_geometric.datasets.IMDB(root='data/IMDB')
     # Check for available GPUs
@@ -234,7 +247,7 @@ if __name__ == '__main__':
     dropout = 0.6
     nb_heads = 1
     alpha = 0.2
-    epochs = 10
+    epochs = 50
     
     model_name = 'RGCN_emb'
     if model_name == 'RGCN_emb':
@@ -248,9 +261,7 @@ if __name__ == '__main__':
             decomposition=None,
             nemb=lemb)
         loss = rgcn_train(epochs, pyk_emb, triples_plus)
-        #get_lrp_variables(model, pyk_emb, triples_plus)
-        lrp.analyse_lrp(pyk_emb, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, None, None)
-        lrp.lrp_rgcn(act_rgc1, weight_dense, bias_dense, relevance, act_rgc1_no_hidden, weight_rgc1, weight_rgc1_no_hidden, adj, pyk_emb, test_idx, model_name, 'A')
+        lrp.analyse_lrp(pyk_emb, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, None, None)
         rgcn_evaluation(pyk_emb, triples_plus)
 
     elif model_name == 'RGCN_no_emb':
@@ -264,7 +275,8 @@ if __name__ == '__main__':
             decomposition=None)
         loss = rgcn_train(epochs, None, triples_plus)
         get_lrp_variables(model, None, triples_plus)
-        lrp.lrp_rgcn(act_rgc1, weight_dense, bias_dense, relevance, act_rgc1_no_hidden, weight_rgc1, weight_rgc1_no_hidden, adj,  pyk_emb, test_idx, model_name, 'A')
+        lrp.analyse_lrp(None, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, None, None)
+        #lrp.lrp_rgcn(act_rgc1, weight_dense, bias_dense, relevance, act_rgc1_no_hidden, weight_rgc1, weight_rgc1_no_hidden, adj,  pyk_emb, test_idx, model_name, 'A')
         rgcn_evaluation(None, triples_plus)
     elif model_name == 'GAT':
         model = gat.GAT
