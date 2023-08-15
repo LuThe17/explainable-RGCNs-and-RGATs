@@ -8,7 +8,7 @@ import time
 import numpy as np
 import torch
 from utils import utils_act
-from model import rgcn_act, gat 
+from model import gat, rgcn_layers 
 from model import lrp_act
 from model.rgat_act import RGAT, RGATLayer
 from data.entities import Entities
@@ -66,11 +66,11 @@ def gat_evaluation():
         test_accuracy = utils_act.accuracy(output[test_idx], test_lbl) # Note: Accuracy is always computed on CPU
         print(f'[Evaluation] Test Accuracy: {test_accuracy:.2f}')
 
-def rgcn_train(epochs, emb, triples):
+def rgcn_train(epochs, triples):
     optimiser = torch.optim.Adam
     optimiser = optimiser(
     model.parameters(),
-    lr=0.02,
+    lr=0.01,
     weight_decay=0.05)
 
     for epoch in range(1, epochs+1):
@@ -78,7 +78,7 @@ def rgcn_train(epochs, emb, triples):
         criterion = nn.CrossEntropyLoss()
         model.train()
         optimiser.zero_grad()
-        classes, adj_m, activation = model(emb,triples)
+        classes, adj, activation = model(triples)
         classes = classes.to(device)
         
         classes = classes[train_idx, :]
@@ -114,11 +114,11 @@ def rgcn_train(epochs, emb, triples):
 
     with torch.no_grad(): #no backpropagation
         model.eval()
-        classes, adj,  activation = model(emb, triples)
+        classes, adj,  activation= model(triples)
         classes = classes.to(device)
         classes = classes[train_idx, :].argmax(dim=-1)
         train_accuracy = accuracy_score(classes.cpu(), train_lbl.cpu()) * 100  # Note: Accuracy is always computed on CPU
-        classes, adj, activation = model(emb, triples)
+        classes, adj,  activation= model(triples)
         classes = classes.to(device)
         classes = classes[test_idx, :].argmax(dim=-1)
         test_accuracy = accuracy_score(classes.cpu(), test_lbl.cpu()) * 100  # Note: Accuracy is always computed on CPU
@@ -178,7 +178,7 @@ def get_lrp_variables(model, emb, triples_plus):
     global bias_dense, bias_rgc1, bias_rgc1_no_hidden, weight_dense 
     global weight_rgc1, weight_rgc1_no_hidden, relevance, adj
     global  activation
-    classes, adj, activation = model(emb, triples_plus)
+    classes, adj, activation = model()
     act_dense = activation['dense']
     act_rgc1 = activation['rgc1']
     act_rgc1_no_hidden = activation['rgcn_no_hidden']
@@ -188,7 +188,7 @@ def get_lrp_variables(model, emb, triples_plus):
     weight_dense = model.dense.weight
     weight_rgc1 = model.rgc1.weights
     weight_rgc1_no_hidden = model.rgcn_no_hidden.weights
-    relevance, adj, activation = model(emb, triples_plus)
+    relevance, adj, activation = model()
 
 
 
@@ -197,7 +197,7 @@ if __name__ == '__main__':
     dataset_name = 'AIFB'
     global test_idx, test_y, train_idx, train_y, edge_index, edge_type, pyk_emb
     adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus = utils_act.load_data(homedir, filename= dataset_name)
-    pyk_emb = utils_act.load_pickle(homedir + "data/AIFB/embeddings/pykeen_embedding_DistMult.pickle")
+    pyk_emb = utils_act.load_pickle(homedir + "data/"+'AIFB'+"/embeddings/pykeen_embedding_TransH.pickle")
     pyk_emb = torch.tensor(pyk_emb, dtype=torch.float)
     lemb = len(pyk_emb[1])
     #dataset = torch_geometric.datasets.IMDB(root='data/IMDB')
@@ -237,37 +237,38 @@ if __name__ == '__main__':
     dropout = 0.6
     nb_heads = 1
     alpha = 0.2
-    epochs = 100
+    epochs = 5
     
-    model_name = 'RGAT_no_emb'
+    model_name = 'RGAT_emb'
     if model_name == 'RGCN_emb':
-        model = rgcn_act.EmbeddingNodeClassifier
+        model = rgcn_layers.NodeClassifier
         model = model(
             nnodes=num_nodes,
             nrel=num_relations,
+            nfeat = len(pyk_emb[0]),
             nclass=num_classes,
             nhid=50,
             nlayers=2,
             decomposition=None,
-            nemb=lemb)
-        loss = rgcn_train(epochs, pyk_emb, triples_plus)
+            nemb=pyk_emb)
+        loss = rgcn_train(epochs, triples_plus)
         lrp_act.analyse_lrp(pyk_emb, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, num_nodes, num_relations,None, None)
         rgcn_evaluation(pyk_emb, triples_plus)
 
     elif model_name == 'RGCN_no_emb':
-        model = rgcn_act.EmbeddingNodeClassifier
+        model = rgcn_layers.NodeClassifier
         model = model(
             nnodes=num_nodes,
-            nrel=num_relations,
+            nrel=num_relations,            
+            nfeat = len(pyk_emb[0]),
             nclass=num_classes,
             nhid=50,
             nlayers=2,
             decomposition=None,
-            nemb=lemb)
-        loss = rgcn_train(epochs, None, triples_plus)
-        get_lrp_variables(model, None, triples_plus)
+            nemb=None)
+        loss = rgcn_train(epochs, triples_plus)
+
         lrp_act.analyse_lrp(None, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, num_nodes, num_relations,None, None)
-        #lrp.lrp_rgcn(act_rgc1, weight_dense, bias_dense, relevance, act_rgc1_no_hidden, weight_rgc1, weight_rgc1_no_hidden, adj,  pyk_emb, test_idx, model_name, 'A')
         rgcn_evaluation(None, triples_plus)
     elif model_name == 'GAT':
         model = gat.GAT
