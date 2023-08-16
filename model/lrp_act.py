@@ -490,7 +490,8 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
                            model.rgcn_no_hidden.weights, adj,  emb, test_idx, model_name, i, num_nodes,'A')
             rel_nodes = rel_nodes.sum(dim=1)
             rel_edges = rel_edges.sum(dim=2)
-            rel_nodes_list[i] = rel_nodes
+            rel_nodes_list[i] = rel_nodes.to_sparse_coo()
+            rel_edges_list[i] = rel_edges.to_sparse_coo()
             if rel_nodes.argmax().item() == i[1].item():
                 count_nodes_self+=1
                 print(count_nodes_self)
@@ -511,7 +512,7 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
                 pos_max_nodes[i] = rel_nodes.argmax().item()
                 min_nodes_list[i] = rel_nodes.min().item()
                 pos_min_nodes[i] = rel_nodes.argmin().item()
-            rel_edges_list[i] = rel_edges
+            
             if (rel_edges==torch.max(rel_edges)).nonzero()[0][1].item() == i[1].item():
                 count_edges_self +=1
                 print(count_edges_self)
@@ -530,6 +531,7 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
                 pos_max_edges[i] = (rel_edges==torch.max(rel_edges)).nonzero()
                 min_edges_list[i] = rel_edges.min().item()
                 pos_min_edges[i] = (rel_edges==torch.min(rel_edges)).nonzero()
+        
         nodes = {'tensor_nodes':rel_nodes_list, 'max_nodes':max_nodes_list, 'pos_max_nodes':pos_max_nodes, 'min_nodes':min_nodes_list, 'pos_min_nodes':pos_min_nodes}    
         nodes_table = pd.DataFrame(nodes)
         nodes_table.to_csv(homedir + 'out/'+dataset_name+'/' + model_name + '/LRP_nodes_table.csv')
@@ -571,7 +573,8 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
                            model.rgcn_no_hidden.weights, adj,  activation['input'], test_idx, model_name, i,num_nodes, 'A')
             rel_nodes = rel_nodes.sum(dim=1)
             rel_edges = rel_edges.sum(dim=2)
-            rel_nodes_list[i] = rel_nodes#rel_nodes.argmax(), rel_nodes.max(), rel_nodes.argmin(), rel_nodes.min()
+            rel_nodes_list[i] = rel_nodes.to_sparse_coo()
+            rel_edges_list[i] = rel_edges.to_sparse_coo()
             if rel_nodes.argmax().item() == i[1].item():
                 count_nodes_self+=1
                 print(count_nodes_self)
@@ -592,7 +595,6 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
                 pos_max_nodes[i] = rel_nodes.argmax().item()
                 min_nodes_list[i] = rel_nodes.min().item()
                 pos_min_nodes[i] = rel_nodes.argmin().item()
-            rel_edges_list[i] = rel_edges
             if (rel_edges==torch.max(rel_edges)).nonzero()[0][1].item() == i[1].item():
                 count_edges_self +=1
                 print(count_edges_self)
@@ -652,7 +654,8 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
             rel_edges, rel_nodes = lrp_rgat(params, input, weight_dense, pred, s1, s2, i, test_idx, num_nodes, num_relations, edge_type, edge_index)
             rel_nodes = rel_nodes.sum(dim=1)
             rel_edges = rel_edges.sum(dim=2)
-            rel_nodes_list[i] = rel_nodes#rel_nodes.argmax(), rel_nodes.max(), rel_nodes.argmin(), rel_nodes.min()
+            rel_nodes_list[i] = rel_nodes.to_sparse_coo()
+            rel_edges_list[i] = rel_edges.to_sparse_coo()
             if rel_nodes.argmax().item() == i[1].item():
                 count_nodes_self+=1
                 print(count_nodes_self)
@@ -673,7 +676,6 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
                 pos_max_nodes[i] = rel_nodes.argmax().item()
                 min_nodes_list[i] = rel_nodes.min().item()
                 pos_min_nodes[i] = rel_nodes.argmin().item()
-            rel_edges_list[i] = rel_edges
             if (rel_edges==torch.max(rel_edges)).nonzero()[0][1].item() == i[1].item():
                 count_edges_self +=1
                 print(count_edges_self)
@@ -724,7 +726,8 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
             rel_edges, rel_nodes = lrp_rgat(params, input, weight_dense, pred, s1, s2, i, test_idx, num_nodes, num_relations, edge_type, edge_index)
             rel_nodes = rel_nodes.sum(dim=1)
             rel_edges = rel_edges.sum(dim=2)
-            rel_nodes_list[i] = rel_nodes#rel_nodes.argmax(), rel_nodes.max(), rel_nodes.argmin(), rel_nodes.min()
+            rel_nodes_list[i] = rel_nodes.to_sparse_coo()
+            rel_edges_list[i] = rel_edges.to_sparse_coo()
             if rel_nodes.argmax().item() == i[1].item():
                 count_nodes_self+=1
                 print(count_nodes_self)
@@ -745,7 +748,6 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
                 pos_max_nodes[i] = rel_nodes.argmax().item()
                 min_nodes_list[i] = rel_nodes.min().item()
                 pos_min_nodes[i] = rel_nodes.argmin().item()
-            rel_edges_list[i] = rel_edges
             if (rel_edges==torch.max(rel_edges)).nonzero()[0][1].item() == i[1].item():
                 count_edges_self +=1
                 print(count_edges_self)
