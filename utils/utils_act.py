@@ -189,6 +189,10 @@ def load_data(homedir,filename):
     i2r =list(relations.keys()) # maps indices to labels
 
     r2i = {r: i for i, r in enumerate(i2r)} # maps labels to indices
+    with open ('i2r', 'wb') as fp:
+        pickle.dump(i2r, fp)
+    with open('i2n', 'wb') as fp:
+        pickle.dump(i2n, fp)
 
     # Collect all edges into a list: [from, relation, to] (only storing integer indices)
     edges = list()
@@ -199,7 +203,10 @@ def load_data(homedir,filename):
         edges.append([s, pf, o])
 
     print('Graph loaded.')
-    edges = torch.Tensor(edges)
+
+    with open('edges', 'wb') as fp:
+        pickle.dump(edges, fp)
+    
     edge_index = edges[:,[0,2]]
     #create adjacency matrix
     adj = sp.coo_matrix((np.ones(edges.shape[0]), (edges[:, 0], edges[:, 1])), shape=(len(i2n), len(i2n)), dtype=np.float32)
@@ -209,6 +216,8 @@ def load_data(homedir,filename):
     adj = torch.FloatTensor(np.array(adj.todense()))
 
     triples_plus = add_inverse_and_self(edges, len(i2n), len(i2r))
+    with open ('triples_plus', 'wb') as fp:
+        pickle.dump(triples_plus, fp)
     return adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus
 
 def normalize_adj(mx):
