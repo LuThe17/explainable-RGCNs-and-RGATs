@@ -102,38 +102,38 @@ def load_data(homedir,filename):
             test: dictionary mapping test node labels to indices
     '''
     if filename == 'AIFB':
-        kg_dir = '/data/AIFB/aifb_renamed_bn.nt'
-        train_dir = "/data/AIFB/trainingSet.tsv"
-        test_dir = "/data/AIFB/testSet.tsv"
-        pytest_dir = "/data/AIFB/testSetpy.tsv"
+        kg_dir = 'data/AIFB/aifb_renamed_bn.nt'
+        train_dir = "data/AIFB/trainingSet.tsv"
+        test_dir = "data/AIFB/testSet.tsv"
+        pytest_dir = "data/AIFB/testSetpy.tsv"
         label_header = 'label_affiliation'
         nodes_header = 'person'
         sep="\t"
     elif filename == 'MUTAG':
         #kg_dir = '/data/MUTAG/mutag_stripped.nt'
-        kg_dir = '/data/MUTAG/mutag_renamed_bn.nt'
-        train_dir = "/data/MUTAG/trainingSet.tsv"
-        test_dir = "/data/MUTAG/testSet.tsv"
+        kg_dir = 'data/MUTAG/mutag_renamed_bn.nt'
+        train_dir = "data/MUTAG/trainingSet.tsv"
+        test_dir = "data/MUTAG/testSet.tsv"
         pytest_dir = "/data/MUTAG/testSetpy.tsv"
         label_header = 'label_mutagenic'
         nodes_header = 'bond'
         sep="\t"
     elif filename == 'BGS':
         #homedir = '/pfs/work7/workspace/scratch/ma_luitheob-master/AIFB'
-        kg_dir = '/data/BGS/bgs_renamed_bn_new.nt.gz'
+        kg_dir = 'data/BGS/bgs_renamed_bn_new.nt.gz'
         #kg_dir2= '/data/BGS/bgs_renamed_bn.nt.gz'
-        train_dir = "/data/BGS/trainingSet(lith).tsv"
-        test_dir = "/data/BGS/testSet(lith).tsv"
-        pytest_dir = "/data/BGS/testSetpy.tsv"
+        train_dir = "data/BGS/trainingSet(lith).tsv"
+        test_dir = "data/BGS/testSet(lith).tsv"
+        pytest_dir = "data/BGS/testSetpy.tsv"
         label_header = 'label_lithogenesis'
         nodes_header = 'rock'
         sep="\t"
     elif filename == 'IMDB':
-        kg_dir = 'data/IMDB/imdb.nt'
+        kg_dir = 'data/IMDB/imdb_graph.nt'
         label_header = 'genre'
         nodes_header = 'movie'
-        train_dir = 'data/IMDB/training_Set.csv'
-        test_dir = 'data/IMDB/test_Set.csv'
+        train_dir = 'data/IMDB/training_Set_new.csv'
+        test_dir = 'data/IMDB/test_Set_new.csv'
         sep=','
 
     
