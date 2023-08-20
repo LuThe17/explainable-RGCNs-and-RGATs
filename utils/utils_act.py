@@ -90,7 +90,7 @@ def st(node):
     else:
         return node.n3()
 
-def load_data(homedir,filename):
+def load_data(homedir,filename, emb_type, model_name):
     '''
     Input: homedir: path to the directory where the data is stored
     Output: edges: list of edges
@@ -189,9 +189,9 @@ def load_data(homedir,filename):
     i2r =list(relations.keys()) # maps indices to labels
 
     r2i = {r: i for i, r in enumerate(i2r)} # maps labels to indices
-    with open ('i2r', 'wb') as fp:
+    with open (homedir + '/out/'+ filename+'/'+ model_name+'/i2r', 'wb') as fp:
         pickle.dump(i2r, fp)
-    with open('i2n', 'wb') as fp:
+    with open(homedir + '/out/'+ filename+'/'+ model_name+'/i2n', 'wb') as fp:
         pickle.dump(i2n, fp)
 
     # Collect all edges into a list: [from, relation, to] (only storing integer indices)
@@ -203,10 +203,7 @@ def load_data(homedir,filename):
         edges.append([s, pf, o])
 
     print('Graph loaded.')
-
-    with open('edges', 'wb') as fp:
-        pickle.dump(edges, fp)
-    
+    edges = torch.Tensor(edges)
     edge_index = edges[:,[0,2]]
     #create adjacency matrix
     adj = sp.coo_matrix((np.ones(edges.shape[0]), (edges[:, 0], edges[:, 1])), shape=(len(i2n), len(i2n)), dtype=np.float32)
@@ -216,8 +213,10 @@ def load_data(homedir,filename):
     adj = torch.FloatTensor(np.array(adj.todense()))
 
     triples_plus = add_inverse_and_self(edges, len(i2n), len(i2r))
-    with open ('triples_plus', 'wb') as fp:
+    with open (homedir + '/out/'+ filename+'/'+ model_name+'/triples_plus', 'wb') as fp:
         pickle.dump(triples_plus, fp)
+    with open(homedir + '/out/'+ filename+'/'+ model_name+'/edges_list', 'wb') as fp:
+        pickle.dump(edges, fp)
     return adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus
 
 def normalize_adj(mx):

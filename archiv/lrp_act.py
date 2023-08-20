@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 import scipy.sparse as sp
+import gc
 import tqdm
 import pandas as pd
 import rdflib as rdf
@@ -106,7 +107,8 @@ def lrp(activation, weights, adjacency, relevance):
     #1.Lrp Schritt
     num_relations = weights.shape[0]
     num_nodes = relevance.shape[0]
-    Xp = (adjacency.T @ activation).view(num_relations, num_nodes, 50)
+    adj = adjacency.to_dense().view(num_nodes,num_relations,num_nodes)
+    Xp = (adj @ activation).transpose(0,1)
     sumzk = (Xp @ weights).sum(dim=0)+1e-9
     s = torch.div(relevance,sumzk)
     zkl = s @ weights.mT 
@@ -114,7 +116,7 @@ def lrp(activation, weights, adjacency, relevance):
 
     Xp = Xp+1e-9 
     z = out / Xp
-    f_out = adjacency @ z.view(num_relations*num_nodes, 50)
+    f_out = adj.T.transpose(0,1) @ z
     rel_edge = (activation * f_out)
     rel_node = rel_edge.sum(dim=0)
     return rel_node, rel_edge
@@ -152,7 +154,6 @@ def lrp_rgcn(act_rgc1, weight_dense, bias_dense, relevance,
             print(rel_node.to_sparse_coo())
         elif model_name == 'RGCN_no_emb':
             rel_node, rel_edge = lrp(pyk_emb, weight_rgc1_no_hidden, adjacency, rel_node)
-            #rel_node, rel_edge = lrp_first_noemb_layer(adjacency, weight_rgc1_no_hidden, rel_node)
     else:
         rel = lrp2(act_rgc1_no_hidden, weight_rgc1, adjacency, rel1)
         out = lrp2(pyk_emb, weight_rgc1_no_hidden, adjacency, rel)
@@ -233,7 +234,7 @@ def analyse_nodes(homedir, mode, node_table, edge_index, edge_type, model, emb,
                            model.rgcn_no_hidden.weights, adj,  activation['input'], test_idx, model_name, i,num_nodes, 'A')
             elif model_name == 'RGAT_no_emb':
                 pred, params, inp = model(None, edge_index, edge_type)
-                torch.save(pred, homedir + 'out/'+dataset_name+'/' + model_name + '/pred_after'+str(name_node)+'adapt_'+str(node_indice)+'_'+str(new_index)+'.pt')
+                torch.save(pred, homedir + 'out/'+dataset_name+'/' + model_name + '/pred_after'+str(name_node[0])+'adapt_'+str(node_indice)+'_'+str(new_index)+'.pt')
                 rel_edges_new, rel_nodes_new = lrp_rgat(params, input, weight_dense, relevance, s1, 
                                                         s2, i, test_idx, num_nodes, num_relations, edge_type, edge_index) 
             elif model_name == 'RGAT_emb':
@@ -294,7 +295,7 @@ def analyse_nodes(homedir, mode, node_table, edge_index, edge_type, model, emb,
             elif model_name == 'RGCN_no_emb':
                  
                 classes, adj_m, act = model(input_new)
-                torch.save(classes, homedir + 'out/'+dataset_name+'/' + model_name + '/pred_after'+str(name_node)+'adapt_'+str(node_indice)+'_'+str(new_index)+'.pt')
+                torch.save(classes, homedir + 'out/'+dataset_name+'/' + model_name + '/pred_after'+str(name_node[0])+'adapt_'+str(node_indice)+'_'+str(new_index)+'.pt')
                 rel_nodes_new, rel_edges_new = lrp_rgcn(activation['rgc1'], model.dense.weight, None, relevance, activation['rgcn_no_hidden'], model.rgc1.weights, 
                            model.rgcn_no_hidden.weights, adj,  activation['input'], test_idx, model_name, i, num_nodes,'A')
             elif model_name == 'RGAT_no_emb':
@@ -474,16 +475,15 @@ def analyse_edges(homedir, mode, edge_table, edge_index, edge_type, model, emb,
         rel_new_table.to_csv(homedir + 'out/'+dataset_name+'/' + model_name + '/'+mode+ '_LRP_nodes_edges_after_edge_adaptation.csv')    
 
 def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight_dense, relevance, test_idx, model_name,dataset_name, num_nodes,num_relations, homedir, s1, s2):
-    #homedir = "C:/Users/luisa/Projekte/Masterthesis/AIFB/"
     if model_name == 'RGCN_emb':
         pred, adj, activation = model(input)
         torch.save(pred, homedir + 'out/'+dataset_name+'/'+model_name+ '/pred_before.pt')
         rel_nodes_list, min_nodes_list = {}, {}
-        rel_edges_list, pos_min_nodes = {}, {}
-        max_nodes_list, max_edges_list = {}, {}
-        pos_max_nodes, pos_max_edges, min_edges_list, pos_min_edges = {}, {}, {}, {}
+        pos_min_nodes, rel_edges_list = {}, {}
+        max_nodes_list, pos_max_nodes =  {}, {}
         count_edges_self, count_nodes_self = 0,0
         for i in enumerate(test_idx):
+            print('i: ', i)
             relevance, adj,act = model(input)
             rel_nodes, rel_edges = lrp_rgcn(activation['rgc1'], model.dense.weight, None, relevance, activation['rgcn_no_hidden'], model.rgc1.weights, 
                            model.rgcn_no_hidden.weights, adj,  emb, test_idx, model_name, i, num_nodes,'A')
@@ -511,7 +511,27 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
                 pos_max_nodes[i] = rel_nodes.argmax().item()
                 min_nodes_list[i] = rel_nodes.min().item()
                 pos_min_nodes[i] = rel_nodes.argmin().item()
-            
+
+        nodes = {'tensor_nodes':rel_nodes_list, 'max_nodes':max_nodes_list, 'pos_max_nodes':pos_max_nodes, 'min_nodes':min_nodes_list, 'pos_min_nodes':pos_min_nodes}    
+        nodes_table = pd.DataFrame(nodes)
+        nodes_table.to_csv(homedir + 'out/'+dataset_name+'/' + model_name + '/LRP_nodes_table.csv')
+
+        n_largest_nodes = nodes_table.nlargest(3, 'max_nodes')
+        n_smallest_nodes = nodes_table.nsmallest(3, 'min_nodes')
+
+        del nodes, nodes_table, rel_nodes,  rel_nodes_list
+        del pos_max_nodes, min_nodes_list, pos_min_nodes
+        gc.collect()
+        mode = 'large'
+        analyse_nodes(homedir,mode,  n_largest_nodes, edge_index, edge_type, model,emb, 
+                           parameter_list, input, weight_dense, relevance, adj, activation,
+                           test_idx, model_name,dataset_name,None, num_nodes,num_relations, s1, s2)
+        mode= 'small'
+        analyse_nodes(homedir,mode,  n_smallest_nodes, edge_index, edge_type, model,emb, 
+                           parameter_list, input, weight_dense, relevance, adj, activation,
+                           test_idx, model_name,dataset_name,None, num_nodes,num_relations, s1, s2)
+        pos_max_edges, min_edges_list, pos_min_edges, max_edges_list, rel_edges_list = {}, {}, {},{}, {}
+        for i in enumerate(test_idx):
             if (rel_edges==torch.max(rel_edges)).nonzero()[0][1].item() == i[1].item():
                 count_edges_self +=1
                 print(count_edges_self)
@@ -529,34 +549,22 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
                 max_edges_list[i] = rel_edges.max().item()
                 pos_max_edges[i] = (rel_edges==torch.max(rel_edges)).nonzero()
                 min_edges_list[i] = rel_edges.min().item()
-                pos_min_edges[i] = (rel_edges==torch.min(rel_edges)).nonzero()
-        
-        nodes = {'tensor_nodes':rel_nodes_list, 'max_nodes':max_nodes_list, 'pos_max_nodes':pos_max_nodes, 'min_nodes':min_nodes_list, 'pos_min_nodes':pos_min_nodes}    
-        nodes_table = pd.DataFrame(nodes)
-        nodes_table.to_csv(homedir + 'out/'+dataset_name+'/' + model_name + '/LRP_nodes_table.csv')
+                pos_min_edges[i] = (rel_edges==torch.min(rel_edges)).nonzero()        
+
+
         edges = {'tensor_edges':rel_edges_list, 'max_edges':max_edges_list, 'pos_max_edges':pos_max_edges, 'min_edges':min_edges_list, 'pos_min_edges':pos_min_edges}
         edges_table = pd.DataFrame(edges)
         edges_table.to_csv(homedir + 'out/'+dataset_name+'/' + model_name + '/LRP_edges_table.csv')
-        n_largest_nodes = nodes_table.nlargest(3, 'max_nodes')
-        n_smallest_nodes = nodes_table.nsmallest(3, 'min_nodes')
         n_largest_edges = edges_table.nlargest(3, 'max_edges')
         n_smallest_edges = edges_table.nsmallest(3, 'min_edges')
-        mode = 'large'
+        mode='large'
         analyse_edges(homedir, mode, n_largest_edges, edge_index, edge_type, model,emb,
                             parameter_list, input, weight_dense, relevance, adj, activation,
                             test_idx, model_name,dataset_name,None, num_nodes,num_relations, s1, s2)
-        analyse_nodes(homedir,mode,  n_largest_nodes, edge_index, edge_type, model,emb, 
-                           parameter_list, input, weight_dense, relevance, adj, activation,
-                           test_idx, model_name,dataset_name,None, num_nodes,num_relations, s1, s2)
         mode = 'small'
         analyse_edges(homedir, mode, n_smallest_edges, edge_index, edge_type, model,emb,
                             parameter_list, input, weight_dense, relevance, adj, activation,
                             test_idx, model_name,dataset_name,None, num_nodes,num_relations, s1, s2)
-        analyse_nodes(homedir,mode,  n_smallest_nodes, edge_index, edge_type, model,emb, 
-                           parameter_list, input, weight_dense, relevance, adj, activation,
-                           test_idx, model_name,dataset_name,None, num_nodes,num_relations, s1, s2)
-        print('count_nodes_self: ',count_nodes_self)
-        print('count_edges_self: ', count_edges_self)
 
     elif model_name == 'RGCN_no_emb':
         pred, adj, activation = model(input)
@@ -703,6 +711,7 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
         n_smallest_nodes = nodes_table.nsmallest(3, 'min_nodes')
         n_largest_edges = edges_table.nlargest(3, 'max_edges')
         n_smallest_edges = edges_table.nsmallest(3, 'min_edges')
+        print('n_smallest: ', n_smallest_nodes)
         mode = 'large'
         analyse_edges(homedir, mode, n_largest_edges, edge_index, edge_type, model, None,
                             parameter_list, input, weight_dense, pred, None, None,
@@ -780,6 +789,7 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
         edges_table.to_csv(homedir + 'out/'+dataset_name+'/' + model_name + '/LRP_edges_table.csv')
         n_largest_nodes = nodes_table.nlargest(3, 'max_nodes')
         n_smallest_nodes = nodes_table.nsmallest(3, 'min_nodes')
+        print(n_smallest_nodes)
         n_largest_edges = edges_table.nlargest(3, 'max_edges')
         n_smallest_edges = edges_table.nsmallest(3, 'min_edges')
         mode = 'large'
@@ -789,7 +799,7 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
         analyse_nodes(homedir,mode,  n_largest_nodes, edge_index, edge_type, model,None, 
                            parameter_list, input, weight_dense, pred, None, None,
                            test_idx, model_name,dataset_name, params, num_nodes, num_relations, s1, s2)
-        mode = 'small'
+        mode='small'
         analyse_edges(homedir, mode, n_largest_edges, edge_index, edge_type, model, None,
                             parameter_list, input, weight_dense, pred, None, None,
                             test_idx, model_name,dataset_name,params, num_nodes, num_relations, s1, s2)

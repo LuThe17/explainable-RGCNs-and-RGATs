@@ -32,9 +32,9 @@ def customized_softmax(input_tensor, edge_index, edge_type, num_nodes, num_relat
     resmat = resmat.unsqueeze(2).expand(-1, -1, num_nodes)
     num_neighbors2 = num_neighbors.unsqueeze(2).expand(-1, -1, num_nodes)
     softmax_output = torch.where(exponential == 0, torch.zeros_like(exponential), exponential/resmat)
-    print("Softmax_output: ",softmax_output.to_sparse_coo())
-    print("Resmat: ",resmat.to_sparse_coo())
-    print("Exponential: ", exponential.to_sparse_coo())
+    #print("Softmax_output: ",softmax_output.to_sparse_coo())
+    #print("Resmat: ",resmat.to_sparse_coo())
+    #print("Exponential: ", exponential.to_sparse_coo())
     return softmax_output, exponential, resmat, num_neighbors2
 
 class RGAT(torch.nn.Module):
@@ -45,7 +45,7 @@ class RGAT(torch.nn.Module):
 
         self.rgatlayer1 = RGATLayer(in_channels, hidden_channels, num_relations, num_nodes)
         self.rgatlayer2 = RGATLayer(hidden_channels, hidden_channels, num_relations, num_nodes)
-        self.dense = Linear(hidden_channels, out_channels)
+        self.dense = Linear(hidden_channels, out_channels, bias=False)
 
     def forward(self, x, edge_index, edge_type):
         parameter_list = []
@@ -70,14 +70,15 @@ class RGAT(torch.nn.Module):
 
 def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weights):
     if x is None:
-        x = self.node_emb#= torch.nn.Embedding(self.num_nodes, self.in_channels).weight
-
+        x = self.node_emb
+        print(x)
     size = int(max(edge_type)+1), len(x[:,]), len(x[:,])
     values = torch.ones_like(edge_index[0])
     M = torch.sparse.FloatTensor(indices = torch.stack((edge_type, edge_index[0], edge_index[1])), values = values, size = size)
     M = M.float()
 
     G = x @ self.weight
+    print(M.shape, G.shape)
     Gmi = M.to_dense() @ G
     Gmj = M.to_dense().transpose(1,2) @ G
 
@@ -92,7 +93,7 @@ def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weigh
         
         Eij2 = F.leaky_relu(E, self.negative_slope) #(4) Eij(r)
         alpha3, exponential, resmat, num_neighbors = customized_softmax(Eij2, edge_index, edge_type, self.num_nodes, self.num_relations,dim=0)
-        print("Alpha3: ", alpha3.to_sparse_coo())
+        #print("Alpha3: ", alpha3.to_sparse_coo())
         
         out = (alpha3 @ G).sum(dim=0) 
 

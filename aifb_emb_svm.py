@@ -218,7 +218,7 @@ def Gaussian_classifier(train_emb, test_emb, traindata, testdata, label_header):
 if __name__ == '__main__':
     name = 'AIFB'
     if name == 'AIFB':
-        homedir = '/pfs/work7/workspace/scratch/ma_luitheob-master/AIFB'
+        homedir = '/home/luitheob/AIFB/'
         kg_dir = '/data/AIFB/aifb_renamed_bn.tsv'
         train_dir = "/data/AIFB/trainingSet.tsv"
         test_dir = "/data/AIFB/testSet.tsv"
@@ -282,7 +282,7 @@ if __name__ == '__main__':
         
     #g = Graph()
     #g.parse(homedir + kg_dir, format='nt')
-    #kg = remove_aff_mem_emp(homedir, kg)
+    #kg = remove_aff_mem_emp(homedir, 
     #print('########### REMOVE LITERALS IN GRAPH ################')
     #kg = remove_literal_in_graph(g)
     #print('################  RENAME BNODE IN GRAPH #############')
@@ -297,14 +297,14 @@ if __name__ == '__main__':
     traindata = pd.read_csv(homedir + train_dir, sep="\t") # train und test zusammen
     testdata = pd.read_csv(homedir + test_dir, sep="\t")
     entities = traindata[nodes_header].append(testdata[nodes_header])
-    emb_type = ['DistMult', 'TransE', 'TransH']
+    emb_type = ['DistMult']#, 'TransE', 'TransH']
     #testpy = testdata[:2]
     pykeen_data = TriplesFactory.from_path(homedir + kg_dir, sep="\t")
     pykeen_test = TriplesFactory.from_path(homedir + pytest_dir, sep="\t")
     for embs in emb_type:
         pykeen_emb_train, pykeen_emb_test, pykeen_embeddings  = create_pykeen_embedding(pykeen_data, pykeen_test, entities, traindata, embs)
         # train_emb, test_emb, rdf2vec_embeddings = create_rdf2vec_embedding(kg, entities)
-        save_pykeen_emb(pykeen_emb_train, pykeen_emb_test, pykeen_embeddings, embs)
+        #save_pykeen_emb(pykeen_emb_train, pykeen_emb_test, pykeen_embeddings, embs)
         # #save_rdf2vec_emb(train_emb, test_emb, rdf2vec_embeddings)
         # pred_rdf_G, score_rdf_G = Gaussian_classifier(train_emb, test_emb, traindata, testdata)
         #pred_py_G, score_py_G = Gaussian_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header) # size:140x50

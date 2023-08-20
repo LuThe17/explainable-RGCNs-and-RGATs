@@ -9,15 +9,18 @@ import numpy as np
 import torch
 from utils import utils_act
 from model import gat, rgcn_layers 
+import os 
 from model import lrp_act
-from model.rgat_act import RGAT, RGATLayer
+from model.rgat_act import RGAT#, RGATLayer
 from data.entities import Entities
 #from gtn_dataset import IMDBDataset, ACMDataset, DBLPDataset
 import os.path as osp
-import torch_geometric
-from torch_geometric.transforms import NormalizeFeatures
-import networkx as ntx
-import matplotlib.pyplot as plt
+#import torch_geometric
+#from torch_geometric.transforms import NormalizeFeatures
+
+# os.environ['CUDA_DEVICE_ORDER']='PCI_BUS_ID'
+# os.environ['CUDA_VISIBLE_DEVICES'] = '7'
+
 
 def get_data():
     path = osp.join(osp.dirname(osp.realpath(__file__)), '..', 'data', 'Entities')
@@ -106,7 +109,7 @@ def rgcn_train(epochs, triples):
         'acc_train: {:.4f}'.format(acc_train.data.item()),
         'time: {:.4f}s'.format(time.time() - t1))
 
-    torch.save(model.state_dict(), homedir +'out/pykeen_model/test.pth')
+    #torch.save(model.state_dict(), homedir +'out/pykeen_model/test.pth')
     params = {}
     for name, param in model.named_parameters():
         if param.requires_grad:
@@ -132,14 +135,14 @@ def rgcn_train(epochs, triples):
 def rgcn_evaluation(x, triples):
     print("Starting evaluation...")
     model.eval()
-    classes, adj_m, activation = model(x, triples)
+    classes, adj_m, activation = model(triples_plus)
     classes = classes.to(device)
     classes= classes[test_idx].argmax(dim=-1)
     test_accuracy = accuracy_score(classes.cpu(), test_lbl.cpu()) * 100  # Note: Accuracy is always computed on CPU
     print(f'[Evaluation] Test Accuracy: {test_accuracy:.2f}')
 
 
-def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_idx, test_y, triples, model):
+def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_idx, test_y, triples, model, homedir):
     #model = RGAT(16, 16, dataset.num_classes, dataset.num_relations).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=0.0005)
     for epoch in range(1, epochs+1):
@@ -149,7 +152,11 @@ def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_
         out, parameter_list, input = model(pyk_emb, edge_index, edge_type)
         out = out.to(device)
         loss = criterion(out[train_idx], train_lbl)
-        print("Loss, epoch: ", loss, epoch)
+        acc_train = utils_act.accuracy(out[train_idx], train_lbl)
+        #print("Loss, epoch: ", loss, epoch)
+        print('Epoch: {:04d}'.format(epoch),
+        'loss: {:.4f}'.format(loss),
+        'acc_train: {:.4f}'.format(acc_train.data.item()))
         loss.backward()
         #torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
 
@@ -162,8 +169,8 @@ def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_
         weight_dense = model.dense.weight
         lrp_act.analyse_lrp(pyk_emb, edge_index, edge_type, model, parameter_list, 
                         triples, weight_dense, pred, test_idx, model_name, 
-                        dataset_name,num_nodes, num_relations, s1 = 0.8, s2 = 0.2)
-        lrp_act.lrp_rgat(parameter_list, input, weight_dense, pred, s1 = 0.8)
+                        dataset_name,num_nodes, num_relations, homedir, s1 = 0.8, s2 = 0.2)
+        #lrp_act.lrp_rgat(parameter_list, input, weight_dense, pred, s1 = 0.8)
         pred2 = pred.argmax(dim=-1)
         
         train_acc = float((pred2[train_idx] == train_y).float().mean())
@@ -193,17 +200,31 @@ def get_lrp_variables(model, emb, triples_plus):
 
 
 if __name__ == '__main__':
-    homedir='C:/Users/luisa/Projekte/Masterthesis/AIFB/'
-    dataset_name = 'AIFB'
+
+    homedir='/home/luitheob/AIFB/'
+    dataset_name = 'MUTAG' #MUTAG, BGS, AIFB
+    emb_type='DistMult' #TransE, TransH, DistMult
+    epochs= 25
+    model_name = 'RGAT_no_emb'
     global test_idx, test_y, train_idx, train_y, edge_index, edge_type, pyk_emb
-    adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus = utils_act.load_data(homedir, filename= dataset_name)
-    pyk_emb = utils_act.load_pickle(homedir + "data/"+'AIFB'+"/embeddings/pykeen_embedding_TransH.pickle")
+    adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus = utils_act.load_data(homedir, dataset_name, emb_type, model_name)
+    pyk_emb = utils_act.load_pickle(homedir + "data/"+dataset_name+"/embeddings/pykeen_embedding_"+emb_type+".pickle")
     pyk_emb = torch.tensor(pyk_emb, dtype=torch.float)
     lemb = len(pyk_emb[1])
     #dataset = torch_geometric.datasets.IMDB(root='data/IMDB')
     # Check for available GPUs
     use_cuda =  torch.cuda.is_available()
-    device = torch.device('cuda' if use_cuda else 'cpu')
+    print(torch.cuda.device_count())
+    print(torch.cuda.current_device())
+    print(torch.cuda.get_device_name(0))
+    print(torch.cuda.device_count())
+    print('cuda: ',use_cuda)
+
+    device = torch.device('cuda:7' if use_cuda else 'cpu')
+    print(torch.cuda.current_device())
+    #print("device: ", device)
+    #device = torch.device('cuda:3' if use_cuda else 'cpu')
+    #print("device:  ", device)
     print('shape edges: ', edges.shape)
     edge_index = edges[:,[0,2]].T
     edge_index = edge_index.type(torch.long)
@@ -237,9 +258,7 @@ if __name__ == '__main__':
     dropout = 0.6
     nb_heads = 1
     alpha = 0.2
-    epochs = 5
-    
-    model_name = 'RGAT_emb'
+
     if model_name == 'RGCN_emb':
         model = rgcn_layers.NodeClassifier
         model = model(
@@ -252,7 +271,7 @@ if __name__ == '__main__':
             decomposition=None,
             nemb=pyk_emb)
         loss = rgcn_train(epochs, triples_plus)
-        lrp_act.analyse_lrp(pyk_emb, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, num_nodes, num_relations,None, None)
+        lrp_act.analyse_lrp(pyk_emb, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, num_nodes, num_relations, homedir, None, None)
         rgcn_evaluation(pyk_emb, triples_plus)
 
     elif model_name == 'RGCN_no_emb':
@@ -267,8 +286,7 @@ if __name__ == '__main__':
             decomposition=None,
             nemb=None)
         loss = rgcn_train(epochs, triples_plus)
-
-        lrp_act.analyse_lrp(None, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, num_nodes, num_relations,None, None)
+        lrp_act.analyse_lrp(None, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, num_nodes, num_relations, homedir, None, None)
         rgcn_evaluation(None, triples_plus)
     elif model_name == 'GAT':
         model = gat.GAT
@@ -281,13 +299,11 @@ if __name__ == '__main__':
         gat_evaluation()
     
     elif model_name== 'RGAT_emb':
-        epochs= 50
         model = RGAT
         model = model(50, 50, num_classes, num_relations, num_nodes)
-        loss, pred, parameter_list = rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl,edges, model)
+        loss, pred, parameter_list = rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl,edges, model, homedir)
     
     elif model_name== 'RGAT_no_emb':
-        epochs= 50
         model = RGAT
         model = model(50, 50, num_classes, num_relations, num_nodes)
-        loss, pred, parameter_list = rgat_train(epochs, None, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl, edges, model)
+        loss, pred, parameter_list = rgat_train(epochs, None, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl, edges, model, homedir)
