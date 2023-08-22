@@ -12,6 +12,7 @@ from model import gat, rgcn_layers
 import os 
 from model import lrp_act
 from model.rgat_act import RGAT#, RGATLayer
+import pickle
 from data.entities import Entities
 #from gtn_dataset import IMDBDataset, ACMDataset, DBLPDataset
 import os.path as osp
@@ -142,7 +143,7 @@ def rgcn_evaluation(x, triples):
     print(f'[Evaluation] Test Accuracy: {test_accuracy:.2f}')
 
 
-def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_idx, test_y, triples, model, homedir):
+def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_idx, test_y, triples, model, homedir,emb_type):
     #model = RGAT(16, 16, dataset.num_classes, dataset.num_relations).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=0.0005)
     for epoch in range(1, epochs+1):
@@ -169,10 +170,9 @@ def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_
         weight_dense = model.dense.weight
         lrp_act.analyse_lrp(pyk_emb, edge_index, edge_type, model, parameter_list, 
                         triples, weight_dense, pred, test_idx, model_name, 
-                        dataset_name,num_nodes, num_relations, homedir, s1 = 0.8, s2 = 0.2)
-        #lrp_act.lrp_rgat(parameter_list, input, weight_dense, pred, s1 = 0.8)
+                        dataset_name,num_nodes, num_relations, homedir, s1 = 0.8, s2 = 0.2,emb_type)
         pred2 = pred.argmax(dim=-1)
-        
+        pred2.to('cpu')
         train_acc = float((pred2[train_idx] == train_y).float().mean())
         test_acc = float((pred2[test_idx] == test_y).float().mean())
         print(f'Epoch: {epoch:02d}, Loss: {loss:.4f}, Train: {train_acc:.4f} '
@@ -203,9 +203,9 @@ if __name__ == '__main__':
 
     homedir='/home/luitheob/AIFB/'
     dataset_name = 'MUTAG' #MUTAG, BGS, AIFB
-    emb_type='DistMult' #TransE, TransH, DistMult
+    emb_type='TransH' #TransE, TransH, DistMult
     epochs= 25
-    model_name = 'RGAT_no_emb'
+    model_name = 'RGAT_emb'
     global test_idx, test_y, train_idx, train_y, edge_index, edge_type, pyk_emb
     adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus = utils_act.load_data(homedir, dataset_name, emb_type, model_name)
     pyk_emb = utils_act.load_pickle(homedir + "data/"+dataset_name+"/embeddings/pykeen_embedding_"+emb_type+".pickle")
@@ -229,11 +229,15 @@ if __name__ == '__main__':
     edge_index = edges[:,[0,2]].T
     edge_index = edge_index.type(torch.long)
     edge_index_plus = triples_plus[:,[0,2]].T
+    with open(homedir + '/out/'+ dataset_name+'/'+ model_name+'/edge_index_plus', 'wb') as fp:
+        pickle.dump(edge_index_plus, fp)
     edge_index_plus = edge_index_plus.type(torch.long)
     edge_type = edges[:,1].T
     edge_type = edge_type.to(torch.long)
     edge_type_plus = triples_plus[:,1].T
     edge_type_plus = edge_type_plus.to(torch.long)
+    with open(homedir + '/out/'+ dataset_name+'/'+ model_name+'/edge_type_plus', 'wb') as fp:
+        pickle.dump(edge_type_plus, fp)
 
     # Convert train and test datasets to torch tensors
     train_idx = [n2i[name] for name, _ in train.items()]
@@ -271,7 +275,7 @@ if __name__ == '__main__':
             decomposition=None,
             nemb=pyk_emb)
         loss = rgcn_train(epochs, triples_plus)
-        lrp_act.analyse_lrp(pyk_emb, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, num_nodes, num_relations, homedir, None, None)
+        lrp_act.analyse_lrp(pyk_emb, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, num_nodes, num_relations, homedir, None, None,emb_type)
         rgcn_evaluation(pyk_emb, triples_plus)
 
     elif model_name == 'RGCN_no_emb':
@@ -286,7 +290,7 @@ if __name__ == '__main__':
             decomposition=None,
             nemb=None)
         loss = rgcn_train(epochs, triples_plus)
-        lrp_act.analyse_lrp(None, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, num_nodes, num_relations, homedir, None, None)
+        lrp_act.analyse_lrp(None, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, num_nodes, num_relations, homedir, None, None,emb_type)
         rgcn_evaluation(None, triples_plus)
     elif model_name == 'GAT':
         model = gat.GAT
@@ -301,9 +305,9 @@ if __name__ == '__main__':
     elif model_name== 'RGAT_emb':
         model = RGAT
         model = model(50, 50, num_classes, num_relations, num_nodes)
-        loss, pred, parameter_list = rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl,edges, model, homedir)
+        loss, pred, parameter_list = rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl,edges, model, homedir,emb_type)
     
     elif model_name== 'RGAT_no_emb':
         model = RGAT
         model = model(50, 50, num_classes, num_relations, num_nodes)
-        loss, pred, parameter_list = rgat_train(epochs, None, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl, edges, model, homedir)
+        loss, pred, parameter_list = rgat_train(epochs, None, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl, edges, model, homedir,emb_type)
