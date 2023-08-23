@@ -170,7 +170,7 @@ def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_
         weight_dense = model.dense.weight
         lrp_act.analyse_lrp(pyk_emb, edge_index, edge_type, model, parameter_list, 
                         triples, weight_dense, pred, test_idx, model_name, 
-                        dataset_name,num_nodes, num_relations, homedir, s1 = 0.8, s2 = 0.2,emb_type)
+                        dataset_name,num_nodes, num_relations, homedir,emb_type, s1 = 0.8, s2 = 0.2)
         pred2 = pred.argmax(dim=-1)
         pred2.to('cpu')
         train_acc = float((pred2[train_idx] == train_y).float().mean())
@@ -200,114 +200,156 @@ def get_lrp_variables(model, emb, triples_plus):
 
 
 if __name__ == '__main__':
-
-    homedir='/home/luitheob/AIFB/'
-    dataset_name = 'MUTAG' #MUTAG, BGS, AIFB
-    emb_type='TransH' #TransE, TransH, DistMult
-    epochs= 25
-    model_name = 'RGAT_emb'
+    homedir='C:/Users/luisa/Projekte/Masterthesis/AIFB/'
+    datasets = ['AIFB', 'MUTAG']
+    models = ['RGCN_no_emb','RGCN_emb', 'RGAT_no_emb', 'RGAT_emb']
+    embs=['TransH', 'TransE', 'DistMult']
     global test_idx, test_y, train_idx, train_y, edge_index, edge_type, pyk_emb
-    adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus = utils_act.load_data(homedir, dataset_name, emb_type, model_name)
-    pyk_emb = utils_act.load_pickle(homedir + "data/"+dataset_name+"/embeddings/pykeen_embedding_"+emb_type+".pickle")
-    pyk_emb = torch.tensor(pyk_emb, dtype=torch.float)
-    lemb = len(pyk_emb[1])
-    #dataset = torch_geometric.datasets.IMDB(root='data/IMDB')
-    # Check for available GPUs
-    use_cuda =  torch.cuda.is_available()
-    print(torch.cuda.device_count())
-    print(torch.cuda.current_device())
-    print(torch.cuda.get_device_name(0))
-    print(torch.cuda.device_count())
-    print('cuda: ',use_cuda)
+    for dataset_name in datasets:
+        print('dataset: ', dataset_name)
+        for model_name in models:
+            print('model: ', model_name)
+            if model_name == 'RGCN_emb' or model_name == 'RGAT_emb':
+                for emb_type in embs:
+                    print('emb_type: ', emb_type)
+                    pyk_emb = utils_act.load_pickle(homedir + "data/"+dataset_name+"/embeddings/pykeen_embedding_"+emb_type+".pickle")
+                    pyk_emb = torch.tensor(pyk_emb, dtype=torch.float)
+                    lemb = len(pyk_emb[1])
+                    if model_name.startswith('RGCN'):
+                        epochs = 1
+                    elif model_name.startswith('RGAT'):
+                         epochs = 1
+                    
+                    adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus = utils_act.load_data(homedir, dataset_name, emb_type, model_name)
 
-    device = torch.device('cuda:7' if use_cuda else 'cpu')
-    print(torch.cuda.current_device())
-    #print("device: ", device)
-    #device = torch.device('cuda:3' if use_cuda else 'cpu')
-    #print("device:  ", device)
-    print('shape edges: ', edges.shape)
-    edge_index = edges[:,[0,2]].T
-    edge_index = edge_index.type(torch.long)
-    edge_index_plus = triples_plus[:,[0,2]].T
-    with open(homedir + '/out/'+ dataset_name+'/'+ model_name+'/edge_index_plus', 'wb') as fp:
-        pickle.dump(edge_index_plus, fp)
-    edge_index_plus = edge_index_plus.type(torch.long)
-    edge_type = edges[:,1].T
-    edge_type = edge_type.to(torch.long)
-    edge_type_plus = triples_plus[:,1].T
-    edge_type_plus = edge_type_plus.to(torch.long)
-    with open(homedir + '/out/'+ dataset_name+'/'+ model_name+'/edge_type_plus', 'wb') as fp:
-        pickle.dump(edge_type_plus, fp)
+                    use_cuda =  torch.cuda.is_available()
+                    print('cuda: ',use_cuda)
 
-    # Convert train and test datasets to torch tensors
-    train_idx = [n2i[name] for name, _ in train.items()]
-    train_lbl = [cls for _, cls in train.items()]
-    train_idx = torch.tensor(train_idx, dtype=torch.long, device=device)
-    train_lbl = torch.tensor(train_lbl, dtype=torch.long, device=device)
+                    device = torch.device('cuda:7' if use_cuda else 'cpu')
+                    print('shape edges: ', edges.shape)
+                    edge_index = edges[:,[0,2]].T
+                    edge_index = edge_index.type(torch.long)
+                    edge_index_plus = triples_plus[:,[0,2]].T
+                    with open(homedir + '/out/'+ dataset_name+'/'+ model_name+'/edge_index_plus.pkl', 'wb') as fp:
+                        pickle.dump(edge_index_plus, fp)
+                    edge_index_plus = edge_index_plus.type(torch.long)
+                    edge_type = edges[:,1].T
+                    edge_type = edge_type.to(torch.long)
+                    edge_type_plus = triples_plus[:,1].T
+                    edge_type_plus = edge_type_plus.to(torch.long)
+                    with open(homedir + '/out/'+ dataset_name+'/'+ model_name+'/edge_type_plus.pkl', 'wb') as fp:
+                        pickle.dump(edge_type_plus, fp)
 
-    test_idx = [n2i[name] for name, _ in test.items()]
-    test_lbl = [cls for _, cls in test.items()]
-    test_idx = torch.tensor(test_idx, dtype=torch.long, device=device)
-    test_lbl = torch.tensor(test_lbl, dtype=torch.long, device=device)
+                    # Convert train and test datasets to torch tensors
+                    train_idx = [n2i[name] for name, _ in train.items()]
+                    train_lbl = [cls for _, cls in train.items()]
+                    train_idx = torch.tensor(train_idx, dtype=torch.long, device=device)
+                    train_lbl = torch.tensor(train_lbl, dtype=torch.long, device=device)
 
-    classes = set([int(l) for l in test_lbl] + [int(l) for l in train_lbl])
-    num_classes = len(classes)
-    print('num_classes: ', num_classes)
-    num_nodes = len(n2i)
-    print('num_nodes: ', num_nodes)
-    num_relations = len(r2i)
-    print('num_relations: ', num_relations)
-    num_rel_plus = len(triples_plus[:,1].unique())
-    hidden = 50
-    dropout = 0.6
-    nb_heads = 1
-    alpha = 0.2
+                    test_idx = [n2i[name] for name, _ in test.items()]
+                    test_lbl = [cls for _, cls in test.items()]
+                    test_idx = torch.tensor(test_idx, dtype=torch.long, device=device)
+                    test_lbl = torch.tensor(test_lbl, dtype=torch.long, device=device)
 
-    if model_name == 'RGCN_emb':
-        model = rgcn_layers.NodeClassifier
-        model = model(
-            nnodes=num_nodes,
-            nrel=num_relations,
-            nfeat = len(pyk_emb[0]),
-            nclass=num_classes,
-            nhid=50,
-            nlayers=2,
-            decomposition=None,
-            nemb=pyk_emb)
-        loss = rgcn_train(epochs, triples_plus)
-        lrp_act.analyse_lrp(pyk_emb, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, num_nodes, num_relations, homedir, None, None,emb_type)
-        rgcn_evaluation(pyk_emb, triples_plus)
+                    classes = set([int(l) for l in test_lbl] + [int(l) for l in train_lbl])
+                    num_classes = len(classes)
+                    print('num_classes: ', num_classes)
+                    num_nodes = len(n2i)
+                    print('num_nodes: ', num_nodes)
+                    num_relations = len(r2i)
+                    print('num_relations: ', num_relations)
+                    num_rel_plus = len(triples_plus[:,1].unique())
+                    hidden = 50
+                    dropout = 0.6
+                    nb_heads = 1
+                    alpha = 0.2
+                    
+                    if model_name == 'RGCN_emb':
+                        model = rgcn_layers.NodeClassifier
+                        model = model(
+                            nnodes=num_nodes,
+                            nrel=num_relations,
+                            nfeat = len(pyk_emb[0]),
+                            nclass=num_classes,
+                            nhid=50,
+                            nlayers=2,
+                            decomposition=None,
+                            nemb=pyk_emb)
+                        loss = rgcn_train(epochs, triples_plus)
+                        lrp_act.analyse_lrp(pyk_emb, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, num_nodes, num_relations, homedir, emb_type, None, None)
+                        rgcn_evaluation(pyk_emb, triples_plus)
+                    elif model_name== 'RGAT_emb':
+                        model = RGAT
+                        model = model(50, 50, num_classes, num_relations, num_nodes)
+                        loss, pred, parameter_list = rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl,edges, model, homedir,emb_type)
 
-    elif model_name == 'RGCN_no_emb':
-        model = rgcn_layers.NodeClassifier
-        model = model(
-            nnodes=num_nodes,
-            nrel=num_relations,            
-            nfeat = len(pyk_emb[0]),
-            nclass=num_classes,
-            nhid=50,
-            nlayers=2,
-            decomposition=None,
-            nemb=None)
-        loss = rgcn_train(epochs, triples_plus)
-        lrp_act.analyse_lrp(None, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, num_nodes, num_relations, homedir, None, None,emb_type)
-        rgcn_evaluation(None, triples_plus)
-    elif model_name == 'GAT':
-        model = gat.GAT
-        model = model(nfeat=lemb, 
-                nhid=hidden, 
-                nclass=num_classes, 
-                dropout=dropout, 
-                alpha=alpha)
-        loss = gat_train(epochs=4)
-        gat_evaluation()
-    
-    elif model_name== 'RGAT_emb':
-        model = RGAT
-        model = model(50, 50, num_classes, num_relations, num_nodes)
-        loss, pred, parameter_list = rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl,edges, model, homedir,emb_type)
-    
-    elif model_name== 'RGAT_no_emb':
-        model = RGAT
-        model = model(50, 50, num_classes, num_relations, num_nodes)
-        loss, pred, parameter_list = rgat_train(epochs, None, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl, edges, model, homedir,emb_type)
+            else:
+                pyk_emb = None
+                lemb = None
+                adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus = utils_act.load_data(homedir, dataset_name, None, model_name)
+                if model_name.startswith('RGCN'):
+                    epochs = 1
+                elif model_name.startswith('RGAT'):
+                    epochs = 1
+                # Check for available GPUs
+                use_cuda =  torch.cuda.is_available()
+                print('cuda: ',use_cuda)
+                device = torch.device('cuda:7' if use_cuda else 'cpu')
+                print('shape edges: ', edges.shape)
+                edge_index = edges[:,[0,2]].T
+                edge_index = edge_index.type(torch.long)
+                edge_index_plus = triples_plus[:,[0,2]].T
+                with open(homedir + '/out/'+ dataset_name+'/'+ model_name+'/edge_index_plus.pkl', 'wb') as fp:
+                    pickle.dump(edge_index_plus, fp)
+                edge_index_plus = edge_index_plus.type(torch.long)
+                edge_type = edges[:,1].T
+                edge_type = edge_type.to(torch.long)
+                edge_type_plus = triples_plus[:,1].T
+                edge_type_plus = edge_type_plus.to(torch.long)
+                with open(homedir + '/out/'+ dataset_name+'/'+ model_name+'/edge_type_plus.pkl', 'wb') as fp:
+                    pickle.dump(edge_type_plus, fp)
+
+                # Convert train and test datasets to torch tensors
+                train_idx = [n2i[name] for name, _ in train.items()]
+                train_lbl = [cls for _, cls in train.items()]
+                train_idx = torch.tensor(train_idx, dtype=torch.long, device=device)
+                train_lbl = torch.tensor(train_lbl, dtype=torch.long, device=device)
+
+                test_idx = [n2i[name] for name, _ in test.items()]
+                test_lbl = [cls for _, cls in test.items()]
+                test_idx = torch.tensor(test_idx, dtype=torch.long, device=device)
+                test_lbl = torch.tensor(test_lbl, dtype=torch.long, device=device)
+
+                classes = set([int(l) for l in test_lbl] + [int(l) for l in train_lbl])
+                num_classes = len(classes)
+                print('num_classes: ', num_classes)
+                num_nodes = len(n2i)
+                print('num_nodes: ', num_nodes)
+                num_relations = len(r2i)
+                print('num_relations: ', num_relations)
+                num_rel_plus = len(triples_plus[:,1].unique())
+                hidden = 50
+                dropout = 0.6
+                nb_heads = 1
+                alpha = 0.2
+
+                if model_name == 'RGCN_no_emb':
+                    model = rgcn_layers.NodeClassifier
+                    model = model(
+                        nnodes=num_nodes,
+                        nrel=num_relations,            
+                        nfeat = 50,
+                        nclass=num_classes,
+                        nhid=50,
+                        nlayers=2,
+                        decomposition=None,
+                        nemb=None)
+                    loss = rgcn_train(epochs, triples_plus)
+                    lrp_act.analyse_lrp(None, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, num_nodes, num_relations, homedir, None, None, None)
+                    rgcn_evaluation(None, triples_plus)
+                
+
+                elif model_name== 'RGAT_no_emb':
+                    model = RGAT
+                    model = model(50, 50, num_classes, num_relations, num_nodes)
+                    loss, pred, parameter_list = rgat_train(epochs, None, edge_index, edge_type, train_idx, train_lbl,test_idx, test_lbl, edges, model, homedir,None)

@@ -189,9 +189,9 @@ def load_data(homedir,filename, emb_type, model_name):
     i2r =list(relations.keys()) # maps indices to labels
 
     r2i = {r: i for i, r in enumerate(i2r)} # maps labels to indices
-    with open (homedir + '/out/'+ filename+'/'+ model_name+'/i2r', 'wb') as fp:
+    with open (homedir + '/out/'+ filename+'/'+ model_name+'/i2r.pkl', 'wb') as fp:
         pickle.dump(i2r, fp)
-    with open(homedir + '/out/'+ filename+'/'+ model_name+'/i2n', 'wb') as fp:
+    with open(homedir + '/out/'+ filename+'/'+ model_name+'/i2n.pkl', 'wb') as fp:
         pickle.dump(i2n, fp)
 
     # Collect all edges into a list: [from, relation, to] (only storing integer indices)
@@ -213,9 +213,9 @@ def load_data(homedir,filename, emb_type, model_name):
     adj = torch.FloatTensor(np.array(adj.todense()))
 
     triples_plus = add_inverse_and_self(edges, len(i2n), len(i2r))
-    with open (homedir + '/out/'+ filename+'/'+ model_name+'/triples_plus', 'wb') as fp:
+    with open (homedir + '/out/'+ filename+'/'+ model_name+'/triples_plus.pkl', 'wb') as fp:
         pickle.dump(triples_plus, fp)
-    with open(homedir + '/out/'+ filename+'/'+ model_name+'/edges_list', 'wb') as fp:
+    with open(homedir + '/out/'+ filename+'/'+ model_name+'/edges_list.pkl', 'wb') as fp:
         pickle.dump(edges, fp)
     return adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus
 
