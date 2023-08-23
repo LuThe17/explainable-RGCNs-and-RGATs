@@ -173,6 +173,8 @@ def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_
                         dataset_name,num_nodes, num_relations, homedir,emb_type, s1 = 0.8, s2 = 0.2)
         pred2 = pred.argmax(dim=-1)
         pred2.to('cpu')
+        train_idx.to('cpu')
+        train_y.to('cpu')
         train_acc = float((pred2[train_idx] == train_y).float().mean())
         test_acc = float((pred2[test_idx] == test_y).float().mean())
         print(f'Epoch: {epoch:02d}, Loss: {loss:.4f}, Train: {train_acc:.4f} '
@@ -201,9 +203,9 @@ def get_lrp_variables(model, emb, triples_plus):
 
 if __name__ == '__main__':
     homedir= '/home/luitheob/AIFB/'#C:/Users/luisa/Projekte/Masterthesis/AIFB/'
-    datasets = ['AIFB', 'MUTAG']
-    models = ['RGCN_emb', 'RGAT_no_emb', 'RGAT_emb']#'RGCN_no_emb',
-    embs=['TransH', 'TransE', 'DistMult']
+    datasets = ['AIFB','MUTAG']#, 'MUTAG']
+    models = ['RGAT_emb']#'RGCN_no_emb', 'RGCN_emb',
+    embs=['TransE', 'TransH', 'DistMult']
     global test_idx, test_y, train_idx, train_y, edge_index, edge_type, pyk_emb
     for dataset_name in datasets:
         print('dataset: ', dataset_name)

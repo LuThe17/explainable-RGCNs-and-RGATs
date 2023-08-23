@@ -32,9 +32,7 @@ def customized_softmax(input_tensor, edge_index, edge_type, num_nodes, num_relat
     resmat = resmat.unsqueeze(2).expand(-1, -1, num_nodes)
     num_neighbors2 = num_neighbors.unsqueeze(2).expand(-1, -1, num_nodes)
     softmax_output = torch.where(exponential == 0, torch.zeros_like(exponential), exponential/resmat)
-    #print("Softmax_output: ",softmax_output.to_sparse_coo())
-    #print("Resmat: ",resmat.to_sparse_coo())
-    #print("Exponential: ", exponential.to_sparse_coo())
+
     return softmax_output, exponential, resmat, num_neighbors2
 
 class RGAT(torch.nn.Module):
@@ -92,9 +90,16 @@ def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weigh
     if self.attention_mode == "additive-self-attention":
         
         Eij2 = F.leaky_relu(E, self.negative_slope) #(4) Eij(r)
+        #np.log(np.max(x, 1e-9))
+        #Eij2 = torch.log(torch.max(Eij2))
+        print(Eij2.max(), Eij2.min(), Eij2.argmin())
+        if torch.isnan(Eij2).any():
+            exit()
         alpha3, exponential, resmat, num_neighbors = customized_softmax(Eij2, edge_index, edge_type, self.num_nodes, self.num_relations,dim=0)
         #print("Alpha3: ", alpha3.to_sparse_coo())
-        
+        print('alpha3: ', alpha3.max(), alpha3.min())
+        if torch.isnan(alpha3).any():
+            exit()
         out = (alpha3 @ G).sum(dim=0) 
 
         return x, out, self.weight, self.k, self.q, K, Q, M, Gmi, Gmj, alpha3, E, exponential, resmat, num_neighbors
