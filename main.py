@@ -200,7 +200,7 @@ def get_lrp_variables(model, emb, triples_plus):
 
 
 if __name__ == '__main__':
-    homedir='C:/Users/luisa/Projekte/Masterthesis/AIFB/'
+    homedir= '/home/luitheob/AIFB/'#C:/Users/luisa/Projekte/Masterthesis/AIFB/'
     datasets = ['AIFB', 'MUTAG']
     models = ['RGCN_no_emb','RGCN_emb', 'RGAT_no_emb', 'RGAT_emb']
     embs=['TransH', 'TransE', 'DistMult']
@@ -216,9 +216,9 @@ if __name__ == '__main__':
                     pyk_emb = torch.tensor(pyk_emb, dtype=torch.float)
                     lemb = len(pyk_emb[1])
                     if model_name.startswith('RGCN'):
-                        epochs = 1
+                        epochs = 50
                     elif model_name.startswith('RGAT'):
-                         epochs = 1
+                         epochs = 25
                     
                     adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus = utils_act.load_data(homedir, dataset_name, emb_type, model_name)
 
@@ -288,9 +288,9 @@ if __name__ == '__main__':
                 lemb = None
                 adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus = utils_act.load_data(homedir, dataset_name, None, model_name)
                 if model_name.startswith('RGCN'):
-                    epochs = 1
+                    epochs = 50
                 elif model_name.startswith('RGAT'):
-                    epochs = 1
+                    epochs = 25
                 # Check for available GPUs
                 use_cuda =  torch.cuda.is_available()
                 print('cuda: ',use_cuda)
