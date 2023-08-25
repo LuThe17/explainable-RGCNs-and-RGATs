@@ -189,10 +189,7 @@ def load_data(homedir,filename, emb_type, model_name):
     i2r =list(relations.keys()) # maps indices to labels
 
     r2i = {r: i for i, r in enumerate(i2r)} # maps labels to indices
-    with open (homedir + '/out/'+ filename+'/'+ model_name+'/i2r.pkl', 'wb') as fp:
-        pickle.dump(i2r, fp)
-    with open(homedir + '/out/'+ filename+'/'+ model_name+'/i2n.pkl', 'wb') as fp:
-        pickle.dump(i2n, fp)
+
 
     # Collect all edges into a list: [from, relation, to] (only storing integer indices)
     edges = list()
@@ -213,10 +210,32 @@ def load_data(homedir,filename, emb_type, model_name):
     adj = torch.FloatTensor(np.array(adj.todense()))
 
     triples_plus = add_inverse_and_self(edges, len(i2n), len(i2r))
-    with open (homedir + '/out/'+ filename+'/'+ model_name+'/triples_plus.pkl', 'wb') as fp:
-        pickle.dump(triples_plus, fp)
-    with open(homedir + '/out/'+ filename+'/'+ model_name+'/edges_list.pkl', 'wb') as fp:
-        pickle.dump(edges, fp)
+    if emb_type == None:
+        with open (homedir + '/out/'+ filename+'/'+ model_name+'/triples_plus.pkl', 'wb') as fp:
+            pickle.dump(triples_plus, fp)
+        with open(homedir + '/out/'+ filename+'/'+ model_name+'/edges_list.pkl', 'wb') as fp:
+            pickle.dump(edges, fp)
+        with open (homedir + '/out/'+filename + '/'+ model_name + 'test_list.pkl','wb') as fp:
+            pickle.dump(test, fp)
+        with open (homedir + '/out/'+filename + '/'+ model_name + 'train_list.pkl','wb') as fp:
+            pickle.dump(train,fp)
+        with open (homedir + '/out/'+ filename+'/'+ model_name+'/i2r.pkl', 'wb') as fp:
+            pickle.dump(i2r, fp)
+        with open(homedir + '/out/'+ filename+'/'+ model_name+'/i2n.pkl', 'wb') as fp:
+            pickle.dump(i2n, fp)
+    else:
+        with open (homedir + '/out/'+ filename+'/'+ model_name+ '/'+ emb_type+'/triples_plus.pkl', 'wb') as fp:
+            pickle.dump(triples_plus, fp)
+        with open(homedir + '/out/'+ filename+'/'+ model_name+'/'+ emb_type+'/edges_list.pkl', 'wb') as fp:
+            pickle.dump(edges, fp)
+        with open (homedir + '/out/'+filename + '/'+ model_name +'/'+ emb_type+ '/test_list.pkl','wb') as fp:
+            pickle.dump(test,fp)
+        with open (homedir + '/out/'+filename + '/'+ model_name + '/'+ emb_type+'/train_list.pkl','wb') as fp:
+            pickle.dump(train,fp)
+        with open (homedir + '/out/'+ filename+'/'+ model_name+'/'+ emb_type+'/i2r.pkl', 'wb') as fp:
+            pickle.dump(i2r, fp)
+        with open(homedir + '/out/'+ filename+'/'+ model_name+'/'+ emb_type+'/i2n.pkl', 'wb') as fp:  
+            pickle.dump(i2n,fp)
     return adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus
 
 def normalize_adj(mx):

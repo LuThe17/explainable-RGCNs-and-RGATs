@@ -207,8 +207,8 @@ def get_lrp_variables(model, emb, triples_plus):
 if __name__ == '__main__':
     homedir= '/home/luitheob/AIFB/'#C:/Users/luisa/Projekte/Masterthesis/AIFB/'
     datasets = ['AIFB','MUTAG']
-    models = ['RGCN_no_emb', 'RGCN_emb',  'RGAT_no_emb','RGAT_emb'] #
-    embs=[ 'TransE','TransH','DistMult']# 
+    models =   ['RGCN_no_emb', 'RGCN_emb', 'RGAT_no_emb','RGAT_emb'] #['RGCN_no_emb', 'RGCN_emb', 
+    embs=[ 'TransE','TransH','DistMult']# ,
     global test_idx, test_y, train_idx, train_y, edge_index, edge_type, pyk_emb
     for dataset_name in datasets:
         print('dataset: ', dataset_name)
@@ -235,15 +235,13 @@ if __name__ == '__main__':
                     edge_index = edges[:,[0,2]].T
                     edge_index = edge_index.type(torch.long)
                     edge_index_plus = triples_plus[:,[0,2]].T
-                    with open(homedir + '/out/'+ dataset_name+'/'+ model_name+'/edge_index_plus.pkl', 'wb') as fp:
-                        pickle.dump(edge_index_plus, fp)
+
                     edge_index_plus = edge_index_plus.type(torch.long)
                     edge_type = edges[:,1].T
                     edge_type = edge_type.to(torch.long)
                     edge_type_plus = triples_plus[:,1].T
                     edge_type_plus = edge_type_plus.to(torch.long)
-                    with open(homedir + '/out/'+ dataset_name+'/'+ model_name+'/edge_type_plus.pkl', 'wb') as fp:
-                        pickle.dump(edge_type_plus, fp)
+
 
                     # Convert train and test datasets to torch tensors
                     train_idx = [n2i[name] for name, _ in train.items()]
@@ -254,6 +252,19 @@ if __name__ == '__main__':
                     test_idx = [n2i[name] for name, _ in test.items()]
                     test_lbl = [cls for _, cls in test.items()]
                     test_idx = torch.tensor(test_idx, dtype=torch.long, device=device)
+                    with open(homedir + '/out/'+ dataset_name+'/'+ model_name+ '/' + emb_type+'/edge_type_plus.pkl', 'wb') as fp:
+                        pickle.dump(edge_type_plus, fp)
+                    with open(homedir + '/out/'+ dataset_name+'/'+ model_name+ '/' + emb_type+'/edge_index_plus.pkl', 'wb') as fp:
+                        pickle.dump(edge_index_plus, fp)
+                    with open (homedir + '/out/'+ dataset_name+'/'+ model_name+ '/'+ emb_type+'/test_idx.pkl', 'wb') as fp:
+                        pickle.dump(test_idx, fp)
+                    with open (homedir + '/out/'+ dataset_name+'/'+ model_name+ '/'+ emb_type+'/test_lbl.pkl', 'wb') as fp:
+                        pickle.dump(test_lbl, fp)
+                    with open (homedir + '/out/'+ dataset_name+'/'+ model_name+ '/'+ emb_type+'/train_idx.pkl', 'wb') as fp:
+                        pickle.dump(test_idx, fp)
+                    with open (homedir + '/out/'+ dataset_name+'/'+ model_name+ '/'+ emb_type+'/train_lbl.pkl', 'wb') as fp:
+                        pickle.dump(test_lbl, fp)
+                    print('test_idx: ',test_idx)
                     test_lbl = torch.tensor(test_lbl, dtype=torch.long, device=device)
 
                     classes = set([int(l) for l in test_lbl] + [int(l) for l in train_lbl])
@@ -324,6 +335,21 @@ if __name__ == '__main__':
                 test_lbl = [cls for _, cls in test.items()]
                 test_idx = torch.tensor(test_idx, dtype=torch.long, device=device)
                 test_lbl = torch.tensor(test_lbl, dtype=torch.long, device=device)
+
+                with open (homedir + '/out/'+ dataset_name+'/'+ model_name+'/test_idx.pkl', 'wb') as fp:
+                    pickle.dump(test_idx, fp)
+                with open (homedir + '/out/'+ dataset_name+'/'+ model_name+'/test_lbl.pkl', 'wb') as fp:
+                    pickle.dump(test_lbl, fp)
+                with open (homedir + '/out/'+ dataset_name+'/'+ model_name+'/train_idx.pkl', 'wb') as fp:
+                    pickle.dump(test_idx, fp)
+                with open (homedir + '/out/'+ dataset_name+'/'+ model_name+'/train_lbl.pkl', 'wb') as fp:
+                    pickle.dump(test_lbl, fp)
+
+
+
+
+
+                print('test_idx: ',test_idx)
 
                 classes = set([int(l) for l in test_lbl] + [int(l) for l in train_lbl])
                 num_classes = len(classes)
