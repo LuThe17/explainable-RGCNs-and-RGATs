@@ -172,13 +172,17 @@ def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_
                         triples, weight_dense, pred, test_idx, model_name, 
                         dataset_name,num_nodes, num_relations, homedir,emb_type, s1 = 0.8, s2 = 0.2)
         pred2 = pred.argmax(dim=-1)
-        pred2.to('cpu')
-        train_idx.to('cpu')
-        train_y.to('cpu')
-        train_acc = float((pred2[train_idx] == train_y).float().mean())
-        test_acc = float((pred2[test_idx] == test_y).float().mean())
-        print(f'Epoch: {epoch:02d}, Loss: {loss:.4f}, Train: {train_acc:.4f} '
-          f'Test: {test_acc:.4f}')
+
+        #pred2 = pred2.to(device)
+        pred2 = pred2[test_idx.cpu()]
+        test_accuracy = accuracy_score(pred2.cpu(), test_y.cpu()) * 100 
+        print(f'[Evaluation] Test Accuracy: {test_accuracy:.2f}')
+        #train_acc.to(device)
+        #test_acc.to(decive)
+        #train_acc = float((pred2[train_idx] == train_y).float().mean()).to(decive)
+        #test_acc = float((pred2[test_idx.cpu()] == test_y.cpu()).float().mean())
+        # print(f'Epoch: {epoch:02d}, Loss: {loss:.4f}, Train: {train_acc:.4f} '
+        #   f'Test: {test_acc:.4f}')
     return loss, pred, parameter_list
         
 
@@ -200,12 +204,11 @@ def get_lrp_variables(model, emb, triples_plus):
     relevance, adj, activation = model()
 
 
-
 if __name__ == '__main__':
     homedir= '/home/luitheob/AIFB/'#C:/Users/luisa/Projekte/Masterthesis/AIFB/'
-    datasets = ['AIFB','MUTAG']#, 'MUTAG']
-    models = ['RGAT_emb']#'RGCN_no_emb', 'RGCN_emb',
-    embs=['TransE', 'TransH', 'DistMult']
+    datasets = ['MUTAG']
+    models = ['RGAT_emb'] #'RGCN_no_emb', 'RGCN_emb',  'RGAT_no_emb',
+    embs=[ 'DistMult']# 'TransE','TransH',
     global test_idx, test_y, train_idx, train_y, edge_index, edge_type, pyk_emb
     for dataset_name in datasets:
         print('dataset: ', dataset_name)

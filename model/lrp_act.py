@@ -230,25 +230,37 @@ def analyse_nodes(homedir, mode, node_table, edge_index, edge_type, model, emb,
             
         if model_name == 'RGCN_emb':
             classes, adj_m, act = model(input_new)
+            adj_m = adj_m.to_dense().view(num_nodes,(num_relations*2+1),num_nodes)
             torch.save(classes, homedir + 'out/'+dataset_name+'/' + model_name + '/'+ emb_type+ '/pred_after'+str(name_e)+'adapt_'+str(node_indice)+'_'+str(new_index)+'.pt')
-            rel_nodes_new, rel_edges_new = lrp_rgcn(activation['rgc1'], model.dense.weight, None, relevance, activation['rgcn_no_hidden'], model.rgc1.weights, 
-                        model.rgcn_no_hidden.weights, adja,  emb, test_idx, model_name, i, num_nodes,'A')
+            rel_nodes_new, rel_edges_new = lrp_rgcn(act['rgc1'], model.dense.weight, None, classes, act['rgcn_no_hidden'], model.rgc1.weights, 
+                        model.rgcn_no_hidden.weights, adj_m,  emb, test_idx, model_name, i, num_nodes,'A')
         elif model_name == 'RGCN_no_emb':
                 
             classes, adj_m, act = model(input_new)
+            adj_m = adj_m.to_dense().view(num_nodes,(num_relations*2+1),num_nodes)
             torch.save(classes, homedir + 'out/'+dataset_name+'/' + model_name + '/pred_after'+str(name_e)+'adapt_'+str(node_indice)+'_'+str(new_index)+'.pt')
-            rel_nodes_new, rel_edges_new = lrp_rgcn(activation['rgc1'], model.dense.weight, None, relevance, activation['rgcn_no_hidden'], model.rgc1.weights, 
-                        model.rgcn_no_hidden.weights, adja,  activation['input'], test_idx, model_name, i, num_nodes,'A')
+            rel_nodes_new, rel_edges_new = lrp_rgcn(act['rgc1'], model.dense.weight, None, classes, act['rgcn_no_hidden'], model.rgc1.weights, 
+                        model.rgcn_no_hidden.weights, adj_m,  act['input'], test_idx, model_name, i, num_nodes,'A')
         elif model_name == 'RGAT_no_emb':
             pred, params, inp = model(None, edge_index_new, edge_type)
+            for d in params:
+                globals()[d[0]] = d[1]
+                if d[0] =='M_l2':
+                    M_l2 = d[1]
+            M_l2 = M_l2.to_dense()
             torch.save(pred, homedir + 'out/'+dataset_name+'/' + model_name + '/pred_after'+str(name_e)+'adapt_'+str(node_indice)+'_'+str(new_index)+'.pt')
-            rel_edges_new, rel_nodes_new = lrp_rgat(params, input, weight_dense, relevance, s1, 
-                                                    s2, i, test_idx, num_nodes, num_relations, edge_type, edge_index,M_l2) 
+            rel_edges_new, rel_nodes_new = lrp_rgat(params, input, model.dense.weight, pred, s1, 
+                                                    s2, i, test_idx, num_nodes, num_relations, edge_type, edge_index_new, M_l2) 
         elif model_name == 'RGAT_emb':
             pred, params, inp = model(emb, edge_index_new, edge_type)
+            for d in params:
+                globals()[d[0]] = d[1]
+                if d[0] =='M_l2':
+                    M_l2 = d[1]
+            M_l2 = M_l2.to_dense()
             torch.save(pred, homedir + 'out/'+dataset_name+'/' + model_name + '/'+ emb_type+ '/pred_after'+str(name_e)+'adapt_'+str(node_indice)+'_'+str(new_index)+'.pt')
-            rel_edges_new, rel_nodes_new = lrp_rgat(params, input, weight_dense, relevance, s1, 
-                                                    s2, i, test_idx, num_nodes, num_relations, edge_type, edge_index,M_l2)
+            rel_edges_new, rel_nodes_new = lrp_rgat(params, input, model.dense.weight, pred, s1, 
+                                                    s2, i, test_idx, num_nodes, num_relations, edge_type, edge_index_new,M_l2)
         rel_nodes_new = rel_nodes_new.sum(dim=1)
         rel_nodes_list_new[i] = rel_nodes_new#rel_nodes.argmax(), rel_nodes.max(), rel_nodes.argmin(), rel_nodes.min()
         max_nodes_list_new[i] = rel_nodes_new.max().item()
@@ -319,27 +331,39 @@ def analyse_edges(homedir, mode, edge_table, edge_index, edge_type, model, emb,
         if model_name == 'RGCN_emb':
             model.eval()
             classes, adj_m, act = model(input_new)
+            adj_m = adj_m.to_dense().view(num_nodes,(num_relations*2+1),num_nodes)
             torch.save(classes, homedir + 'out/'+dataset_name+'/' + model_name + '/'+ emb_type+ '/pred_after'+str(name_e)+'adapt_'+str(edge_indice[0])+'_'+str(new_type)+'.pt')
-            rel_nodes_new, rel_edges_new = lrp_rgcn(activation['rgc1'], model.dense.weight, None, relevance, activation['rgcn_no_hidden'], model.rgc1.weights, 
+            rel_nodes_new, rel_edges_new = lrp_rgcn(act['rgc1'], model.dense.weight, None, classes, act['rgcn_no_hidden'], model.rgc1.weights, 
                         model.rgcn_no_hidden.weights, adja,  emb, test_idx, model_name, i,num_nodes, 'A')
         elif model_name == 'RGCN_no_emb':
             model.eval()
             classes, adj_m, act = model(input_new)
+            adj_m = adj_m.to_dense().view(num_nodes,(num_relations*2+1),num_nodes)
             torch.save(classes, homedir + 'out/'+dataset_name+'/' + model_name + '/pred_after'+str(name_e)+'adapt_'+str(edge_indice[0])+'_'+str(new_type)+'.pt')
-            rel_nodes_new, rel_edges_new = lrp_rgcn(activation['rgc1'], model.dense.weight, None, relevance, activation['rgcn_no_hidden'], model.rgc1.weights, 
-                        model.rgcn_no_hidden.weights, adja,  activation['input'], test_idx, model_name, i,num_nodes, 'A')
+            rel_nodes_new, rel_edges_new = lrp_rgcn(act['rgc1'], model.dense.weight, None, classes, act['rgcn_no_hidden'], model.rgc1.weights, 
+                        model.rgcn_no_hidden.weights, adja,  act['input'], test_idx, model_name, i,num_nodes, 'A')
         elif model_name == 'RGAT_no_emb':
             model.eval()
             pred, params, inp = model(None, edge_index, edge_type_new)
+            for d in params:
+                globals()[d[0]] = d[1]
+                if d[0] =='M_l2':
+                    M_l2 = d[1]
+            M_l2 = M_l2.to_dense()
             torch.save(pred, homedir + 'out/'+dataset_name+'/' + model_name + '/pred_after'+str(name_e)+'adapt_'+str(edge_indice[0])+'_'+str(new_type)+'.pt')
-            rel_edges_new, rel_nodes_new = lrp_rgat(params, input, weight_dense, relevance, s1, 
-                                                    s2, i, test_idx, num_nodes, num_relations, edge_type, edge_index,M_l2) 
+            rel_edges_new, rel_nodes_new = lrp_rgat(params, input, model.dense.weight, pred, s1, 
+                                                    s2, i, test_idx, num_nodes, num_relations, edge_type_new, edge_index,M_l2) 
         elif model_name == 'RGAT_emb':
             model.eval()
             pred, params, inp = model(emb, edge_index, edge_type_new)
+            for d in params:
+                globals()[d[0]] = d[1]
+                if d[0] =='M_l2':
+                    M_l2 = d[1]
+            M_l2 = M_l2.to_dense()
             torch.save(pred, homedir + 'out/'+dataset_name+'/' + model_name +'/'+ emb_type+ '/pred_after'+str(name_e)+'adapt_'+str(edge_indice[0])+'_'+str(new_type)+'.pt')
-            rel_edges_new, rel_nodes_new = lrp_rgat(params, input, weight_dense, relevance, s1, 
-                                                    s2, i, test_idx, num_nodes, num_relations, edge_type, edge_index,M_l2)
+            rel_edges_new, rel_nodes_new = lrp_rgat(params, input, model.dense.weight, pred, s1, 
+                                                    s2, i, test_idx, num_nodes, num_relations, edge_type_new, edge_index,M_l2)
             
         rel_nodes_new = rel_nodes_new.sum(dim=1)
         rel_nodes_list_new[i] = rel_nodes_new#rel_nodes.argmax(), rel_nodes.max(), rel_nodes.argmin(), rel_nodes.min()
