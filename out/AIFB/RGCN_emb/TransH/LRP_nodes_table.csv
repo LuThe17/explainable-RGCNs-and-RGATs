@@ -1,0 +1,181 @@
+,,tensor_nodes,max_nodes,pos_max_nodes,min_nodes,pos_min_nodes
+0,"tensor(1349, device='cuda:7')","tensor(indices=tensor([[   0,    3,    4,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 3.3194e-06,  9.7826e-06, -1.4548e-07,  ...,
+                      -3.7388e-05, -1.5653e-05,  1.0250e-05]),
+       size=(2835,), nnz=1258, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.6897248029708862,2393,-0.1358216553926468,1349
+1,"tensor(529, device='cuda:7')","tensor(indices=tensor([[   0,    1,    3,  ..., 2832, 2833, 2834]]),
+       values=tensor([-2.5800e-07, -2.4250e-09, -7.8466e-07,  ...,
+                       5.6777e-08, -1.0998e-07, -8.7665e-07]),
+       size=(2835,), nnz=2020, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.6430692076683044,196,-0.06973768770694733,2393
+2,"tensor(389, device='cuda:7')","tensor(indices=tensor([[   0,    3,    5,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 4.6820e-06,  1.3798e-05,  1.6724e-05,  ...,
+                      -5.2736e-05, -2.2079e-05,  1.4458e-05]),
+       size=(2835,), nnz=1258, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",3.6116178035736084,234,-2.39347767829895,2077
+3,"tensor(2444, device='cuda:7')","tensor(indices=tensor([[   0,    1,    3,  ..., 2832, 2833, 2834]]),
+       values=tensor([-1.2877e-07, -1.9993e-06,  9.9353e-04,  ...,
+                      -8.9800e-08, -1.8455e-07, -4.3756e-07]),
+       size=(2835,), nnz=2035, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.7856199145317078,790,-0.7265657782554626,739
+4,"tensor(1191, device='cuda:7')","tensor(indices=tensor([[   0,    3,    4,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 3.3245e-06,  9.7978e-06, -1.4571e-07,  ...,
+                      -3.7446e-05, -1.5677e-05,  1.0266e-05]),
+       size=(2835,), nnz=1258, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.664264976978302,2393,-0.1117343008518219,1191
+5,"tensor(1303, device='cuda:7')","tensor(indices=tensor([[   0,    1,    3,  ..., 2832, 2833, 2834]]),
+       values=tensor([-2.4928e-07, -2.3431e-09, -7.7252e-07,  ...,
+                       5.4859e-08, -1.0627e-07, -8.4704e-07]),
+       size=(2835,), nnz=2038, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.6432145833969116,196,-0.07777489721775055,2393
+6,"tensor(2527, device='cuda:7')","tensor(indices=tensor([[   0,    3,    4,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 3.0648e-06,  9.0322e-06, -1.3432e-07,  ...,
+                      -3.4520e-05, -1.4453e-05,  9.4638e-06]),
+       size=(2835,), nnz=1258, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.4521956741809845,2393,-0.002387742046266794,2011
+7,"tensor(308, device='cuda:7')","tensor(indices=tensor([[   0,    3,    4,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 2.1946e-06,  6.4678e-06,  2.6047e-05,  ...,
+                      -2.4719e-05, -1.0349e-05,  6.7769e-06]),
+       size=(2835,), nnz=1348, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.5503667593002319,2625,-0.97041916847229,431
+8,"tensor(2151, device='cuda:7')","tensor(indices=tensor([[   0,    3,    4,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 2.0163e-06,  1.2579e-04,  1.1588e-06,  ...,
+                      -2.2710e-05, -9.5082e-06,  6.2261e-06]),
+       size=(2835,), nnz=1275, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.43074917793273926,2625,-0.0877511128783226,1513
+9,"tensor(1780, device='cuda:7')","tensor(indices=tensor([[   0,    3,    4,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 3.0115e-06,  8.8751e-06, -1.3199e-07,  ...,
+                      -3.3920e-05, -1.4201e-05,  9.2992e-06]),
+       size=(2835,), nnz=1258, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.429044246673584,2393,-0.0023462027311325073,2011
+10,"tensor(418, device='cuda:7')","tensor(indices=tensor([[   0,    3,    4,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 3.2832e-06,  9.6758e-06,  3.1167e-08,  ...,
+                      -3.6980e-05, -1.5482e-05,  1.0138e-05]),
+       size=(2835,), nnz=1258, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.593717098236084,2393,-0.025442752987146378,418
+11,"tensor(2107, device='cuda:7')","tensor(indices=tensor([[   0,    3,    4,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 3.3685e-06,  2.9187e-05, -1.4764e-07,  ...,
+                      -3.7941e-05, -1.5885e-05,  1.0402e-05]),
+       size=(2835,), nnz=1361, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.47882217168807983,2393,-1.1028342247009277,431
+12,"tensor(1218, device='cuda:7')","tensor(indices=tensor([[   0,    1,    3,  ..., 2832, 2833, 2834]]),
+       values=tensor([ 3.3269e-06, -2.9871e-08,  9.8048e-06,  ...,
+                       1.5072e-07,  5.1418e-09,  1.0273e-05]),
+       size=(2835,), nnz=1996, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.6620860695838928,2393,-0.10095332562923431,1218
+13,"tensor(2184, device='cuda:7')","tensor(indices=tensor([[   0,    3,    4,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 3.1115e-06,  9.1699e-06, -1.3637e-07,  ...,
+                      -3.5046e-05, -1.4673e-05,  9.6081e-06]),
+       size=(2835,), nnz=1258, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.474996954202652,2393,-0.002424136968329549,2011
+14,"tensor(2262, device='cuda:7')","tensor(indices=tensor([[   0,    2,    3,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 2.1854e-06,  2.6057e-04,  1.3635e-04,  ...,
+                      -2.4616e-05, -1.0306e-05,  6.7485e-06]),
+       size=(2835,), nnz=1315, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",2.113001823425293,431,-0.769234836101532,2262
+15,"tensor(901, device='cuda:7')","tensor(indices=tensor([[   0,    3,    4,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 3.4183e-06,  1.0074e-05, -1.4982e-07,  ...,
+                      -3.8502e-05, -1.6120e-05,  1.0555e-05]),
+       size=(2835,), nnz=1258, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.9186267256736755,2393,-0.3778305947780609,901
+16,"tensor(1060, device='cuda:7')","tensor(indices=tensor([[   0,    1,    3,  ..., 2832, 2833, 2834]]),
+       values=tensor([-1.2296e-07, -1.9488e-07, -6.3848e-06,  ...,
+                      -2.2561e-07, -2.4762e-07, -4.1781e-07]),
+       size=(2835,), nnz=2032, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.6650798320770264,196,-0.07794062793254852,2393
+17,"tensor(1439, device='cuda:7')","tensor(indices=tensor([[   0,    3,    5,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 2.2744e-06,  1.4190e-04,  8.1241e-06,  ...,
+                      -2.5618e-05, -1.0725e-05,  7.0232e-06]),
+       size=(2835,), nnz=1244, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.52254319190979,2393,-0.22731910645961761,1439
+18,"tensor(119, device='cuda:7')","tensor(indices=tensor([[   0,    3,    5,  ..., 2827, 2831, 2834]]),
+       values=tensor([-4.9406e-07, -1.5453e-06, -1.8889e-06,  ...,
+                       6.0876e-06,  2.5322e-06, -1.6788e-06]),
+       size=(2835,), nnz=1129, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.4630391001701355,2192,-0.1530524492263794,1138
+19,"tensor(1339, device='cuda:7')","tensor(indices=tensor([[   0,    1,    3,  ..., 2832, 2833, 2834]]),
+       values=tensor([-1.3951e-07, -1.1186e-07,  1.0764e-03,  ...,
+                      -9.7289e-08, -1.9994e-07, -4.7405e-07]),
+       size=(2835,), nnz=2028, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.866150975227356,790,-0.7851238250732422,739
+20,"tensor(270, device='cuda:7')","tensor(indices=tensor([[   0,    1,    3,  ..., 2832, 2833, 2834]]),
+       values=tensor([-3.2175e-07, -3.0243e-09, -1.0064e-06,  ...,
+                       7.0807e-08, -1.3716e-07, -1.0933e-06]),
+       size=(2835,), nnz=1999, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.799765944480896,196,-0.07578102499246597,2393
+21,"tensor(1968, device='cuda:7')","tensor(indices=tensor([[   0,    3,    4,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 1.7721e-06,  1.1056e-04,  5.8427e-05,  ...,
+                      -1.9960e-05, -8.3565e-06,  5.4720e-06]),
+       size=(2835,), nnz=1289, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.378574401140213,2625,-0.14159870147705078,2011
+22,"tensor(486, device='cuda:7')","tensor(indices=tensor([[   0,    1,    3,  ..., 2832, 2833, 2834]]),
+       values=tensor([-2.2342e-07, -2.1001e-09, -6.7951e-07,  ...,
+                       4.9169e-08, -9.5244e-08, -7.5918e-07]),
+       size=(2835,), nnz=2024, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.5806299448013306,196,-0.0580921471118927,2393
+23,"tensor(944, device='cuda:7')","tensor(indices=tensor([[   0,    1,    3,  ..., 2832, 2833, 2834]]),
+       values=tensor([-2.2158e-07, -2.0828e-09, -6.9305e-07,  ...,
+                       4.8763e-08, -9.4458e-08, -7.5292e-07]),
+       size=(2835,), nnz=2044, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.4767919182777405,196,-0.06202235072851181,2393
+24,"tensor(2590, device='cuda:7')","tensor(indices=tensor([[   0,    3,    5,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 3.0468e-06,  8.9793e-06,  1.0883e-05,  ...,
+                      -3.4318e-05, -1.4368e-05,  9.4084e-06]),
+       size=(2835,), nnz=1224, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.44413959980010986,2393,-0.002285588765516877,2011
+25,"tensor(54, device='cuda:7')","tensor(indices=tensor([[   0,    3,    5,  ..., 2827, 2831, 2834]]),
+       values=tensor([-2.4134e-07, -1.5965e-05, -9.2270e-07,  ...,
+                       2.9737e-06,  1.2369e-06, -8.2005e-07]),
+       size=(2835,), nnz=1294, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",2.1493618488311768,2192,-3.3530426025390625,234
+26,"tensor(1478, device='cuda:7')","tensor(indices=tensor([[   0,    1,    2,  ..., 2832, 2833, 2834]]),
+       values=tensor([ 3.3868e-06,  4.1990e-05,  2.4600e-04,  ...,
+                       7.8109e-08, -3.0773e-08, -3.8084e-07]),
+       size=(2835,), nnz=2139, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.641035258769989,196,-0.07812825590372086,2393
+27,"tensor(2092, device='cuda:7')","tensor(indices=tensor([[   0,    1,    3,  ..., 2832, 2833, 2834]]),
+       values=tensor([-2.4414e-07, -8.0042e-04, -2.2322e-05,  ...,
+                      -4.7393e-03, -1.0407e-07, -8.2956e-07]),
+       size=(2835,), nnz=2045, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.7195979356765747,196,-0.06428156048059464,1513
+28,"tensor(1573, device='cuda:7')","tensor(indices=tensor([[   0,    3,    4,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 1.8838e-06,  5.5517e-06,  2.3304e-06,  ...,
+                      -2.1218e-05, -8.8833e-06,  5.8170e-06]),
+       size=(2835,), nnz=1263, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.45840147137641907,2625,-0.1505253165960312,2011
+29,"tensor(2373, device='cuda:7')","tensor(indices=tensor([[   0,    1,    3,  ..., 2832, 2833, 2834]]),
+       values=tensor([ 3.1821e-06, -2.8571e-08,  9.3780e-06,  ...,
+                       1.4416e-07,  4.9180e-09,  9.8261e-06]),
+       size=(2835,), nnz=1996, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.5047722458839417,2393,-0.012215089052915573,2011
+30,"tensor(1000, device='cuda:7')","tensor(indices=tensor([[   0,    3,    4,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 3.4004e-06,  1.0021e-05, -1.4903e-07,  ...,
+                      -3.8300e-05, -1.6035e-05,  1.0500e-05]),
+       size=(2835,), nnz=1258, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.9655523896217346,2393,-0.421123206615448,1000
+31,"tensor(366, device='cuda:7')","tensor(indices=tensor([[   0,    3,    5,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 4.7731e-06,  1.4067e-05,  1.7049e-05,  ...,
+                      -5.3762e-05, -2.2508e-05,  1.4739e-05]),
+       size=(2835,), nnz=1250, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.8224766850471497,2393,-0.8571930527687073,2077
+32,"tensor(1646, device='cuda:7')","tensor(indices=tensor([[   0,    3,    5,  ..., 2827, 2831, 2834]]),
+       values=tensor([-1.9703e-07, -1.3034e-05, -7.5331e-07,  ...,
+                       2.4278e-06,  1.0099e-06, -6.6950e-07]),
+       size=(2835,), nnz=1160, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.30816537141799927,1621,-0.16316848993301392,1176
+33,"tensor(847, device='cuda:7')","tensor(indices=tensor([[   0,    3,    4,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 2.0406e-06,  1.2731e-04,  2.2282e-04,  ...,
+                      -2.2984e-05, -9.6229e-06,  6.3013e-06]),
+       size=(2835,), nnz=1307, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.6914080381393433,2393,-0.6527107954025269,847
+34,"tensor(33, device='cuda:7')","tensor(indices=tensor([[   0,    3,    5,  ..., 2827, 2831, 2834]]),
+       values=tensor([ 3.3622e-06,  2.0977e-04,  1.2010e-05,  ...,
+                      -3.7870e-05,  3.3394e-02,  1.0382e-05]),
+       size=(2835,), nnz=1248, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",1.8364983797073364,234,-0.7986471056938171,846
+35,"tensor(45, device='cuda:7')","tensor(indices=tensor([[   0,    3,    5,  ..., 2827, 2831, 2834]]),
+       values=tensor([-2.6266e-07, -1.7376e-05, -1.0042e-06,  ...,
+                       3.2364e-06,  1.3462e-06, -8.9250e-07]),
+       size=(2835,), nnz=1154, layout=torch.sparse_coo,
+       grad_fn=<ToSparseBackward0>)",0.8821396231651306,1621,-0.794681966304779,234
