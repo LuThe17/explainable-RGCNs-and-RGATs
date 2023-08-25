@@ -211,9 +211,10 @@ def analyse_nodes(homedir, mode, node_table, edge_index, edge_type, model, emb,
         elif mode == 'small':
             node_indice = node_table['pos_min_nodes'][i]
         lrp_node = node_indice
-        res_ind = torch.where((input[:,0] == lrp_node) & (input[:,2]== node_indice))[0]
+        #name_e = name_e.split(')')[0]
+        res_ind = torch.where((input[:,0] == int(name_e)) & (input[:,2]== node_indice))[0]
         if res_ind.shape[0] == 0:
-            res_ind = torch.where((input[:,2] == lrp_node) & (input[:,0]== node_indice))[0]
+            res_ind = torch.where((input[:,2] == int(name_e)) & (input[:,0]== node_indice))[0]
             exclude = [node_indice]
             new_index = choice([a for a in range(0,int(input[:,1].max().item())) if a not in [exclude]])
             input_new = input.clone()
@@ -409,7 +410,7 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
         max_nodes_list, max_edges_list = {}, {}
         pos_max_nodes, pos_max_edges, min_edges_list, pos_min_edges = {}, {}, {}, {}
         count_edges_self, count_nodes_self = 0,0
-        for i in enumerate(test_idx):
+        for i in enumerate(test_idx[:5]):
             #name_test_idx for torch.save
             print(i)
             name_e = str(i).split('tensor(')[1].split(',')[0]
@@ -488,12 +489,13 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
         n_largest_edges = edges_table.nlargest(3, 'max_edges')
         n_smallest_edges = edges_table.nsmallest(3, 'min_edges')
         mode = 'large'
-        analyse_edges(homedir, mode, n_largest_edges, edge_index, edge_type, model,emb,
-                            parameter_list, input, weight_dense, relevance, adja, activation,
-                            test_idx, model_name,dataset_name,None, num_nodes,num_relations,emb_type, s1, s2,None)
         analyse_nodes(homedir,mode,  n_largest_nodes, edge_index, edge_type, model,emb, 
                            parameter_list, input, weight_dense, relevance, adja, activation,
                            test_idx, model_name,dataset_name,None, num_nodes,num_relations,emb_type, s1, s2,None)
+        analyse_edges(homedir, mode, n_largest_edges, edge_index, edge_type, model,emb,
+                            parameter_list, input, weight_dense, relevance, adja, activation,
+                            test_idx, model_name,dataset_name,None, num_nodes,num_relations,emb_type, s1, s2,None)
+
         mode = 'small'
         analyse_edges(homedir, mode, n_smallest_edges, edge_index, edge_type, model,emb,
                             parameter_list, input, weight_dense, relevance, adja, activation,
