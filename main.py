@@ -206,9 +206,9 @@ def get_lrp_variables(model, emb, triples_plus):
 
 if __name__ == '__main__':
     homedir= '/home/luitheob/AIFB/'#C:/Users/luisa/Projekte/Masterthesis/AIFB/'
-    datasets = ['AIFB','MUTAG']
-    models =   ['RGCN_no_emb', 'RGCN_emb', 'RGAT_no_emb','RGAT_emb'] #['RGCN_no_emb', 'RGCN_emb', 
-    embs=[ 'TransE','TransH','DistMult']# ,
+    datasets = ['AIFB'] #'AIFB',
+    models =   [ 'RGCN_no_emb', 'RGCN_emb', 'RGAT_no_emb','RGAT_emb'] #[ 'RGAT_no_emb','RGCN_no_emb', 'RGCN_emb',
+    embs=['TransE','TransH', 'DistMult']# ,
     global test_idx, test_y, train_idx, train_y, edge_index, edge_type, pyk_emb
     for dataset_name in datasets:
         print('dataset: ', dataset_name)

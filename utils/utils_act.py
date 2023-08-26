@@ -102,7 +102,7 @@ def load_data(homedir,filename, emb_type, model_name):
             test: dictionary mapping test node labels to indices
     '''
     if filename == 'AIFB':
-        kg_dir = 'data/AIFB/aifb_renamed_bn.nt'
+        kg_dir = 'data/AIFB/aifb_final.nt'
         train_dir = "data/AIFB/trainingSet.tsv"
         test_dir = "data/AIFB/testSet.tsv"
         pytest_dir = "data/AIFB/testSetpy.tsv"
@@ -215,9 +215,9 @@ def load_data(homedir,filename, emb_type, model_name):
             pickle.dump(triples_plus, fp)
         with open(homedir + '/out/'+ filename+'/'+ model_name+'/edges_list.pkl', 'wb') as fp:
             pickle.dump(edges, fp)
-        with open (homedir + '/out/'+filename + '/'+ model_name + 'test_list.pkl','wb') as fp:
+        with open (homedir + '/out/'+filename + '/'+ model_name + '/test_list.pkl','wb') as fp:
             pickle.dump(test, fp)
-        with open (homedir + '/out/'+filename + '/'+ model_name + 'train_list.pkl','wb') as fp:
+        with open (homedir + '/out/'+filename + '/'+ model_name + '/train_list.pkl','wb') as fp:
             pickle.dump(train,fp)
         with open (homedir + '/out/'+ filename+'/'+ model_name+'/i2r.pkl', 'wb') as fp:
             pickle.dump(i2r, fp)

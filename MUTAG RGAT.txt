@@ -6399,3 +6399,4057 @@ tensor([[0.7777, 0.2223],
         [0.7899, 0.2101],
         [0.7976, 0.2024],
         [0.7971, 0.2029]])
+tensor(indices=tensor([[14281],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+17821
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[17821],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+15715
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[15715],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+1966
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[1966],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+17622
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[17622],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+21681
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[21681],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+1
+3373
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[3373],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+11119
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[11119],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+11621
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[11621],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+11947
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[11947],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+12409
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[12409],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+20806
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[20806],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+13002
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[13002],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+15729
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[15729],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+2
+2167
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[2167],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+7955
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[7955],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+3104
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[3104],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+2748
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[2748],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+10034
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[10034],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+637
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[637],
+                       [  0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+21437
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[21437],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+11254
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[11254],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+3
+9946
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[9946],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+4191
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[4191],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+14132
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[14132],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+156
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[156],
+                       [  1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+10010
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[10010],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+22182
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[22182],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+13636
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[13636],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+471
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[471],
+                       [  0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+4
+669
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[669],
+                       [  0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+20021
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[20021],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+5
+3227
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[3227],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+20789
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[20789],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+13301
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[13301],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+9380
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[9380],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+600
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[600],
+                       [  0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+6
+21481
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[21481],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+4631
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[4631],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+4532
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[4532],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+21379
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[21379],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+14712
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[14712],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+18673
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[18673],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+10273
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[10273],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+2845
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[2845],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+19996
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[19996],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+7
+1
+12058
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[12058],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+19053
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[19053],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+17214
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[17214],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+20951
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[20951],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+8
+6762
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[6762],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+9
+22065
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[22065],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+21236
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[21236],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+1886
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[1886],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+10
+14082
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[14082],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+11
+19344
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[19344],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+10657
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[10657],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+1892
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(4.3927) tensor(-0.1538) tensor(3978212)
+Exponential sum:  tensor(63059.9688)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(127.6781) tensor(-1.8759) tensor(1503282937)
+Exponential sum:  tensor(59189.5430)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.7777, 0.2223],
+        [0.7819, 0.2181],
+        [0.7777, 0.2223],
+        ...,
+        [0.7899, 0.2101],
+        [0.7976, 0.2024],
+        [0.7971, 0.2029]])
+tensor(indices=tensor([[1892],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+Start Analyzing
+11621
+Parameter containing:
+tensor([[-0.6739,  0.1195, -0.2323,  ..., -0.2025, -0.3272, -0.1164],
+        [-0.2270, -0.0673,  0.3001,  ..., -0.0692,  0.0014,  0.2561],
+        [-0.0214,  0.3068,  0.0993,  ...,  0.1740,  0.1389, -0.1208],
+        ...,
+        [-0.2673,  0.0959, -0.0511,  ...,  0.0830, -0.0978,  0.2554],
+        [ 0.2491,  0.1878,  0.2754,  ...,  0.3843,  0.0010,  0.0797],
+        [-0.2791,  0.1566, -0.1803,  ...,  0.3715, -0.2197,  0.1227]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(3.0409) tensor(-0.5400) tensor(549973)
+Exponential sum:  tensor(61979.6172)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(76.5545) tensor(-0.7484) tensor(1347711799)
+Exponential sum:  tensor(60872.9531)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5403, 0.4597],
+        [0.5422, 0.4578],
+        [0.5403, 0.4597],
+        ...,
+        [0.5472, 0.4528],
+        [0.5407, 0.4593],
+        [0.5423, 0.4577]])
+tensor(indices=tensor([[11621],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+13002
+Parameter containing:
+tensor([[-0.6739,  0.1195, -0.2323,  ..., -0.2025, -0.3272, -0.1164],
+        [-0.2270, -0.0673,  0.3001,  ..., -0.0692,  0.0014,  0.2561],
+        [-0.0214,  0.3068,  0.0993,  ...,  0.1740,  0.1389, -0.1208],
+        ...,
+        [-0.2673,  0.0959, -0.0511,  ...,  0.0830, -0.0978,  0.2554],
+        [ 0.2491,  0.1878,  0.2754,  ...,  0.3843,  0.0010,  0.0797],
+        [-0.2791,  0.1566, -0.1803,  ...,  0.3715, -0.2197,  0.1227]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(3.0409) tensor(-0.5400) tensor(549973)
+Exponential sum:  tensor(61979.6133)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(76.5545) tensor(-0.7484) tensor(1347711799)
+Exponential sum:  tensor(60872.9609)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5403, 0.4597],
+        [0.5422, 0.4578],
+        [0.5403, 0.4597],
+        ...,
+        [0.5472, 0.4528],
+        [0.5407, 0.4593],
+        [0.5423, 0.4577]])
+tensor(indices=tensor([[13002],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+22065
+Parameter containing:
+tensor([[-0.6739,  0.1195, -0.2323,  ..., -0.2025, -0.3272, -0.1164],
+        [-0.2270, -0.0673,  0.3001,  ..., -0.0692,  0.0014,  0.2561],
+        [-0.0214,  0.3068,  0.0993,  ...,  0.1740,  0.1389, -0.1208],
+        ...,
+        [-0.2673,  0.0959, -0.0511,  ...,  0.0830, -0.0978,  0.2554],
+        [ 0.2491,  0.1878,  0.2754,  ...,  0.3843,  0.0010,  0.0797],
+        [-0.2791,  0.1566, -0.1803,  ...,  0.3715, -0.2197,  0.1227]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(3.0854) tensor(-0.5400) tensor(549973)
+Exponential sum:  tensor(61979.6172)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(76.5545) tensor(-0.7484) tensor(1347711799)
+Exponential sum:  tensor(60872.9922)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5403, 0.4597],
+        [0.5422, 0.4578],
+        [0.5403, 0.4597],
+        ...,
+        [0.5472, 0.4528],
+        [0.5407, 0.4593],
+        [0.5423, 0.4577]])
+tensor(indices=tensor([[22065],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+22065
+torch.Size([2, 63382])
+Parameter containing:
+tensor([[-0.6739,  0.1195, -0.2323,  ..., -0.2025, -0.3272, -0.1164],
+        [-0.2270, -0.0673,  0.3001,  ..., -0.0692,  0.0014,  0.2561],
+        [-0.0214,  0.3068,  0.0993,  ...,  0.1740,  0.1389, -0.1208],
+        ...,
+        [-0.2673,  0.0959, -0.0511,  ...,  0.0830, -0.0978,  0.2554],
+        [ 0.2491,  0.1878,  0.2754,  ...,  0.3843,  0.0010,  0.0797],
+        [-0.2791,  0.1566, -0.1803,  ...,  0.3715, -0.2197,  0.1227]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(3.0409) tensor(-0.5400) tensor(549973)
+Exponential sum:  tensor(61979.6016)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(76.5545) tensor(-0.7484) tensor(1347711799)
+Exponential sum:  tensor(60873.0391)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5403, 0.4597],
+        [0.5422, 0.4578],
+        [0.5403, 0.4597],
+        ...,
+        [0.5472, 0.4528],
+        [0.5407, 0.4593],
+        [0.5423, 0.4577]])
+tensor(indices=tensor([[22065],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+11621
+torch.Size([2, 63382])
+Parameter containing:
+tensor([[-0.6739,  0.1195, -0.2323,  ..., -0.2025, -0.3272, -0.1164],
+        [-0.2270, -0.0673,  0.3001,  ..., -0.0692,  0.0014,  0.2561],
+        [-0.0214,  0.3068,  0.0993,  ...,  0.1740,  0.1389, -0.1208],
+        ...,
+        [-0.2673,  0.0959, -0.0511,  ...,  0.0830, -0.0978,  0.2554],
+        [ 0.2491,  0.1878,  0.2754,  ...,  0.3843,  0.0010,  0.0797],
+        [-0.2791,  0.1566, -0.1803,  ...,  0.3715, -0.2197,  0.1227]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(3.0409) tensor(-0.5400) tensor(549973)
+Exponential sum:  tensor(61979.6094)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(76.5545) tensor(-0.7484) tensor(1347711799)
+Exponential sum:  tensor(60873.0391)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5403, 0.4597],
+        [0.5422, 0.4578],
+        [0.5403, 0.4597],
+        ...,
+        [0.5472, 0.4528],
+        [0.5407, 0.4593],
+        [0.5423, 0.4577]])
+tensor(indices=tensor([[11621],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+2167
+torch.Size([2, 63382])
+Parameter containing:
+tensor([[-0.6739,  0.1195, -0.2323,  ..., -0.2025, -0.3272, -0.1164],
+        [-0.2270, -0.0673,  0.3001,  ..., -0.0692,  0.0014,  0.2561],
+        [-0.0214,  0.3068,  0.0993,  ...,  0.1740,  0.1389, -0.1208],
+        ...,
+        [-0.2673,  0.0959, -0.0511,  ...,  0.0830, -0.0978,  0.2554],
+        [ 0.2491,  0.1878,  0.2754,  ...,  0.3843,  0.0010,  0.0797],
+        [-0.2791,  0.1566, -0.1803,  ...,  0.3715, -0.2197,  0.1227]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(3.0409) tensor(-0.5400) tensor(549973)
+Exponential sum:  tensor(61979.6328)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(76.5545) tensor(-0.7484) tensor(1347711799)
+Exponential sum:  tensor(60872.9922)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5403, 0.4597],
+        [0.5422, 0.4578],
+        [0.5403, 0.4597],
+        ...,
+        [0.5472, 0.4528],
+        [0.5407, 0.4593],
+        [0.5423, 0.4577]])
+tensor(indices=tensor([[2167],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+11621
+Parameter containing:
+tensor([[-0.6739,  0.1195, -0.2323,  ..., -0.2025, -0.3272, -0.1164],
+        [-0.2270, -0.0673,  0.3001,  ..., -0.0692,  0.0014,  0.2561],
+        [-0.0214,  0.3068,  0.0993,  ...,  0.1740,  0.1389, -0.1208],
+        ...,
+        [-0.2673,  0.0959, -0.0511,  ...,  0.0830, -0.0978,  0.2554],
+        [ 0.2491,  0.1878,  0.2754,  ...,  0.3843,  0.0010,  0.0797],
+        [-0.2791,  0.1566, -0.1803,  ...,  0.3715, -0.2197,  0.1227]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(3.0409) tensor(-0.5400) tensor(549973)
+Exponential sum:  tensor(61979.6172)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(76.5545) tensor(-0.7484) tensor(1347711799)
+Exponential sum:  tensor(60872.9531)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5403, 0.4597],
+        [0.5422, 0.4578],
+        [0.5403, 0.4597],
+        ...,
+        [0.5472, 0.4528],
+        [0.5407, 0.4593],
+        [0.5423, 0.4577]])
+tensor(indices=tensor([[11621],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+13002
+Parameter containing:
+tensor([[-0.6739,  0.1195, -0.2323,  ..., -0.2025, -0.3272, -0.1164],
+        [-0.2270, -0.0673,  0.3001,  ..., -0.0692,  0.0014,  0.2561],
+        [-0.0214,  0.3068,  0.0993,  ...,  0.1740,  0.1389, -0.1208],
+        ...,
+        [-0.2673,  0.0959, -0.0511,  ...,  0.0830, -0.0978,  0.2554],
+        [ 0.2491,  0.1878,  0.2754,  ...,  0.3843,  0.0010,  0.0797],
+        [-0.2791,  0.1566, -0.1803,  ...,  0.3715, -0.2197,  0.1227]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(3.0409) tensor(-0.5400) tensor(549973)
+Exponential sum:  tensor(61979.6172)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(76.5545) tensor(-0.7484) tensor(1347711799)
+Exponential sum:  tensor(60872.9531)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5403, 0.4597],
+        [0.5422, 0.4578],
+        [0.5403, 0.4597],
+        ...,
+        [0.5472, 0.4528],
+        [0.5407, 0.4593],
+        [0.5423, 0.4577]])
+tensor(indices=tensor([[13002],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+22065
+Parameter containing:
+tensor([[-0.6739,  0.1195, -0.2323,  ..., -0.2025, -0.3272, -0.1164],
+        [-0.2270, -0.0673,  0.3001,  ..., -0.0692,  0.0014,  0.2561],
+        [-0.0214,  0.3068,  0.0993,  ...,  0.1740,  0.1389, -0.1208],
+        ...,
+        [-0.2673,  0.0959, -0.0511,  ...,  0.0830, -0.0978,  0.2554],
+        [ 0.2491,  0.1878,  0.2754,  ...,  0.3843,  0.0010,  0.0797],
+        [-0.2791,  0.1566, -0.1803,  ...,  0.3715, -0.2197,  0.1227]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(3.0409) tensor(-0.5400) tensor(549973)
+Exponential sum:  tensor(61979.6094)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(76.5545) tensor(-0.7484) tensor(1347711799)
+Exponential sum:  tensor(60872.9453)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5403, 0.4597],
+        [0.5422, 0.4578],
+        [0.5403, 0.4597],
+        ...,
+        [0.5472, 0.4528],
+        [0.5407, 0.4593],
+        [0.5423, 0.4577]])
+tensor(indices=tensor([[22065],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+22065
+torch.Size([2, 63382])
+Parameter containing:
+tensor([[-0.6739,  0.1195, -0.2323,  ..., -0.2025, -0.3272, -0.1164],
+        [-0.2270, -0.0673,  0.3001,  ..., -0.0692,  0.0014,  0.2561],
+        [-0.0214,  0.3068,  0.0993,  ...,  0.1740,  0.1389, -0.1208],
+        ...,
+        [-0.2673,  0.0959, -0.0511,  ...,  0.0830, -0.0978,  0.2554],
+        [ 0.2491,  0.1878,  0.2754,  ...,  0.3843,  0.0010,  0.0797],
+        [-0.2791,  0.1566, -0.1803,  ...,  0.3715, -0.2197,  0.1227]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(3.0409) tensor(-0.5400) tensor(549973)
+Exponential sum:  tensor(61979.6172)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(76.5545) tensor(-0.7484) tensor(1347711799)
+Exponential sum:  tensor(60872.9531)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5403, 0.4597],
+        [0.5422, 0.4578],
+        [0.5403, 0.4597],
+        ...,
+        [0.5472, 0.4528],
+        [0.5407, 0.4593],
+        [0.5423, 0.4577]])
+tensor(indices=tensor([[22065],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+11621
+torch.Size([2, 63382])
+Parameter containing:
+tensor([[-0.6739,  0.1195, -0.2323,  ..., -0.2025, -0.3272, -0.1164],
+        [-0.2270, -0.0673,  0.3001,  ..., -0.0692,  0.0014,  0.2561],
+        [-0.0214,  0.3068,  0.0993,  ...,  0.1740,  0.1389, -0.1208],
+        ...,
+        [-0.2673,  0.0959, -0.0511,  ...,  0.0830, -0.0978,  0.2554],
+        [ 0.2491,  0.1878,  0.2754,  ...,  0.3843,  0.0010,  0.0797],
+        [-0.2791,  0.1566, -0.1803,  ...,  0.3715, -0.2197,  0.1227]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(3.0409) tensor(-0.5400) tensor(549973)
+Exponential sum:  tensor(61979.6172)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(76.5545) tensor(-0.7484) tensor(1347711799)
+Exponential sum:  tensor(60872.9531)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5403, 0.4597],
+        [0.5422, 0.4578],
+        [0.5403, 0.4597],
+        ...,
+        [0.5472, 0.4528],
+        [0.5407, 0.4593],
+        [0.5423, 0.4577]])
+tensor(indices=tensor([[11621],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+2167
+torch.Size([2, 63382])
+Parameter containing:
+tensor([[-0.6739,  0.1195, -0.2323,  ..., -0.2025, -0.3272, -0.1164],
+        [-0.2270, -0.0673,  0.3001,  ..., -0.0692,  0.0014,  0.2561],
+        [-0.0214,  0.3068,  0.0993,  ...,  0.1740,  0.1389, -0.1208],
+        ...,
+        [-0.2673,  0.0959, -0.0511,  ...,  0.0830, -0.0978,  0.2554],
+        [ 0.2491,  0.1878,  0.2754,  ...,  0.3843,  0.0010,  0.0797],
+        [-0.2791,  0.1566, -0.1803,  ...,  0.3715, -0.2197,  0.1227]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(3.0409) tensor(-0.5400) tensor(549973)
+Exponential sum:  tensor(61979.6172)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(76.5545) tensor(-0.7484) tensor(1347711799)
+Exponential sum:  tensor(60872.9531)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5403, 0.4597],
+        [0.5422, 0.4578],
+        [0.5403, 0.4597],
+        ...,
+        [0.5472, 0.4528],
+        [0.5407, 0.4593],
+        [0.5423, 0.4577]])
+tensor(indices=tensor([[2167],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+count_nodes_self:  11
+count_edges_self:  1
+[Evaluation] Test Accuracy: 75.00
+emb_type:  DistMult
+Labels loaded.
+RDF loaded.
+Graph loaded.
+cuda:  True
+shape edges:  torch.Size([63382, 3])
+test_idx:  tensor([ 1513,  7769,  9786, 11084,  5351, 22535,  1699, 22206,  5881,  7952,
+        14281, 17821, 15715,  1966, 17622, 21681,  3373, 11119, 11621, 11947,
+        12409, 20806, 13002, 15729,  2167,  7955,  3104,  2748, 10034,   637,
+        21437, 11254,  9946,  4191, 14132,   156, 10010, 22182, 13636,   471,
+          669, 20021,  3227, 20789, 13301,  9380,   600, 21481,  4631,  4532,
+        21379, 14712, 18673, 10273,  2845, 19996, 12058, 19053, 17214, 20951,
+         6762, 22065, 21236,  1886, 14082, 19344, 10657,  1892],
+       device='cuda:7')
+num_classes:  2
+num_nodes:  22540
+num_relations:  9
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(34.3689, grad_fn=<MaxBackward1>) tensor(-0.7955, grad_fn=<MinBackward1>) tensor(7831966)
+Exponential sum:  tensor(59332.4414, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(718.6286, grad_fn=<MaxBackward1>) tensor(-5.8385, grad_fn=<MinBackward1>) tensor(670946)
+Exponential sum:  tensor(58380.3633, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.4977, 0.5023],
+        [0.4870, 0.5130],
+        [0.4977, 0.5023],
+        ...,
+        [0.4839, 0.5161],
+        [0.4645, 0.5355],
+        [0.4871, 0.5129]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0001 loss: 0.6921 acc_train: 0.5625
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(35.2916, grad_fn=<MaxBackward1>) tensor(-0.7315, grad_fn=<MinBackward1>) tensor(3880409)
+Exponential sum:  tensor(59737.7930, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(727.6335, grad_fn=<MaxBackward1>) tensor(-3.3853, grad_fn=<MinBackward1>) tensor(1492767)
+Exponential sum:  tensor(60407.5781, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5427, 0.4573],
+        [0.5309, 0.4691],
+        [0.5427, 0.4573],
+        ...,
+        [0.5254, 0.4746],
+        [0.5169, 0.4831],
+        [0.5546, 0.4454]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0002 loss: 0.6704 acc_train: 0.6103
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(34.5173, grad_fn=<MaxBackward1>) tensor(-0.6678, grad_fn=<MinBackward1>) tensor(7831966)
+Exponential sum:  tensor(60008.7031, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(758.7507, grad_fn=<MaxBackward1>) tensor(-1.9333, grad_fn=<MinBackward1>) tensor(1492767)
+Exponential sum:  tensor(61461.1055, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5835, 0.4165],
+        [0.5715, 0.4285],
+        [0.5835, 0.4165],
+        ...,
+        [0.5674, 0.4326],
+        [0.5600, 0.4400],
+        [0.6030, 0.3970]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0003 loss: 0.6652 acc_train: 0.6103
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(32.9499, grad_fn=<MaxBackward1>) tensor(-0.6277, grad_fn=<MinBackward1>) tensor(7831966)
+Exponential sum:  tensor(60272.0469, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(778.5557, grad_fn=<MaxBackward1>) tensor(-1.1933, grad_fn=<MinBackward1>) tensor(1877108666)
+Exponential sum:  tensor(61953.3438, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.6090, 0.3910],
+        [0.5958, 0.4042],
+        [0.6090, 0.3910],
+        ...,
+        [0.5933, 0.4067],
+        [0.5881, 0.4119],
+        [0.6314, 0.3686]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0004 loss: 0.6625 acc_train: 0.6103
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(31.3564, grad_fn=<MaxBackward1>) tensor(-0.5989, grad_fn=<MinBackward1>) tensor(7831966)
+Exponential sum:  tensor(60520.4336, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(771.2460, grad_fn=<MaxBackward1>) tensor(-1.0691, grad_fn=<MinBackward1>) tensor(1802209935)
+Exponential sum:  tensor(62341.0859, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.6148, 0.3852],
+        [0.6002, 0.3998],
+        [0.6148, 0.3852],
+        ...,
+        [0.5963, 0.4037],
+        [0.5966, 0.4034],
+        [0.6335, 0.3665]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0005 loss: 0.6576 acc_train: 0.6103
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(29.5078, grad_fn=<MaxBackward1>) tensor(-0.5661, grad_fn=<MinBackward1>) tensor(7831966)
+Exponential sum:  tensor(60588.2344, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(753.7759, grad_fn=<MaxBackward1>) tensor(-0.9971, grad_fn=<MinBackward1>) tensor(1802209935)
+Exponential sum:  tensor(62473.0781, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.6079, 0.3921],
+        [0.5918, 0.4082],
+        [0.6079, 0.3921],
+        ...,
+        [0.5880, 0.4120],
+        [0.5901, 0.4099],
+        [0.6215, 0.3785]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0006 loss: 0.6505 acc_train: 0.6103
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(27.9244, grad_fn=<MaxBackward1>) tensor(-0.5371, grad_fn=<MinBackward1>) tensor(7831966)
+Exponential sum:  tensor(60678.2812, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(706.5980, grad_fn=<MaxBackward1>) tensor(-0.8911, grad_fn=<MinBackward1>) tensor(1802209935)
+Exponential sum:  tensor(62609.3242, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5999, 0.4001],
+        [0.5820, 0.4180],
+        [0.5999, 0.4001],
+        ...,
+        [0.5776, 0.4224],
+        [0.5826, 0.4174],
+        [0.6073, 0.3927]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0007 loss: 0.6432 acc_train: 0.6103
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(26.5464, grad_fn=<MaxBackward1>) tensor(-0.5095, grad_fn=<MinBackward1>) tensor(2299722)
+Exponential sum:  tensor(60760.9102, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(647.0234, grad_fn=<MaxBackward1>) tensor(-0.7982, grad_fn=<MinBackward1>) tensor(1802209935)
+Exponential sum:  tensor(62752.4805, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5945, 0.4055],
+        [0.5742, 0.4258],
+        [0.5945, 0.4055],
+        ...,
+        [0.5695, 0.4305],
+        [0.5783, 0.4217],
+        [0.5947, 0.4053]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0008 loss: 0.6360 acc_train: 0.6103
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(25.3567, grad_fn=<MaxBackward1>) tensor(-0.5091, grad_fn=<MinBackward1>) tensor(2299722)
+Exponential sum:  tensor(60842.7422, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(586.0604, grad_fn=<MaxBackward1>) tensor(-0.7257, grad_fn=<MinBackward1>) tensor(1802209935)
+Exponential sum:  tensor(62878.1953, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5914, 0.4086],
+        [0.5705, 0.4295],
+        [0.5914, 0.4086],
+        ...,
+        [0.5641, 0.4359],
+        [0.5775, 0.4225],
+        [0.5849, 0.4151]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0009 loss: 0.6286 acc_train: 0.6176
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(24.3103, grad_fn=<MaxBackward1>) tensor(-0.4965, grad_fn=<MinBackward1>) tensor(2299722)
+Exponential sum:  tensor(60919.6484, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(534.1148, grad_fn=<MaxBackward1>) tensor(-0.6777, grad_fn=<MinBackward1>) tensor(1802209935)
+Exponential sum:  tensor(62961.8555, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5894, 0.4106],
+        [0.5687, 0.4313],
+        [0.5894, 0.4106],
+        ...,
+        [0.5632, 0.4368],
+        [0.5784, 0.4216],
+        [0.5773, 0.4227]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0010 loss: 0.6217 acc_train: 0.6581
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(23.4649, grad_fn=<MaxBackward1>) tensor(-0.4748, grad_fn=<MinBackward1>) tensor(2299722)
+Exponential sum:  tensor(60994.5156, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(484.0031, grad_fn=<MaxBackward1>) tensor(-0.6496, grad_fn=<MinBackward1>) tensor(1802209935)
+Exponential sum:  tensor(62950.5781, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5891, 0.4109],
+        [0.5683, 0.4317],
+        [0.5891, 0.4109],
+        ...,
+        [0.5659, 0.4341],
+        [0.5815, 0.4185],
+        [0.5735, 0.4265]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0011 loss: 0.6144 acc_train: 0.6838
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(22.6488, grad_fn=<MaxBackward1>) tensor(-0.4796, grad_fn=<MinBackward1>) tensor(549973)
+Exponential sum:  tensor(61042.5977, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(446.1036, grad_fn=<MaxBackward1>) tensor(-0.6457, grad_fn=<MinBackward1>) tensor(1802209935)
+Exponential sum:  tensor(62735.9336, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5886, 0.4114],
+        [0.5679, 0.4321],
+        [0.5886, 0.4114],
+        ...,
+        [0.5696, 0.4304],
+        [0.5847, 0.4153],
+        [0.5728, 0.4272]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0012 loss: 0.6073 acc_train: 0.7022
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(21.7360, grad_fn=<MaxBackward1>) tensor(-0.5441, grad_fn=<MinBackward1>) tensor(549973)
+Exponential sum:  tensor(61056.0312, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(424.5602, grad_fn=<MaxBackward1>) tensor(-0.6546, grad_fn=<MinBackward1>) tensor(1802209935)
+Exponential sum:  tensor(62514.4102, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5853, 0.4147],
+        [0.5649, 0.4351],
+        [0.5853, 0.4147],
+        ...,
+        [0.5707, 0.4293],
+        [0.5851, 0.4149],
+        [0.5708, 0.4292]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0013 loss: 0.6006 acc_train: 0.7022
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(20.7388, grad_fn=<MaxBackward1>) tensor(-0.6094, grad_fn=<MinBackward1>) tensor(549973)
+Exponential sum:  tensor(61048.6641, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(414.3171, grad_fn=<MaxBackward1>) tensor(-0.6668, grad_fn=<MinBackward1>) tensor(1802209935)
+Exponential sum:  tensor(62237.3984, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5819, 0.4181],
+        [0.5618, 0.4382],
+        [0.5819, 0.4181],
+        ...,
+        [0.5705, 0.4295],
+        [0.5842, 0.4158],
+        [0.5697, 0.4303]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0014 loss: 0.5941 acc_train: 0.7096
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(19.6978, grad_fn=<MaxBackward1>) tensor(-0.6740, grad_fn=<MinBackward1>) tensor(549973)
+Exponential sum:  tensor(61037.1562, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(411.1599, grad_fn=<MaxBackward1>) tensor(-0.6761, grad_fn=<MinBackward1>) tensor(1802209935)
+Exponential sum:  tensor(61922.4844, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5788, 0.4212],
+        [0.5591, 0.4409],
+        [0.5788, 0.4212],
+        ...,
+        [0.5694, 0.4306],
+        [0.5826, 0.4174],
+        [0.5685, 0.4315]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0015 loss: 0.5878 acc_train: 0.7132
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(18.7290, grad_fn=<MaxBackward1>) tensor(-0.7343, grad_fn=<MinBackward1>) tensor(549973)
+Exponential sum:  tensor(61030.6406, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(408.6232, grad_fn=<MaxBackward1>) tensor(-0.7757, grad_fn=<MinBackward1>) tensor(1503282937)
+Exponential sum:  tensor(61590.2344, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5762, 0.4238],
+        [0.5579, 0.4421],
+        [0.5762, 0.4238],
+        ...,
+        [0.5690, 0.4310],
+        [0.5815, 0.4185],
+        [0.5679, 0.4321]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0016 loss: 0.5813 acc_train: 0.7169
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(17.8706, grad_fn=<MaxBackward1>) tensor(-0.7853, grad_fn=<MinBackward1>) tensor(549973)
+Exponential sum:  tensor(61035.8516, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(405.1862, grad_fn=<MaxBackward1>) tensor(-0.9790, grad_fn=<MinBackward1>) tensor(1503282937)
+Exponential sum:  tensor(61256.3320, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5738, 0.4262],
+        [0.5581, 0.4419],
+        [0.5738, 0.4262],
+        ...,
+        [0.5689, 0.4311],
+        [0.5805, 0.4195],
+        [0.5678, 0.4322]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0017 loss: 0.5747 acc_train: 0.7206
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(17.1064, grad_fn=<MaxBackward1>) tensor(-0.8293, grad_fn=<MinBackward1>) tensor(549973)
+Exponential sum:  tensor(61048.9688, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(400.7436, grad_fn=<MaxBackward1>) tensor(-1.1645, grad_fn=<MinBackward1>) tensor(1503282937)
+Exponential sum:  tensor(60793.2031, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5722, 0.4278],
+        [0.5595, 0.4405],
+        [0.5722, 0.4278],
+        ...,
+        [0.5706, 0.4294],
+        [0.5810, 0.4190],
+        [0.5696, 0.4304]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0018 loss: 0.5680 acc_train: 0.7316
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(16.3841, grad_fn=<MaxBackward1>) tensor(-0.8640, grad_fn=<MinBackward1>) tensor(549973)
+Exponential sum:  tensor(61066.2578, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(394.6707, grad_fn=<MaxBackward1>) tensor(-1.3420, grad_fn=<MinBackward1>) tensor(1503282937)
+Exponential sum:  tensor(60331.5703, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5727, 0.4273],
+        [0.5621, 0.4379],
+        [0.5727, 0.4273],
+        ...,
+        [0.5734, 0.4266],
+        [0.5822, 0.4178],
+        [0.5717, 0.4283]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0019 loss: 0.5614 acc_train: 0.7390
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(15.6761, grad_fn=<MaxBackward1>) tensor(-0.8869, grad_fn=<MinBackward1>) tensor(549973)
+Exponential sum:  tensor(60955.6094, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(387.0198, grad_fn=<MaxBackward1>) tensor(-1.4851, grad_fn=<MinBackward1>) tensor(1503282937)
+Exponential sum:  tensor(59914.5977, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5747, 0.4253],
+        [0.5657, 0.4343],
+        [0.5747, 0.4253],
+        ...,
+        [0.5769, 0.4231],
+        [0.5841, 0.4159],
+        [0.5747, 0.4253]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0020 loss: 0.5551 acc_train: 0.7426
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(14.9735, grad_fn=<MaxBackward1>) tensor(-0.8984, grad_fn=<MinBackward1>) tensor(549973)
+Exponential sum:  tensor(60837.9570, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(377.0685, grad_fn=<MaxBackward1>) tensor(-1.5886, grad_fn=<MinBackward1>) tensor(1503282937)
+Exponential sum:  tensor(59556.8242, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5775, 0.4225],
+        [0.5699, 0.4301],
+        [0.5775, 0.4225],
+        ...,
+        [0.5806, 0.4194],
+        [0.5866, 0.4134],
+        [0.5789, 0.4211]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0021 loss: 0.5484 acc_train: 0.7574
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(14.2514, grad_fn=<MaxBackward1>) tensor(-0.8989, grad_fn=<MinBackward1>) tensor(549973)
+Exponential sum:  tensor(60741.7930, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(366.6996, grad_fn=<MaxBackward1>) tensor(-1.6556, grad_fn=<MinBackward1>) tensor(1503282937)
+Exponential sum:  tensor(59287.0977, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5814, 0.4186],
+        [0.5753, 0.4247],
+        [0.5814, 0.4186],
+        ...,
+        [0.5855, 0.4145],
+        [0.5908, 0.4092],
+        [0.5843, 0.4157]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0022 loss: 0.5411 acc_train: 0.7794
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(13.5129, grad_fn=<MaxBackward1>) tensor(-0.8840, grad_fn=<MinBackward1>) tensor(549973)
+Exponential sum:  tensor(60669.4844, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(356.6269, grad_fn=<MaxBackward1>) tensor(-1.7579, grad_fn=<MinBackward1>) tensor(1294156692)
+Exponential sum:  tensor(59094.3750, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5829, 0.4171],
+        [0.5788, 0.4212],
+        [0.5829, 0.4171],
+        ...,
+        [0.5876, 0.4124],
+        [0.5919, 0.4081],
+        [0.5870, 0.4130]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0023 loss: 0.5334 acc_train: 0.7684
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(12.7843, grad_fn=<MaxBackward1>) tensor(-0.8558, grad_fn=<MinBackward1>) tensor(549973)
+Exponential sum:  tensor(60632.9375, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(344.0921, grad_fn=<MaxBackward1>) tensor(-1.9592, grad_fn=<MinBackward1>) tensor(1294156692)
+Exponential sum:  tensor(58969.7188, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5791, 0.4209],
+        [0.5769, 0.4231],
+        [0.5791, 0.4209],
+        ...,
+        [0.5833, 0.4167],
+        [0.5864, 0.4136],
+        [0.5836, 0.4164]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0024 loss: 0.5256 acc_train: 0.7831
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(12.0440, grad_fn=<MaxBackward1>) tensor(-0.8187, grad_fn=<MinBackward1>) tensor(549973)
+Exponential sum:  tensor(60629.7109, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(327.6335, grad_fn=<MaxBackward1>) tensor(-2.1449, grad_fn=<MinBackward1>) tensor(1294156692)
+Exponential sum:  tensor(58926.5508, grad_fn=<SumBackward0>)
+alpha3:  tensor(1., grad_fn=<MaxBackward1>) tensor(0., grad_fn=<MinBackward1>)
+tensor([[0.5793, 0.4207],
+        [0.5795, 0.4205],
+        [0.5793, 0.4207],
+        ...,
+        [0.5820, 0.4180],
+        [0.5850, 0.4150],
+        [0.5836, 0.4164]], grad_fn=<SoftmaxBackward0>)
+Epoch: 0025 loss: 0.5181 acc_train: 0.8015
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+Start RGAT_emb
+M_l2:  tensor([[[0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         ...,
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.]],
+
+        [[0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         ...,
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.]],
+
+        [[0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         ...,
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.]],
+
+        ...,
+
+        [[0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         ...,
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.]],
+
+        [[0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         ...,
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.]],
+
+        [[0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         ...,
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.]]])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+1513
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[1513],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+1
+7769
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[7769],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+2
+9786
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[9786],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+11084
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[11084],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+3
+5351
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[5351],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+22535
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[22535],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+1699
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[1699],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+22206
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[22206],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+5881
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[5881],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+4
+7952
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[7952],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+5
+14281
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[14281],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+17821
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[17821],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+6
+15715
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[15715],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+7
+1966
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[1966],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+17622
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[17622],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+21681
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[21681],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+8
+3373
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[3373],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+11119
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[11119],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+11621
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[11621],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+11947
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[11947],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+12409
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[12409],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+20806
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[20806],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+9
+13002
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[13002],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+15729
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[15729],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+2167
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[2167],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+10
+7955
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[7955],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+3104
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[3104],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+11
+2748
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[2748],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+12
+10034
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[10034],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+13
+637
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[637],
+                       [  0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+14
+21437
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[21437],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+11254
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[11254],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+15
+9946
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[9946],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+4191
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[4191],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+16
+14132
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[14132],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+156
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[156],
+                       [  1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+10010
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[10010],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+22182
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[22182],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+17
+13636
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[13636],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+471
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[471],
+                       [  0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+669
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[669],
+                       [  0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+18
+20021
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[20021],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+3227
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[3227],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+20789
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[20789],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+19
+13301
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[13301],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+9380
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[9380],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+600
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[600],
+                       [  0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+20
+21481
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[21481],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+4631
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[4631],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+4532
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[4532],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+21379
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[21379],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+21
+14712
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[14712],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+18673
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[18673],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+10273
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[10273],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+22
+2845
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[2845],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+19996
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[19996],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+12058
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[12058],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+23
+19053
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[19053],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+24
+17214
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[17214],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+25
+20951
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[20951],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+6762
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[6762],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+22065
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[22065],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+21236
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[21236],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+1886
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[1886],
+                       [   0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+14082
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[14082],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+19344
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[19344],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+10657
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[10657],
+                       [    0]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+1892
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(11.2856) tensor(-0.7732) tensor(549973)
+Exponential sum:  tensor(60656.6680)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(306.8229) tensor(-2.3348) tensor(1294156692)
+Exponential sum:  tensor(59014.3711)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.5850, 0.4150],
+        [0.5857, 0.4143],
+        [0.5850, 0.4150],
+        ...,
+        [0.5861, 0.4139],
+        [0.5891, 0.4109],
+        [0.5890, 0.4110]])
+tensor(indices=tensor([[1892],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+Start Analyzing
+11621
+Parameter containing:
+tensor([[-0.0161,  0.0966, -0.4133,  ..., -0.4011, -0.3805, -0.1011],
+        [-0.0952, -0.1770, -0.3234,  ..., -0.0898, -0.3223, -0.1301],
+        [-0.3556,  0.1591, -0.5307,  ...,  0.0467,  0.0139,  0.0702],
+        ...,
+        [ 0.2538,  0.0825,  0.3354,  ...,  0.2306,  0.3310, -0.3514],
+        [-0.0782, -0.1328,  0.0470,  ...,  0.0913,  0.3288,  0.0147],
+        [-0.0336,  0.1466, -0.1695,  ...,  0.1494,  0.1609,  0.4113]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(10.7144) tensor(-1.4537) tensor(549973)
+Exponential sum:  tensor(60340.5703)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(112.5942) tensor(-1.8864) tensor(1294156692)
+Exponential sum:  tensor(60829.4062)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.6832, 0.3168],
+        [0.6790, 0.3210],
+        [0.6832, 0.3168],
+        ...,
+        [0.6790, 0.3210],
+        [0.6766, 0.3234],
+        [0.6795, 0.3205]])
+tensor(indices=tensor([[11621],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+21481
+Parameter containing:
+tensor([[-0.0161,  0.0966, -0.4133,  ..., -0.4011, -0.3805, -0.1011],
+        [-0.0952, -0.1770, -0.3234,  ..., -0.0898, -0.3223, -0.1301],
+        [-0.3556,  0.1591, -0.5307,  ...,  0.0467,  0.0139,  0.0702],
+        ...,
+        [ 0.2538,  0.0825,  0.3354,  ...,  0.2306,  0.3310, -0.3514],
+        [-0.0782, -0.1328,  0.0470,  ...,  0.0913,  0.3288,  0.0147],
+        [-0.0336,  0.1466, -0.1695,  ...,  0.1494,  0.1609,  0.4113]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(10.7144) tensor(-1.4537) tensor(549973)
+Exponential sum:  tensor(60340.5703)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(112.5942) tensor(-1.8864) tensor(1294156692)
+Exponential sum:  tensor(60829.4180)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.6832, 0.3168],
+        [0.6790, 0.3210],
+        [0.6832, 0.3168],
+        ...,
+        [0.6790, 0.3210],
+        [0.6766, 0.3234],
+        [0.6795, 0.3205]])
+tensor(indices=tensor([[21481],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+7955
+Parameter containing:
+tensor([[-0.0161,  0.0966, -0.4133,  ..., -0.4011, -0.3805, -0.1011],
+        [-0.0952, -0.1770, -0.3234,  ..., -0.0898, -0.3223, -0.1301],
+        [-0.3556,  0.1591, -0.5307,  ...,  0.0467,  0.0139,  0.0702],
+        ...,
+        [ 0.2538,  0.0825,  0.3354,  ...,  0.2306,  0.3310, -0.3514],
+        [-0.0782, -0.1328,  0.0470,  ...,  0.0913,  0.3288,  0.0147],
+        [-0.0336,  0.1466, -0.1695,  ...,  0.1494,  0.1609,  0.4113]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(10.7144) tensor(-1.4537) tensor(549973)
+Exponential sum:  tensor(60340.5703)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(112.5942) tensor(-1.8864) tensor(1294156692)
+Exponential sum:  tensor(60829.4180)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.6832, 0.3168],
+        [0.6790, 0.3210],
+        [0.6832, 0.3168],
+        ...,
+        [0.6790, 0.3210],
+        [0.6766, 0.3234],
+        [0.6795, 0.3205]])
+tensor(indices=tensor([[7955],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+19996
+torch.Size([2, 63382])
+Parameter containing:
+tensor([[-0.0161,  0.0966, -0.4133,  ..., -0.4011, -0.3805, -0.1011],
+        [-0.0952, -0.1770, -0.3234,  ..., -0.0898, -0.3223, -0.1301],
+        [-0.3556,  0.1591, -0.5307,  ...,  0.0467,  0.0139,  0.0702],
+        ...,
+        [ 0.2538,  0.0825,  0.3354,  ...,  0.2306,  0.3310, -0.3514],
+        [-0.0782, -0.1328,  0.0470,  ...,  0.0913,  0.3288,  0.0147],
+        [-0.0336,  0.1466, -0.1695,  ...,  0.1494,  0.1609,  0.4113]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(10.7144) tensor(-1.4537) tensor(549973)
+Exponential sum:  tensor(60340.5703)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(112.5942) tensor(-1.8864) tensor(1294156692)
+Exponential sum:  tensor(60829.3750)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.6832, 0.3168],
+        [0.6790, 0.3210],
+        [0.6832, 0.3168],
+        ...,
+        [0.6790, 0.3210],
+        [0.6766, 0.3234],
+        [0.6795, 0.3205]])
+tensor(indices=tensor([[19996],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+19344
+torch.Size([2, 63382])
+Parameter containing:
+tensor([[-0.0161,  0.0966, -0.4133,  ..., -0.4011, -0.3805, -0.1011],
+        [-0.0952, -0.1770, -0.3234,  ..., -0.0898, -0.3223, -0.1301],
+        [-0.3556,  0.1591, -0.5307,  ...,  0.0467,  0.0139,  0.0702],
+        ...,
+        [ 0.2538,  0.0825,  0.3354,  ...,  0.2306,  0.3310, -0.3514],
+        [-0.0782, -0.1328,  0.0470,  ...,  0.0913,  0.3288,  0.0147],
+        [-0.0336,  0.1466, -0.1695,  ...,  0.1494,  0.1609,  0.4113]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(10.7144) tensor(-1.4537) tensor(549973)
+Exponential sum:  tensor(60340.5703)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(112.5942) tensor(-1.8864) tensor(1294156692)
+Exponential sum:  tensor(60829.3516)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.6832, 0.3168],
+        [0.6790, 0.3210],
+        [0.6832, 0.3168],
+        ...,
+        [0.6790, 0.3210],
+        [0.6766, 0.3234],
+        [0.6795, 0.3205]])
+tensor(indices=tensor([[19344],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+1892
+torch.Size([2, 63382])
+Parameter containing:
+tensor([[-0.0161,  0.0966, -0.4133,  ..., -0.4011, -0.3805, -0.1011],
+        [-0.0952, -0.1770, -0.3234,  ..., -0.0898, -0.3223, -0.1301],
+        [-0.3556,  0.1591, -0.5307,  ...,  0.0467,  0.0139,  0.0702],
+        ...,
+        [ 0.2538,  0.0825,  0.3354,  ...,  0.2306,  0.3310, -0.3514],
+        [-0.0782, -0.1328,  0.0470,  ...,  0.0913,  0.3288,  0.0147],
+        [-0.0336,  0.1466, -0.1695,  ...,  0.1494,  0.1609,  0.4113]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(10.7144) tensor(-1.4537) tensor(549973)
+Exponential sum:  tensor(60340.5781)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(112.5942) tensor(-1.8864) tensor(1294156692)
+Exponential sum:  tensor(60829.3164)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.6832, 0.3168],
+        [0.6790, 0.3210],
+        [0.6832, 0.3168],
+        ...,
+        [0.6790, 0.3210],
+        [0.6766, 0.3234],
+        [0.6795, 0.3205]])
+tensor(indices=tensor([[1892],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+11621
+Parameter containing:
+tensor([[-0.0161,  0.0966, -0.4133,  ..., -0.4011, -0.3805, -0.1011],
+        [-0.0952, -0.1770, -0.3234,  ..., -0.0898, -0.3223, -0.1301],
+        [-0.3556,  0.1591, -0.5307,  ...,  0.0467,  0.0139,  0.0702],
+        ...,
+        [ 0.2538,  0.0825,  0.3354,  ...,  0.2306,  0.3310, -0.3514],
+        [-0.0782, -0.1328,  0.0470,  ...,  0.0913,  0.3288,  0.0147],
+        [-0.0336,  0.1466, -0.1695,  ...,  0.1494,  0.1609,  0.4113]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(10.7144) tensor(-1.4537) tensor(549973)
+Exponential sum:  tensor(60344.8555)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(112.5942) tensor(-1.8864) tensor(1294156692)
+Exponential sum:  tensor(60829.3164)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.6832, 0.3168],
+        [0.6790, 0.3210],
+        [0.6832, 0.3168],
+        ...,
+        [0.6790, 0.3210],
+        [0.6766, 0.3234],
+        [0.6795, 0.3205]])
+tensor(indices=tensor([[11621],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+21481
+Parameter containing:
+tensor([[-0.0161,  0.0966, -0.4133,  ..., -0.4011, -0.3805, -0.1011],
+        [-0.0952, -0.1770, -0.3234,  ..., -0.0898, -0.3223, -0.1301],
+        [-0.3556,  0.1591, -0.5307,  ...,  0.0467,  0.0139,  0.0702],
+        ...,
+        [ 0.2538,  0.0825,  0.3354,  ...,  0.2306,  0.3310, -0.3514],
+        [-0.0782, -0.1328,  0.0470,  ...,  0.0913,  0.3288,  0.0147],
+        [-0.0336,  0.1466, -0.1695,  ...,  0.1494,  0.1609,  0.4113]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(10.7144) tensor(-1.4537) tensor(549973)
+Exponential sum:  tensor(60340.5703)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(112.5942) tensor(-1.8864) tensor(1294156692)
+Exponential sum:  tensor(60829.4180)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.6832, 0.3168],
+        [0.6790, 0.3210],
+        [0.6832, 0.3168],
+        ...,
+        [0.5040, 0.4960],
+        [0.6766, 0.3234],
+        [0.6795, 0.3205]])
+tensor(indices=tensor([[21481],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+7955
+Parameter containing:
+tensor([[-0.0161,  0.0966, -0.4133,  ..., -0.4011, -0.3805, -0.1011],
+        [-0.0952, -0.1770, -0.3234,  ..., -0.0898, -0.3223, -0.1301],
+        [-0.3556,  0.1591, -0.5307,  ...,  0.0467,  0.0139,  0.0702],
+        ...,
+        [ 0.2538,  0.0825,  0.3354,  ...,  0.2306,  0.3310, -0.3514],
+        [-0.0782, -0.1328,  0.0470,  ...,  0.0913,  0.3288,  0.0147],
+        [-0.0336,  0.1466, -0.1695,  ...,  0.1494,  0.1609,  0.4113]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(10.7144) tensor(-1.4537) tensor(549973)
+Exponential sum:  tensor(60340.5703)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(112.5942) tensor(-1.8864) tensor(1294156692)
+Exponential sum:  tensor(60829.4180)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.6832, 0.3168],
+        [0.6790, 0.3210],
+        [0.6832, 0.3168],
+        ...,
+        [0.6790, 0.3210],
+        [0.6766, 0.3234],
+        [0.6795, 0.3205]])
+tensor(indices=tensor([[7955],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+19996
+torch.Size([2, 63382])
+Parameter containing:
+tensor([[-0.0161,  0.0966, -0.4133,  ..., -0.4011, -0.3805, -0.1011],
+        [-0.0952, -0.1770, -0.3234,  ..., -0.0898, -0.3223, -0.1301],
+        [-0.3556,  0.1591, -0.5307,  ...,  0.0467,  0.0139,  0.0702],
+        ...,
+        [ 0.2538,  0.0825,  0.3354,  ...,  0.2306,  0.3310, -0.3514],
+        [-0.0782, -0.1328,  0.0470,  ...,  0.0913,  0.3288,  0.0147],
+        [-0.0336,  0.1466, -0.1695,  ...,  0.1494,  0.1609,  0.4113]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(10.7144) tensor(-1.4537) tensor(549973)
+Exponential sum:  tensor(60340.5586)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(112.5942) tensor(-1.8864) tensor(1294156692)
+Exponential sum:  tensor(60829.5078)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.6832, 0.3168],
+        [0.6790, 0.3210],
+        [0.6832, 0.3168],
+        ...,
+        [0.6790, 0.3210],
+        [0.6766, 0.3234],
+        [0.6795, 0.3205]])
+tensor(indices=tensor([[19996],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+19344
+torch.Size([2, 63382])
+Parameter containing:
+tensor([[-0.0161,  0.0966, -0.4133,  ..., -0.4011, -0.3805, -0.1011],
+        [-0.0952, -0.1770, -0.3234,  ..., -0.0898, -0.3223, -0.1301],
+        [-0.3556,  0.1591, -0.5307,  ...,  0.0467,  0.0139,  0.0702],
+        ...,
+        [ 0.2538,  0.0825,  0.3354,  ...,  0.2306,  0.3310, -0.3514],
+        [-0.0782, -0.1328,  0.0470,  ...,  0.0913,  0.3288,  0.0147],
+        [-0.0336,  0.1466, -0.1695,  ...,  0.1494,  0.1609,  0.4113]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(10.7144) tensor(-1.4537) tensor(549973)
+Exponential sum:  tensor(60340.5703)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(112.5942) tensor(-1.8864) tensor(1294156692)
+Exponential sum:  tensor(60829.3320)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.6832, 0.3168],
+        [0.6790, 0.3210],
+        [0.6832, 0.3168],
+        ...,
+        [0.6790, 0.3210],
+        [0.6766, 0.3234],
+        [0.6795, 0.3205]])
+tensor(indices=tensor([[19344],
+                       [    1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+1892
+torch.Size([2, 63382])
+Parameter containing:
+tensor([[-0.0161,  0.0966, -0.4133,  ..., -0.4011, -0.3805, -0.1011],
+        [-0.0952, -0.1770, -0.3234,  ..., -0.0898, -0.3223, -0.1301],
+        [-0.3556,  0.1591, -0.5307,  ...,  0.0467,  0.0139,  0.0702],
+        ...,
+        [ 0.2538,  0.0825,  0.3354,  ...,  0.2306,  0.3310, -0.3514],
+        [-0.0782, -0.1328,  0.0470,  ...,  0.0913,  0.3288,  0.0147],
+        [-0.0336,  0.1466, -0.1695,  ...,  0.1494,  0.1609,  0.4113]],
+       requires_grad=True)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(10.7144) tensor(-1.4537) tensor(549973)
+Exponential sum:  tensor(60340.5703)
+alpha3:  tensor(1.) tensor(0.)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+tensor(112.5942) tensor(-1.8864) tensor(1294156692)
+Exponential sum:  tensor(60829.1016)
+alpha3:  tensor(1.) tensor(0.)
+tensor([[0.6832, 0.3168],
+        [0.6790, 0.3210],
+        [0.6832, 0.3168],
+        ...,
+        [0.6790, 0.3210],
+        [0.6766, 0.3234],
+        [0.6795, 0.3205]])
+tensor(indices=tensor([[1892],
+                       [   1]]),
+       values=tensor([1.]),
+       size=(22540, 2), nnz=1, layout=torch.sparse_coo)
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+torch.Size([9, 22540, 22540]) torch.Size([9, 22540, 50])
+count_nodes_self:  25
+count_edges_self:  0
+[Evaluation] Test Accuracy: 73.53

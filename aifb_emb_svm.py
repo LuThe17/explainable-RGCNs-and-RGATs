@@ -100,36 +100,39 @@ def save_pykeen_emb (emb_train, emb_test, emb, type):
         pickle.dump(emb, fp)
 
 def remove_aff_mem_emp(homedir, graph):
-    data=pd.read_csv(homedir + '/data/trainingSet.tsv',sep='\t')
-    test = pd.read_csv(homedir + '/data/testSet.tsv', sep='\t')
-    g = Graph()
-    g.parse(graph)
-
+    data=pd.read_csv(homedir + '/data/AIFB/trainingSet.tsv',sep='\t')
+    test = pd.read_csv(homedir + '/data/AIFB/testSet.tsv', sep='\t')
+    #g = Graph()
+    #g.parse(graph)
+    g =graph
     print(len(g))
 
     l = []
     for row in data.index:
         person = rdflib.term.URIRef(data.person[row])
+        #print(person)
         ag = rdflib.term.URIRef(data.label_affiliation[row])
+        #print(ag)
         aff = rdflib.term.URIRef('http://swrc.ontoware.org/ontology#affiliation')
+        #print(aff)
         mem = rdflib.term.URIRef('http://swrc.ontoware.org/ontology#member')
         emp = rdflib.term.URIRef('http://swrc.ontoware.org/ontology#employs')
         for s, p, o in g:
-            if s == person and p == aff  and o == ag:
+            if p == aff:
                 l.append(s)
                 l.append(p)
                 l.append(o)
-                g.remove((person, aff, ag))
-            if s == ag and p == mem  and o == person:
+                g.remove((s, p, o ))
+            if p == mem:
                 l.append(s)
                 l.append(p)
                 l.append(o)
-                g.remove((ag, mem, person))
-            if s == ag and p == emp  and o == person:
+                g.remove((s, p, o ))
+            if  p == emp:
                 l.append(s)
                 l.append(p)
                 l.append(o)
-                g.remove((ag, emp, person))
+                g.remove((s, p, o))
     for row in test.index:
         person = rdflib.term.URIRef(data.person[row])
         ag = rdflib.term.URIRef(data.label_affiliation[row])
@@ -137,21 +140,22 @@ def remove_aff_mem_emp(homedir, graph):
         mem = rdflib.term.URIRef('http://swrc.ontoware.org/ontology#member')
         emp = rdflib.term.URIRef('http://swrc.ontoware.org/ontology#employs')
         for s, p, o in g:
-            if s == person and p == aff  and o == ag:
+            if p == aff  :
                 l.append(s)
                 l.append(p)
                 l.append(o)
-                g.remove((person, aff, ag))
-            if s == ag and p == mem  and o == person:
+                g.remove((s, p, o))
+            if p == mem  :
                 l.append(s)
                 l.append(p)
                 l.append(o)
-                g.remove((ag, mem, person))
-            if s == ag and p == emp  and o == person:
+                g.remove((s, p, o))
+            if  p == emp  :
                 l.append(s)
                 l.append(p)
                 l.append(o)
-                g.remove((ag, emp, person))
+                g.remove((s, p, o))
+    print(l)
     return g
 
 def remove_literal_in_graph(g):
@@ -218,8 +222,10 @@ def Gaussian_classifier(train_emb, test_emb, traindata, testdata, label_header):
 if __name__ == '__main__':
     name = 'AIFB'
     if name == 'AIFB':
-        homedir = '/home/luitheob/AIFB/'
-        kg_dir = '/data/AIFB/aifb_renamed_bn.tsv'
+        homedir = '/home/luitheob/AIFB'
+        kg_dir = '/data/AIFB/aifb_renamed_bn.nt'
+        kg_dir2 = '/data/AIFB/aifb_final.nt'
+        kg_dir3 = '/data/AIFB/aifb_final.tsv'
         train_dir = "/data/AIFB/trainingSet.tsv"
         test_dir = "/data/AIFB/testSet.tsv"
         pytest_dir = "/data/AIFB/testSetpy.tsv"
@@ -280,34 +286,37 @@ if __name__ == '__main__':
         #         g.parse(file=f, format='nt')
     #elif name == 'IMDB':
         
-    #g = Graph()
-    #g.parse(homedir + kg_dir, format='nt')
-    #kg = remove_aff_mem_emp(homedir, 
+    g = Graph()
+    g.parse(homedir + kg_dir, format='nt')
+    kg = remove_aff_mem_emp(homedir, g)
     #print('########### REMOVE LITERALS IN GRAPH ################')
     #kg = remove_literal_in_graph(g)
     #print('################  RENAME BNODE IN GRAPH #############')
     #kg = rename_bnode_in_graph(kg)
     #print('###########  SERIALIZE KG  #############')
-    # with gzip.open((homedir + kg_dir2), "wb") as output:
+    with open((homedir + kg_dir2), "wb") as output:
+        kg.serialize(output, format="nt")
+    # with open((homedir + kg_dir3), "wb") as output:
     #     kg.serialize(output, format="nt")
-    # kg.close()
+    #kg.close()
 
-    #df = kg_to_tsv(kg, kg_dir)
+    df = kg_to_tsv(kg, kg_dir3)
     #print('TRAIN EMBEDDING')
-    traindata = pd.read_csv(homedir + train_dir, sep="\t") # train und test zusammen
-    testdata = pd.read_csv(homedir + test_dir, sep="\t")
-    entities = traindata[nodes_header].append(testdata[nodes_header])
-    emb_type = ['DistMult']#, 'TransE', 'TransH']
+    #traindata = pd.read_csv(homedir + train_dir, sep="\t") # train und test zusammen
+    #testdata = pd.read_csv(homedir + test_dir, sep="\t")
+    #entities = traindata[nodes_header].append(testdata[nodes_header])
+    #emb_type = ['DistMult', 'TransE', 'TransH']
     #testpy = testdata[:2]
-    pykeen_data = TriplesFactory.from_path(homedir + kg_dir, sep="\t")
-    pykeen_test = TriplesFactory.from_path(homedir + pytest_dir, sep="\t")
+    #pykeen_test = TriplesFactory.from_path(homedir + pytest_dir, sep="\t")
+    #pykeen_data = TriplesFactory.from_path(homedir + kg_dir3, sep="\t")
+    
     for embs in emb_type:
         pykeen_emb_train, pykeen_emb_test, pykeen_embeddings  = create_pykeen_embedding(pykeen_data, pykeen_test, entities, traindata, embs)
         # train_emb, test_emb, rdf2vec_embeddings = create_rdf2vec_embedding(kg, entities)
-        #save_pykeen_emb(pykeen_emb_train, pykeen_emb_test, pykeen_embeddings, embs)
+        save_pykeen_emb(pykeen_emb_train, pykeen_emb_test, pykeen_embeddings, embs)
         # #save_rdf2vec_emb(train_emb, test_emb, rdf2vec_embeddings)
         # pred_rdf_G, score_rdf_G = Gaussian_classifier(train_emb, test_emb, traindata, testdata)
-        #pred_py_G, score_py_G = Gaussian_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header) # size:140x50
+        pred_py_G, score_py_G = Gaussian_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header) # size:140x50
         # #pred_rdf_SVM, score_rdf_SVM = SVM_classifier(train_emb, test_emb, traindata, testdata)
         SVM_classifier(pykeen_emb_train, pykeen_emb_test, traindata, testdata, label_header)
 
