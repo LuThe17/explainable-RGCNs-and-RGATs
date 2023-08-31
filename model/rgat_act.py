@@ -14,8 +14,6 @@ from torch_geometric.utils.sparse import set_sparse_value
 
 def customized_softmax(input_tensor, edge_index, edge_type, num_nodes, num_relations, dim=None):
     input_tensor2 = input_tensor.clone()
-    max_values, _ = torch.max(input_tensor, dim=0, keepdim=True)
-    input_tensor -= max_values
     exponential = torch.where(input_tensor2 == 0, torch.zeros_like(input_tensor2), torch.exp(input_tensor))
     print("Exponential sum: ", exponential.sum())
     
