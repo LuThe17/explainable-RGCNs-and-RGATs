@@ -184,10 +184,12 @@ def get_lrp_variables(model, emb, triples_plus):
 
 
 if __name__ == '__main__':
+    ###### ADAPT #######
     homedir= '/home/luitheob/AIFB/'
     datasets = ['AIFB', 'MUTAG'] 
     models =   [ 'RGCN_no_emb', 'RGCN_emb', 'RGAT_no_emb','RGAT_emb']
     embs=['TransE','TransH', 'DistMult']
+    ####################
     global test_idx, test_y, train_idx, train_y, edge_index, edge_type, pyk_emb
     for dataset_name in datasets:
         print('dataset: ', dataset_name)
@@ -200,9 +202,9 @@ if __name__ == '__main__':
                     pyk_emb = torch.tensor(pyk_emb, dtype=torch.float)
                     lemb = len(pyk_emb[1])
                     if model_name.startswith('RGCN'):
-                        epochs = 50
+                        epochs = 50 #
                     elif model_name.startswith('RGAT'):
-                         epochs = 25
+                         epochs = 25 
                     
                     adj, edges, (n2i, i2n), (r2i, i2r), train, test, triples, triples_plus = utils_act.load_data(homedir, dataset_name, emb_type, model_name)
 
