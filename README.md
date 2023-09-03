@@ -1,7 +1,7 @@
 # explainable-RGCNs-and-RGATs
 
 This repository documents the implementation on using LRP with RGCNs and RGATs described in my Master's Thesis. 
-In includes the preprocessing of the datasets and embeddings, the implemention of both models with LRP as well as the evaluation of all models.
+It includes the preprocessing of the datasets and embeddings, the implemention of both models with LRP as well as the evaluation of all models.
 
 
 ## Getting Started
