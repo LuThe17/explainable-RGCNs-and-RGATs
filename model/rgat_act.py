@@ -15,7 +15,7 @@ from torch_geometric.utils.sparse import set_sparse_value
 def customized_softmax(input_tensor, edge_index, edge_type, num_nodes, num_relations, dim=None):
     input_tensor2 = input_tensor.clone()
     exponential = torch.where(input_tensor2 == 0, torch.zeros_like(input_tensor2), torch.exp(input_tensor))
-    print("Exponential sum: ", exponential.sum())
+    #print("Exponential sum: ", exponential.sum())
     
     resmat = torch.zeros(num_relations, num_nodes)
     num_neighbors = torch.zeros(num_relations, num_nodes)
@@ -61,20 +61,20 @@ class RGAT(torch.nn.Module):
             parameter_list.append((f"{names}_{name}", par2))
         out = self.dense(out)
         out = F.softmax(out, dim=-1)
-        print(out)
+        #print(out)
         return out, parameter_list, x
 
 def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weights):
     if x is None:
         x = self.node_emb
-        print(x)
+        #print(x)
     size = int(max(edge_type)+1), len(x[:,]), len(x[:,])
     values = torch.ones_like(edge_index[0])
     M = torch.sparse.FloatTensor(indices = torch.stack((edge_type, edge_index[0], edge_index[1])), values = values, size = size)
     M = M.float()
 
     G = x @ self.weight
-    print(M.shape, G.shape)
+    #print(M.shape, G.shape)
     Gmi = M.to_dense() @ G
     Gmj = M.to_dense().transpose(1,2) @ G
 
@@ -90,12 +90,12 @@ def mepa(self, x, edge_index, edge_type, edge_attr, size, return_attention_weigh
         Eij2 = F.leaky_relu(E, self.negative_slope) #(4) Eij(r)
         #np.log(np.max(x, 1e-9))
         #Eij2 = torch.log(torch.max(Eij2))
-        print(Eij2.max(), Eij2.min(), Eij2.argmin())
+        #print(Eij2.max(), Eij2.min(), Eij2.argmin())
         if torch.isnan(Eij2).any():
             exit()
         alpha3, exponential, resmat, num_neighbors = customized_softmax(Eij2, edge_index, edge_type, self.num_nodes, self.num_relations,dim=0)
-        #print("Alpha3: ", alpha3.to_sparse_coo())
-        print('alpha3: ', alpha3.max(), alpha3.min())
+        ##print("Alpha3: ", alpha3.to_sparse_coo())
+        #print('alpha3: ', alpha3.max(), alpha3.min())
         if torch.isnan(alpha3).any():
             exit()
         out = (alpha3 @ G).sum(dim=0) 
@@ -466,7 +466,7 @@ class RGATLayer(MessagePassing):
         self.k = Parameter(
             torch.Tensor(self.heads * self.out_channels,
                          self.heads * self.dim))
-        print(index) #x_i
+        #print(index) #x_i
         if self.num_bases is not None:  # Basis-decomposition =================
             w = torch.matmul(self.att, self.basis.view(self.num_bases, -1))
             w = w.view(self.num_relations, self.in_channels,

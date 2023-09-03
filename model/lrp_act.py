@@ -78,7 +78,6 @@ def lrp_rgat_layer(x, w, alpha, rel, s1, s2, num_neighbors,num_relations, num_no
         return output
     elif lrp_step == 'relevance_q_k':
         G = out_l1 @ w_l2
-        print(M_l2.shape, G.shape)
         Gmi = M_l2 @ G
         Gmj = M_l2.transpose(1,2) @ G
 
@@ -141,15 +140,15 @@ def lrp_rgcn(act_rgc1, weight_dense, bias_dense, relevance,
     selected_rel = relevance[x[1],:]
     num_classes = len(selected_rel)
     rel1 = tensor_max_value_to_1_else_0(selected_rel, x, test_idx, num_nodes, num_classes)
-    print(rel1.to_sparse_coo())
+    #print(rel1.to_sparse_coo())
     #rel2 = get_relevance_for_dense_layer(act_rgc1, weight_dense, bias_dense, rel1)
     #print(rel2.to_sparse_coo())
     if variant == 'A':
         rel_node, rel_edge = lrp(act_rgc1_no_hidden, weight_rgc1, adjacency, rel1)
-        print(rel_node.to_sparse_coo())
+        #print(rel_node.to_sparse_coo())
         if model_name == 'RGCN_emb':
             rel_node, rel_edge = lrp(pyk_emb, weight_rgc1_no_hidden, adjacency, rel_node)
-            print(rel_node.to_sparse_coo())
+            #print(rel_node.to_sparse_coo())
         elif model_name == 'RGCN_no_emb':
             rel_node, rel_edge = lrp(pyk_emb, weight_rgc1_no_hidden, adjacency, rel_node)
             #rel_node, rel_edge = lrp_first_noemb_layer(adjacency, weight_rgc1_no_hidden, rel_node)
@@ -162,7 +161,7 @@ def lrp_rgat(parameter_list, input, weight_dense, relevance, s1, s2,x, test_idx,
     selected_rel = relevance[x[1],:]
     num_classes = len(selected_rel)
     rel1 = tensor_max_value_to_1_else_0(selected_rel,x, test_idx, num_nodes, num_classes)
-    print(rel1.to_sparse_coo())
+    #print(rel1.to_sparse_coo())
     # for d in parameter_list:
     #      globals()[d[0]] = d[1]
     rel2 = get_relevance_for_dense_layer(out_l2, weight_dense, None, rel1)
@@ -204,7 +203,7 @@ def analyse_nodes(homedir, mode, node_table, edge_index, edge_type, model, emb,
     for i in node_table.index:
         name_node = str(i)
         name_e = name_node.split('tensor(')[1].split(',')[0]
-        print(name_e)
+        #print(name_e)
         #name_node for torch.save
         if mode == 'large':
             node_indice = node_table['pos_max_nodes'][i]
@@ -219,14 +218,14 @@ def analyse_nodes(homedir, mode, node_table, edge_index, edge_type, model, emb,
             input_new = input.clone()
             input_new[res_ind,0] = new_index
             edge_index_new = (torch.cat([input_new[:,0, None], input_new[:,2,None]], dim=1).T).type(torch.int64)
-            print(edge_index_new.shape)
+            #print(edge_index_new.shape)
         else:
             exclude = [node_indice]
             new_index = choice([a for a in range(0,int(input[:,1].max().item())) if a not in [exclude]])
             input_new = input.clone()
             input_new[res_ind,2] = new_index
             edge_index_new = (torch.cat([input_new[:,0, None], input_new[:,2,None]], dim=1).T).type(torch.int64)
-            print(edge_index_new.shape)
+            #print(edge_index_new.shape)
             
         if model_name == 'RGCN_emb':
             classes, adj_m, act = model(input_new)
@@ -273,7 +272,7 @@ def analyse_nodes(homedir, mode, node_table, edge_index, edge_type, model, emb,
             torch.save(rel_edges_new, homedir + 'out/'+dataset_name+'/' + model_name + '/'+ emb_type+'/relevances/relevances_after_node_edge_'+str(name_e)+'adapt_'+str(node_indice)+'_'+str(new_index)+'.pt')
             torch.save(rel_nodes_new, homedir +'out/' + dataset_name + '/' + model_name + '/'+ emb_type+'/relevances/relevances_after_node_node_'+str(name_e)+'adapt_'+str(node_indice)+'_'+str(new_index)+'.pt')
         else:
-            print(name_e, node_indice, new_index)
+            #print(name_e, node_indice, new_index)
             torch.save(rel_edges_new, homedir + 'out/'+dataset_name+'/' + model_name +  '/relevances/relevances_after_node_edge_'+str(name_e)+'adapt_'+str(node_indice)+'_'+str(new_index)+'.pt')
             torch.save(rel_nodes_new, homedir +'out/' + dataset_name + '/' + model_name  +'/relevances/relevances_after_node_node_'+str(name_e)+'adapt_'+str(node_indice)+'_'+str(new_index)+'.pt')
         rel_edges_list_new[i] = rel_edges_new
@@ -304,7 +303,7 @@ def analyse_edges(homedir, mode, edge_table, edge_index, edge_type, model, emb,
         name_edge = str(i)
         #name_edge for torch.save
         name_e = name_edge.split('tensor(')[1].split(',')[0]
-        print(name_e)
+        #print(name_e)
         if mode == 'large':
             edge_indice = edge_table['pos_max_edges'][i] 
         elif mode == 'small':
@@ -411,9 +410,9 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
         count_edges_self, count_nodes_self = 0,0
         for i in enumerate(test_idx):
             #name_test_idx for torch.save
-            print(i)
+            #print(i)
             name_e = str(i).split('tensor(')[1].split(',')[0]
-            print(name_e)
+            #print(name_e)
             relevance, adj,act = model(input)
             if model_name == 'RGCN_emb':
                 rel_nodes, rel_edges = lrp_rgcn(activation['rgc1'], model.dense.weight, None, relevance, activation['rgcn_no_hidden'], model.rgc1.weights, 
@@ -421,7 +420,7 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
             elif model_name == 'RGCN_no_emb':
                 rel_nodes, rel_edges = lrp_rgcn(activation['rgc1'], model.dense.weight, None, relevance, activation['rgcn_no_hidden'], model.rgc1.weights, 
                             model.rgcn_no_hidden.weights, adja,  activation['input'], test_idx, model_name, i,num_nodes, 'A')
-            print(rel_nodes.shape, rel_nodes.sum(dim=-1))
+            #print(rel_nodes.shape, rel_nodes.sum(dim=-1))
             rel_nodes = rel_nodes.sum(dim=1)
             rel_edges = rel_edges.sum(dim=2)
             if emb_type is not None:
@@ -434,13 +433,13 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
             rel_edges_list[i] = rel_edges.to_sparse_coo()
             if rel_nodes.argmax().item() == i[1].item():
                 count_nodes_self+=1
-                print(count_nodes_self)
+                #print(count_nodes_self)
                 rel_nodes[i[1].item()] = 0
                 max_nodes_list[i] = rel_nodes.max().item()
                 pos_max_nodes[i] = rel_nodes.argmax().item()
                 if rel_nodes.argmin().item() == i[1].item():
                     count_nodes_self+=1
-                    print(count_nodes_self)
+                    #print(count_nodes_self)
                     rel_nodes[i[1].item()] = 0
                     min_nodes_list[i] = rel_nodes.min().item()
                     pos_min_nodes[i] = rel_nodes.argmin().item()
@@ -455,7 +454,7 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
             
             if (rel_edges==torch.max(rel_edges)).nonzero()[0][1].item() == i[1].item():
                 count_edges_self +=1
-                print(count_edges_self)
+                #print(count_edges_self)
                 rel_edges[(rel_edges==torch.max(rel_edges)).nonzero()[0][0].item(), i[1].item()] = 0
                 max_edges_list[i] = rel_edges.max().item()
                 pos_max_edges[i] = (rel_edges==torch.max(rel_edges)).nonzero()
@@ -502,17 +501,17 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
         analyse_nodes(homedir,mode,  n_smallest_nodes, edge_index, edge_type, model,emb, 
                            parameter_list, input, weight_dense, relevance, adja, activation,
                            test_idx, model_name,dataset_name,None, num_nodes,num_relations, emb_type,s1, s2,None)
-        print('count_nodes_self: ',count_nodes_self)
-        print('count_edges_self: ', count_edges_self)
+        #print('count_nodes_self: ',count_nodes_self)
+        #print('count_edges_self: ', count_edges_self)
 
     elif model_name.startswith('RGAT'):
-        print('Start RGAT_emb')
+        #print('Start RGAT_emb')
         for d in parameter_list:
             globals()[d[0]] = d[1]
             if d[0] =='M_l2':
                 M_l2 = d[1]
         M_l2 = M_l2.to_dense()
-        print('M_l2: ', M_l2)
+        #print('M_l2: ', M_l2)
         pred, params, inp = model(emb, edge_index, edge_type)
         if model_name == 'RGAT_no_emb':
             torch.save(pred, homedir + 'out/'+dataset_name+'/'+model_name+ '/pred_before.pt')
@@ -525,7 +524,7 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
         count_edges_self, count_nodes_self = 0,0
         for i in enumerate(test_idx):
             name_e = str(i).split('tensor(')[1].split(',')[0]
-            print(name_e)
+            #print(name_e)
             pred, params, inp = model(emb, edge_index, edge_type)
             rel_edges, rel_nodes = lrp_rgat(params, input, weight_dense, pred, s1, s2, i, test_idx, num_nodes, num_relations, edge_type, edge_index,M_l2)
             rel_nodes = rel_nodes.sum(dim=1)
@@ -540,13 +539,13 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
             rel_edges_list[i] = rel_edges.to_sparse_coo()
             if rel_nodes.argmax().item() == i[1].item():
                 count_nodes_self+=1
-                print(count_nodes_self)
+                #print(count_nodes_self)
                 rel_nodes[i[1].item()] = 0
                 max_nodes_list[i] = rel_nodes.max().item()
                 pos_max_nodes[i] = rel_nodes.argmax().item()
                 if rel_nodes.argmin().item() == i[1].item():
                     count_nodes_self+=1
-                    print(count_nodes_self)
+                    #print(count_nodes_self)
                     rel_nodes[i[1].item()] = 0
                     min_nodes_list[i] = rel_nodes.min().item()
                     pos_min_nodes[i] = rel_nodes.argmin().item()
@@ -560,7 +559,7 @@ def analyse_lrp(emb, edge_index, edge_type, model, parameter_list, input, weight
                 pos_min_nodes[i] = rel_nodes.argmin().item()
             if (rel_edges==torch.max(rel_edges)).nonzero()[0][1].item() == i[1].item():
                 count_edges_self +=1
-                print(count_edges_self)
+                #print(count_edges_self)
                 rel_edges[(rel_edges==torch.max(rel_edges)).nonzero()[0][0].item(), i[1].item()] = 0
                 max_edges_list[i] = rel_edges.max().item()
                 pos_max_edges[i] = (rel_edges==torch.max(rel_edges)).nonzero()
