@@ -14,7 +14,7 @@ It includes the preprocessing of the datasets and embeddings, the implemention o
 ### Installing
 
 * To get the IMDb raw data, the following files have to be downloaded: title.basics.tsv.gz, title.crew.tsv.gz
-* Here the documentation and dataset for for academic purposes only can be found: https://developer.imdb.com/non-commercial-datasets/
+* Here the documentation and dataset for for academic purposes only can be found: [IMDB Dataset](https://developer.imdb.com/non-commercial-datasets/)
 
 
 ### Executing program
