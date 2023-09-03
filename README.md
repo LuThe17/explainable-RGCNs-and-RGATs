@@ -29,8 +29,10 @@ In includes the preprocessing of the datasets and embeddings, the implemention o
 * Thereby, 'RGAT_emb' and 'RGCN_emb' in combination with the in the 'embs' parameter selected embeddings will be trained
 * All models and variant are selectable by a list, such that the training of all models is carried out directly one after the other.
 * After the training of one of these model is finished, the computation of LRP starts directly after.
-* The model output is saved in the following folder: òut/dataset_name/model_name/(embedding_name/)relevances/`
+* The model output is saved in the following folder: `out/dataset_name/model_name/(embedding_name/)relevances/`
 * This structure has to exist, to be able to save the output files
+
+* The evaluation of the models and datasets can be found in the following folder: `/notebooks/analyze_modelname_datasetname.ipynb`
 
 
 * The implementation of the RGAT layer can be found in `/model/rgat_act.py`
@@ -38,38 +40,19 @@ In includes the preprocessing of the datasets and embeddings, the implemention o
 * The implementation of the LRP algorithm can be found in `/model/lrp_act.py`
 
 
-
-## Help
-
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
-
 ## Authors
 
 Contributors names and contact info
 
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
+Luisa Theobald
+luisa.theobald@student.uni-mannheim.de
 
-## Version History
-
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
-* 0.1
-    * Initial Release
-
-## License
-
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
 
 ## Acknowledgments
 
 Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+* [torch-rgcn](https://github.com/thiviyanT/torch-rgcn)
+* [RelationPrediction](https://github.com/MichSchli/RelationPrediction)
+* [RGAT Layer] (https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.nn.conv.RGATConv.html)
+* [Original RGAT Implementation](https://github.com/babylonhealth/rgat)
+
