@@ -186,7 +186,7 @@ def get_lrp_variables(model, emb, triples_plus):
 if __name__ == '__main__':
     ###### ADAPT #######
     homedir= '/home/luitheob/AIFB/'
-    datasets = ['AIFB', 'MUTAG'] 
+    datasets = ['AIFB', 'MUTAG'] #'IMDB'
     models =   [ 'RGCN_no_emb', 'RGCN_emb', 'RGAT_no_emb','RGAT_emb']
     embs=['TransE','TransH', 'DistMult']
     ####################
