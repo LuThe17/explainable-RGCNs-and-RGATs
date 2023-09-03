@@ -26,9 +26,7 @@ def remove_literal_in_graph(g):
 def rename_bnode_in_graph(g):
     new_iri = URIRef("http://bnode.org/")
     for s, p, o in g:
-    
         if isinstance(o, rdflib.BNode):
-            
             o_iri = URIRef(f"{new_iri}{o}")
             g.remove((s, p, o))#
             g.add((s, p, o_iri))
@@ -41,36 +39,8 @@ def rename_bnode_in_graph(g):
             g.add((s_iri, p, o))
             #g.add((s_iri, RDF.subject, s))
             s = s_iri
-        
     return g
 
-def load_IMDB_data(prefix):#='data/preprocessed/IMDB_processed'):
-    G00 = nx.read_adjlist(prefix + '/0/0-1-0.adjlist', create_using=nx.MultiDiGraph)
-    G01 = nx.read_adjlist(prefix + '/0/0-2-0.adjlist', create_using=nx.MultiDiGraph)
-    G10 = nx.read_adjlist(prefix + '/1/1-0-1.adjlist', create_using=nx.MultiDiGraph)
-    G11 = nx.read_adjlist(prefix + '/1/1-0-2-0-1.adjlist', create_using=nx.MultiDiGraph)
-    G20 = nx.read_adjlist(prefix + '/2/2-0-2.adjlist', create_using=nx.MultiDiGraph)
-    G21 = nx.read_adjlist(prefix + '/2/2-0-1-0-2.adjlist', create_using=nx.MultiDiGraph)
-    idx00 = np.load(prefix + '/0/0-1-0_idx.npy')
-    idx01 = np.load(prefix + '/0/0-2-0_idx.npy')
-    idx10 = np.load(prefix + '/1/1-0-1_idx.npy')
-    idx11 = np.load(prefix + '/1/1-0-2-0-1_idx.npy')
-    idx20 = np.load(prefix + '/2/2-0-2_idx.npy')
-    idx21 = np.load(prefix + '/2/2-0-1-0-2_idx.npy')
-    features_0 = scipy.sparse.load_npz(prefix + '/features_0.npz')
-    features_1 = scipy.sparse.load_npz(prefix + '/features_1.npz')
-    features_2 = scipy.sparse.load_npz(prefix + '/features_2.npz')
-    adjM = scipy.sparse.load_npz(prefix + '/adjM.npz')
-    type_mask = np.load(prefix + '/node_types.npy')
-    labels = np.load(prefix + '/labels.npy')
-    train_val_test_idx = np.load(prefix + '/train_val_test_idx.npz')
-    return [[G00, G01], [G10, G11], [G20, G21]], \
-           [[idx00, idx01], [idx10, idx11], [idx20, idx21]], \
-           [features_0, features_1, features_2],\
-           adjM, \
-           type_mask,\
-           labels,\
-           train_val_test_idx
 
 def load_pickle(filename):
     with open(filename, 'rb') as f:
@@ -110,7 +80,6 @@ def load_data(homedir,filename, emb_type, model_name):
         nodes_header = 'person'
         sep="\t"
     elif filename == 'MUTAG':
-        #kg_dir = '/data/MUTAG/mutag_stripped.nt'
         kg_dir = 'data/MUTAG/mutag_renamed_bn.nt'
         train_dir = "data/MUTAG/trainingSet.tsv"
         test_dir = "data/MUTAG/testSet.tsv"
@@ -118,16 +87,16 @@ def load_data(homedir,filename, emb_type, model_name):
         label_header = 'label_mutagenic'
         nodes_header = 'bond'
         sep="\t"
-    elif filename == 'BGS':
-        #homedir = '/pfs/work7/workspace/scratch/ma_luitheob-master/AIFB'
-        kg_dir = 'data/BGS/bgs_renamed_bn_new.nt.gz'
-        #kg_dir2= '/data/BGS/bgs_renamed_bn.nt.gz'
-        train_dir = "data/BGS/trainingSet(lith).tsv"
-        test_dir = "data/BGS/testSet(lith).tsv"
-        pytest_dir = "data/BGS/testSetpy.tsv"
-        label_header = 'label_lithogenesis'
-        nodes_header = 'rock'
-        sep="\t"
+    # elif filename == 'BGS':
+    #     #homedir = '/pfs/work7/workspace/scratch/ma_luitheob-master/AIFB'
+    #     kg_dir = 'data/BGS/bgs_renamed_bn_new.nt.gz'
+    #     #kg_dir2= '/data/BGS/bgs_renamed_bn.nt.gz'
+    #     train_dir = "data/BGS/trainingSet(lith).tsv"
+    #     test_dir = "data/BGS/testSet(lith).tsv"
+    #     pytest_dir = "data/BGS/testSetpy.tsv"
+    #     label_header = 'label_lithogenesis'
+    #     nodes_header = 'rock'
+    #     sep="\t"
     elif filename == 'IMDB':
         kg_dir = 'data/IMDB/imdb_graph.nt'
         label_header = 'genre'
@@ -150,25 +119,20 @@ def load_data(homedir,filename, emb_type, model_name):
     print('Labels loaded.')
     graph = rdf.Graph()
     file = homedir + kg_dir
-    if file.endswith('nt.gz'):
-        with gzip.open(homedir + '/data/BGS/bgs_stripped.nt.gz', "rb") as out:
-            graph.parse(file=out, format='nt')
-        print('FINISH PARSING BGS STRIPPED.nt.gz')
-        lith = rdflib.term.URIRef("http://data.bgs.ac.uk/ref/Lexicon/hasLithogenesis")
-        graph.remove((None, lith, None))
-        kg = remove_literal_in_graph(graph)
-        print('################  RENAME BNODE IN GRAPH #############')
-        kg = rename_bnode_in_graph(kg)
-        graph = kg
-        #with gzip.open((homedir + kg_dir), "wb") as output:
-        #    kg.serialize(output, format="nt")
-        #kg.close()
-    else:
-        graph.parse(file, format=rdf.util.guess_format(file))
+    # if file.endswith('nt.gz'):
+    #     with gzip.open(homedir + '/data/BGS/bgs_stripped.nt.gz', "rb") as out:
+    #         graph.parse(file=out, format='nt')
+    #     print('FINISH PARSING BGS STRIPPED.nt.gz')
+    #     lith = rdflib.term.URIRef("http://data.bgs.ac.uk/ref/Lexicon/hasLithogenesis")
+    #     graph.remove((None, lith, None))
+    #     kg = remove_literal_in_graph(graph)
+    #     print('################  RENAME BNODE IN GRAPH #############')
+    #     kg = rename_bnode_in_graph(kg)
+    #     graph = kg
+    # else:
+    graph.parse(file, format=rdf.util.guess_format(file))
 
     print('RDF loaded.')
-
- 
 
     triples = graph
 
@@ -184,8 +148,6 @@ def load_data(homedir,filename, emb_type, model_name):
     i2n = list(nodes) # maps indices to labels
     n2i = {n:i for i, n in enumerate(i2n)} # maps labels to indices
 
-    # the 'limit' most frequent labels are maintained, the rest are combined into label REST to save memory
-   
     i2r =list(relations.keys()) # maps indices to labels
 
     r2i = {r: i for i, r in enumerate(i2r)} # maps labels to indices

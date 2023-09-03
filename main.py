@@ -11,23 +11,12 @@ from utils import utils_act
 from model import gat, rgcn_layers 
 import os 
 from model import lrp_act
-from model.rgat_act import RGAT#, RGATLayer
+from model.rgat_act import RGAT
 import pickle
-from data.entities import Entities
-#from gtn_dataset import IMDBDataset, ACMDataset, DBLPDataset
 import os.path as osp
-#import torch_geometric
-#from torch_geometric.transforms import NormalizeFeatures
-
-# os.environ['CUDA_DEVICE_ORDER']='PCI_BUS_ID'
-# os.environ['CUDA_VISIBLE_DEVICES'] = '7'
 
 
-def get_data():
-    path = osp.join(osp.dirname(osp.realpath(__file__)), '..', 'data', 'Entities')
-    dataset = Entities(path, 'AIFB')
-    data = dataset[0]
-    data.x = torch.randn(data.num_nodes, 16)
+
 
 def gat_train(epochs):
     optimiser = torch.optim.Adam
@@ -110,7 +99,7 @@ def rgcn_train(epochs, triples):
         'acc_train: {:.4f}'.format(acc_train.data.item()),
         'time: {:.4f}s'.format(time.time() - t1))
 
-    #torch.save(model.state_dict(), homedir +'out/pykeen_model/test.pth')
+
     params = {}
     for name, param in model.named_parameters():
         if param.requires_grad:
@@ -144,7 +133,7 @@ def rgcn_evaluation(x, triples):
 
 
 def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_idx, test_y, triples, model, homedir,emb_type):
-    #model = RGAT(16, 16, dataset.num_classes, dataset.num_relations).to(device)
+
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=0.0005)
     for epoch in range(1, epochs+1):
         criterion = nn.CrossEntropyLoss()
@@ -154,13 +143,10 @@ def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_
         out = out.to(device)
         loss = criterion(out[train_idx], train_lbl)
         acc_train = utils_act.accuracy(out[train_idx], train_lbl)
-        #print("Loss, epoch: ", loss, epoch)
         print('Epoch: {:04d}'.format(epoch),
         'loss: {:.4f}'.format(loss),
         'acc_train: {:.4f}'.format(acc_train.data.item()))
         loss.backward()
-        #torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-
         optimizer.step()
         loss = float(loss)
     with torch.no_grad():
@@ -172,17 +158,10 @@ def rgat_train(epochs, pyk_emb, edge_index, edge_type, train_idx, train_y, test_
                         triples, weight_dense, pred, test_idx, model_name, 
                         dataset_name,num_nodes, num_relations, homedir,emb_type, s1 = 0.8, s2 = 0.2)
         pred2 = pred.argmax(dim=-1)
-
-        #pred2 = pred2.to(device)
         pred2 = pred2[test_idx.cpu()]
         test_accuracy = accuracy_score(pred2.cpu(), test_y.cpu()) * 100 
         print(f'[Evaluation] Test Accuracy: {test_accuracy:.2f}')
-        #train_acc.to(device)
-        #test_acc.to(decive)
-        #train_acc = float((pred2[train_idx] == train_y).float().mean()).to(decive)
-        #test_acc = float((pred2[test_idx.cpu()] == test_y.cpu()).float().mean())
-        # print(f'Epoch: {epoch:02d}, Loss: {loss:.4f}, Train: {train_acc:.4f} '
-        #   f'Test: {test_acc:.4f}')
+
     return loss, pred, parameter_list
         
 
@@ -205,10 +184,10 @@ def get_lrp_variables(model, emb, triples_plus):
 
 
 if __name__ == '__main__':
-    homedir= '/home/luitheob/AIFB/'#C:/Users/luisa/Projekte/Masterthesis/AIFB/'
-    datasets = ['AIFB'] #'AIFB',
-    models =   [ 'RGCN_no_emb', 'RGCN_emb', 'RGAT_no_emb','RGAT_emb'] #[ 'RGAT_no_emb','RGCN_no_emb', 'RGCN_emb',
-    embs=['TransE','TransH', 'DistMult']# ,
+    homedir= '/home/luitheob/AIFB/'
+    datasets = ['AIFB', 'MUTAG'] 
+    models =   [ 'RGCN_no_emb', 'RGCN_emb', 'RGAT_no_emb','RGAT_emb']
+    embs=['TransE','TransH', 'DistMult']
     global test_idx, test_y, train_idx, train_y, edge_index, edge_type, pyk_emb
     for dataset_name in datasets:
         print('dataset: ', dataset_name)
@@ -344,11 +323,6 @@ if __name__ == '__main__':
                     pickle.dump(test_idx, fp)
                 with open (homedir + '/out/'+ dataset_name+'/'+ model_name+'/train_lbl.pkl', 'wb') as fp:
                     pickle.dump(test_lbl, fp)
-
-
-
-
-
                 print('test_idx: ',test_idx)
 
                 classes = set([int(l) for l in test_lbl] + [int(l) for l in train_lbl])
@@ -376,7 +350,6 @@ if __name__ == '__main__':
                         decomposition=None,
                         nemb=None)
                     loss = rgcn_train(epochs, triples_plus)
-                    lrp_act.analyse_lrp(None, edge_index, edge_type, model, None, triples_plus, None, None, test_idx, model_name, dataset_name, num_nodes, num_relations, homedir, None, None, None)
                     rgcn_evaluation(None, triples_plus)
                 
 
